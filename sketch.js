@@ -1,14 +1,17 @@
-var player, grid, cam;
+var entities = [];
+var grid, cam;
 // const CELLSIZE = 30;
-const GRIDSIZE = 3;
+const GRIDSIZE = 10;
 
 function setup() {
 	createCanvas(600, 400);
 	grid = new Grid(GRIDSIZE);
 	cam = createGameCam(0, 0, width, height);
 	var pos = {x: 0, y: 0};//new Soldier(0, 0, 10, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
-    player = new Player(0, 0, 10, grid, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
-    entity = new Entity(0, 1, 10, grid);
+    var player = new Player(0, 0, 10, grid, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
+    var entity = new Entity(0, 1, 10, grid);
+    entities.push(player);
+    entities.push(entity)
 	// soldiers.push(player);
 	cam.follow(player.pos, POSITION);
 
@@ -37,11 +40,11 @@ function draw() {
 	// }
 
 
-	// for (var i = 0; i < soldiers.length; i++) {
-	// 	soldiers[i].update(soldiers, this.grid.grid);
-	// }
-    player.move([player, entity]);
-    entity.move([player, entity]);
+	for (var i = 0; i < entities.length; i++) {
+		entities[i].move(entities);
+	}
+    // player.move([player, entity]);
+    // entity.move([player, entity]);
 
 	cam.update();
 
@@ -49,11 +52,17 @@ function draw() {
 	cam.screen.background(45, 60, 120);
 	cam.draw(grid);
 
-	// for (var i = 0; i < soldiers.length; i++) {
-	// 	cam.draw(soldiers[i]);
-	// }
-    cam.draw(player);
-    cam.draw(entity);
+	for (var i = 0; i < entities.length; i++) {
+		cam.draw(entities[i]);
+	}
+    for (var i = 0; i < entities.length; i++) {
+        if (entities[i].gun !== undefined) {
+            cam.draw(entities[i].gun);
+        }
+		// cam.draw(entities[i]);
+	}
+    // cam.draw(player);
+    // cam.draw(entity);
 
 	cam.drawToCanvas();
 }

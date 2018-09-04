@@ -35,19 +35,19 @@ Cell.prototype.getNeighbours = function() {
     return neighbours;
 }
 
-// Cell.prototype.collideWith = function(entity) {
-//
-// }
-
 Cell.prototype.draw = function(cam, scr) {
-	// if (this.state !== NORMAL || this.mouseHover) {
+	if (this.obstacle) {
+        var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+        var drawR = cam.getDrawSize(this.r);
+        scr.push(0);
+        scr.translate(drawPos);
 	// 	var gameX = this.col * this.r;
 	// 	var gameY = this.row * this.r;
-		var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
         scr.noStroke();
-        scr.fill(255);
-        scr.ellipse(drawPos.x, drawPos.y, 2);
-	// 	var drawR = cam.getDrawSize(this.r);
+        scr.fill(100);
+        scr.rect(0, 0, drawR, drawR);
+
+        scr.pop();
     //
 	// 	if (this.state === GOLD) {
 	// 		scr.fill(255, 255, 0);
@@ -63,7 +63,7 @@ Cell.prototype.draw = function(cam, scr) {
 	// 	}
     //
     //
-	// }
+	}
 
 
 }

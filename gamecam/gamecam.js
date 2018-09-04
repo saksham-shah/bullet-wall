@@ -124,7 +124,8 @@ GameCam.prototype.drawToCanvas = function(x, y) {
 GameCam.prototype.getDrawPos = function(gameX, gameY) {
     var drawX = this.zoom * (gameX - this.x - this.w / 2) + this.w / 2;
     var drawY = this.zoom * (gameY - this.y - this.h / 2) + this.h / 2;
-    return {x: drawX, y: drawY};
+    // return {x: drawX, y: drawY};
+    return createVector(drawX, drawY);
 };
 
 // Converts a game size to a draw size
@@ -137,7 +138,8 @@ GameCam.prototype.getGamePos = function(drawX, drawY) {
     // Just the inverse function of getDrawPos
     var gameX = (drawX - width / 2) / this.zoom + this.x;
     var gameY = (drawY - height / 2) / this.zoom + this.y;
-    return {x: gameX, y: gameY};
+    // return {x: gameX, y: gameY};
+    return createVector(gameX, gameY);
 }
 
 GameCam.prototype.getMousePos = function() {
