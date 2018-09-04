@@ -7,43 +7,19 @@ function Entity(row, col, r_, grid_) {
 	this.r = r_;
 
     this.grid = grid_;
-
-	// if (controls !== undefined) {
-	// 	this.controls = {
-	//         up: controls[0],
-	//         down: controls[1],
-	//         left: controls[2],
-	//         right: controls[3]
-	//     };
-	// } else {
-	// 	this.controls = null;
-	// }
-
-    // this.speed = 1;
 }
 
 Entity.prototype.move = function(entities) {
-    this.update();
+    if (this.update !== undefined) {
+        this.update();
+    }
 	this.pos.add(this.vel);
     this.checkCollisions(entities);
 	this.wallCollisions();
 	this.vel.mult(0);
 }
 
-// Soldier.prototype.update = function(soldiers, grid) {
-// 	if (this.controls) {
-// 		this.moveUsingArrowKeys();
-// 	}
-// 	this.move();
-// 	this.checkCollisions(soldiers);
-// 	this.wallCollisions(grid);
-// }
-
 Entity.prototype.wallCollisions = function() {
-	// var cellCoordinates = {
-	// 	row: floor(this.pos.y / CELLSIZE),
-	// 	col: floor(this.pos.x / CELLSIZE)
-	// }
     var grid = this.grid.grid;
 
 	var currentCell = this.grid.getCell(this.pos);
@@ -54,32 +30,24 @@ Entity.prototype.wallCollisions = function() {
 
 	if (relativePos.x < this.r) {
 		var dx = this.r - relativePos.x;
-		if (currentCell.col == 0) {
-			var xShift = true;
-		} else if (grid[currentCell.row][currentCell.col - 1].obstacle) {
+		if (currentCell.col == 0 || grid[currentCell.row][currentCell.col - 1].obstacle) {
 			var xShift = true;
 		}
 	} else if (relativePos.x > CELLSIZE - this.r) {
 		var dx = CELLSIZE - this.r - relativePos.x;
-		if (currentCell.col == grid.length - 1) {
-			var xShift = true;
-		} else if (grid[currentCell.row][currentCell.col + 1].obstacle) {
+		if (currentCell.col == grid.length - 1 || grid[currentCell.row][currentCell.col + 1].obstacle) {
 			var xShift = true;
 		}
 	}
 
 	if (relativePos.y < this.r) {
 		var dy = this.r - relativePos.y;
-		if (currentCell.row == 0) {
-			var yShift = true;
-		} else if (grid[currentCell.row - 1][currentCell.col].obstacle) {
+		if (currentCell.row == 0 || grid[currentCell.row - 1][currentCell.col].obstacle) {
 			var yShift = true;
 		}
 	} else if (relativePos.y > CELLSIZE - this.r) {
 		var dy = CELLSIZE - this.r - relativePos.y;
-		if (currentCell.row == grid.length - 1) {
-			var yShift = true;
-		} else if (grid[currentCell.row + 1][currentCell.col].obstacle) {
+		if (currentCell.row == grid.length - 1 || grid[currentCell.row + 1][currentCell.col].obstacle) {
 			var yShift = true;
 		}
 	}
@@ -90,32 +58,48 @@ Entity.prototype.wallCollisions = function() {
 	if (yShift) {
 		this.pos.y += dy;
 	}
+
+    if (!xShift && !yShift) {
+        // Corner collisions
+
+        var corners = [];
+
+        corners.push(collideWithPoint(this.pos, createVector(currentCell.pos.x, currentCell.pos.y), this.r, 1));
+        corners.push(collideWithPoint(this.pos, createVector(currentCell.pos.x + currentCell.r, currentCell.pos.y), this.r, 1));
+        corners.push(collideWithPoint(this.pos, createVector(currentCell.pos.x, currentCell.pos.y + currentCell.r), this.r, 1));
+        corners.push(collideWithPoint(this.pos, createVector(currentCell.pos.x + currentCell.r, currentCell.pos.y + currentCell.r), this.r, 1));
+
+        var done = false;
+        for (var i = 0; i < corners.length; i++) {
+            if ((this.pos.x != corners[i].x || this.pos.y != corners[i].y) && !done) {
+                this.pos.x = corners[i].x;
+                this.pos.y = corners[i].y;
+                done = true;
+            }
+        }
+    }
 }
 
 Entity.prototype.checkCollisions = function(all) {
 	for (var i = 0; i < all.length; i++) {
 		if (this !== all[i]) {
-			var d = p5.Vector.dist(this.pos, all[i].pos);
-			if (d < this.r + all[i].r) {
-				this.collide(all[i], d - this.r - all[i].r);
-			}
+            var newPos = collideWithPoint(this.pos, all[i].pos, this.r + all[i].r, 0.5);
+            this.pos.x = newPos.x;
+            this.pos.y = newPos.y;
 		}
 	}
 }
 
-Entity.prototype.collide = function(other, d) {
-	var awayVector = p5.Vector.sub(this.pos, other.pos);
-	awayVector.setMag(-d * 0.5);
-	this.pos.add(awayVector);
+function collideWithPoint(pos1, pos2, distance, weight) {
+    var returnVector = pos1.copy();
+    var d = p5.Vector.dist(pos1, pos2);
+    if (d < distance) {
+        var awayVector = p5.Vector.sub(pos1, pos2);
+        awayVector.setMag((distance - d) * weight);
+        returnVector.add(awayVector);
+    }
+    return returnVector;
 }
-
-// Soldier.prototype.moveUsingArrowKeys = function() {
-//     //Controls
-//     if (keyIsDown(this.controls.left)) this.vel.x -= this.speed;
-//     if (keyIsDown(this.controls.up)) this.vel.y -= this.speed;
-//     if (keyIsDown(this.controls.right)) this.vel.x += this.speed;
-//     if (keyIsDown(this.controls.down)) this.vel.y += this.speed;
-// }
 
 Entity.prototype.draw = function(cam, scr) {
 	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);

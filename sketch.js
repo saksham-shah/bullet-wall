@@ -8,6 +8,7 @@ function setup() {
 	cam = createGameCam(0, 0, width, height);
 	var pos = {x: 0, y: 0};//new Soldier(0, 0, 10, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     player = new Player(0, 0, 10, grid, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
+    entity = new Entity(0, 1, 10, grid);
 	// soldiers.push(player);
 	cam.follow(player.pos, POSITION);
 
@@ -39,7 +40,8 @@ function draw() {
 	// for (var i = 0; i < soldiers.length; i++) {
 	// 	soldiers[i].update(soldiers, this.grid.grid);
 	// }
-    player.move([player]);
+    player.move([player, entity]);
+    entity.move([player, entity]);
 
 	cam.update();
 
@@ -51,6 +53,7 @@ function draw() {
 	// 	cam.draw(soldiers[i]);
 	// }
     cam.draw(player);
+    cam.draw(entity);
 
 	cam.drawToCanvas();
 }
