@@ -1,4 +1,6 @@
-function Gun(entity_, pivot_, l_, w_, l2_) {
+function Gun(game_, entity_, pivot_, l_, w_, l2_) {
+    this.game = game_;
+
     this.entity = entity_;
     this.pivot = pivot_;
     this.l = l_;
@@ -35,6 +37,8 @@ Gun.prototype.shoot = function() {
     if (this.cooldown <= 0) {
         this.state = 1;
         this.cooldown = 30;
+
+        this.game.bullets.push(new Bullet(this.game, this, 5, this.direction, color(255)));
     }
 }
 
@@ -53,7 +57,7 @@ Gun.prototype.draw = function(cam, scr) {
     scr.rotate(this.direction);
     scr.translate(p5.Vector.mult(this.pivot, drawR));
     scr.translate(-this.recoil, 0);
-	scr.fill(50);
+	scr.fill(50, 0, 0);
 	scr.noStroke();
 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
     scr.rect(- this.l2, - this.w * 0.5, this.l + this.l2, this.w);

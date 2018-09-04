@@ -1,5 +1,5 @@
-function Player(row, col, r, grid, controls) {
-    Entity.call(this, row, col, r, grid);
+function Player(game, row, col, controls) {
+    Entity.call(this, game, row, col, 15);
     this.controls = {
 	        up: controls[0],
 	        down: controls[1],
@@ -7,9 +7,9 @@ function Player(row, col, r, grid, controls) {
 	        right: controls[3]
 	    };
 
-    this.speed = 1;
+    this.speed = 1.5;
 
-    this.gun = new Gun(this, createVector(0, 5), 15, 8, 5);
+    this.gun = new Gun(this.game, this, createVector(0, 6), 20, 12, 6);
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -23,7 +23,7 @@ Player.prototype.update = function() {
 
     this.gun.update();
 
-    var mousePos = cam.getMousePos(0);
+    var mousePos = this.game.cam.getMousePos(0);
     this.gun.direction = p5.Vector.sub(mousePos, this.gun.getPos()).heading();
 
     if (mouseIsPressed) {

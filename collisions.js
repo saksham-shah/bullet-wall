@@ -23,32 +23,47 @@ function collideWithWalls(pos, r, grid_) {
 	var xShift = false;
 	var yShift = false;
 
+    var hit = null;
+
     // Checking for collisions with each of the four neighbouring cells in turn
 
     // If the circle is overlapping with the neighbouring cell (on the left)
-	if (relativePos.x < r) {
+    if (relativePos.x < r) {
 		var dx = r - relativePos.x;
-        // If the cell is on the edge of the grid or the cell on the left is a wall
-		if (currentCell.col == 0 || grid[currentCell.row][currentCell.col - 1].obstacle) {
+        // If the cell is on the edge
+		if (currentCell.col == 0) {
             // Collision has happened
 			var xShift = true;
-		}
-	} else if (relativePos.x > CELLSIZE -r) {
-		var dx = CELLSIZE - r - relativePos.x;
-		if (currentCell.col == grid.length - 1 || grid[currentCell.row][currentCell.col + 1].obstacle) {
+            // Else if the cell on the left is a wall
+		} else if (grid[currentCell.row][currentCell.col - 1].wall > 0) {
 			var xShift = true;
+            hit = grid[currentCell.row][currentCell.col - 1];
+		}
+	} else if (relativePos.x > CELLSIZE - r) {
+		var dx = CELLSIZE - r - relativePos.x;
+		if (currentCell.col == grid.length - 1) {
+			var xShift = true;
+		} else if (grid[currentCell.row][currentCell.col + 1].wall > 0) {
+			var xShift = true;
+            hit = grid[currentCell.row][currentCell.col + 1];
 		}
 	}
 
 	if (relativePos.y < r) {
 		var dy = r - relativePos.y;
-		if (currentCell.row == 0 || grid[currentCell.row - 1][currentCell.col].obstacle) {
+		if (currentCell.row == 0) {
 			var yShift = true;
+		} else if (grid[currentCell.row - 1][currentCell.col].wall > 0) {
+			var yShift = true;
+            hit = grid[currentCell.row - 1][currentCell.col ];
 		}
 	} else if (relativePos.y > CELLSIZE - r) {
 		var dy = CELLSIZE - r - relativePos.y;
-		if (currentCell.row == grid.length - 1 || grid[currentCell.row + 1][currentCell.col].obstacle) {
+		if (currentCell.row == grid.length - 1) {
 			var yShift = true;
+		} else if (grid[currentCell.row + 1][currentCell.col].wall > 0) {
+			var yShift = true;
+            hit = grid[currentCell.row + 1][currentCell.col ];
 		}
 	}
 
@@ -65,26 +80,46 @@ function collideWithWalls(pos, r, grid_) {
         var corners = [];
 
         // Four corners
-        if (currentCell.row > 0 && currentCell.col > 0 && grid[currentCell.row - 1][currentCell.col - 1].obstacle) {
+        if (currentCell.row > 0 && currentCell.col > 0 && grid[currentCell.row - 1][currentCell.col - 1].wall > 0) {
             corners.push(collideWithPoint(pos, createVector(currentCell.pos.x, currentCell.pos.y), r, 1));
+        } else {
+            corners.push(false);
         }
-        if (currentCell.row > 0 && currentCell.col < grid[0].length && grid[currentCell.row - 1][currentCell.col + 1].obstacle) {
+        if (currentCell.row > 0 && currentCell.col < grid[0].length - 1 && grid[currentCell.row - 1][currentCell.col + 1].wall > 0) {
             corners.push(collideWithPoint(pos, createVector(currentCell.pos.x + currentCell.r, currentCell.pos.y), r, 1));
+        } else {
+            corners.push(false);
         }
-        if (currentCell.row < grid.length && currentCell.col > 0 && grid[currentCell.row + 1][currentCell.col - 1].obstacle) {
+        if (currentCell.row < grid.length - 1 && currentCell.col > 0 && grid[currentCell.row + 1][currentCell.col - 1].wall > 0) {
             corners.push(collideWithPoint(pos, createVector(currentCell.pos.x, currentCell.pos.y + currentCell.r), r, 1));
+        } else {
+            corners.push(false);
         }
-        if (currentCell.row < grid.length && currentCell.col < grid[0].length && grid[currentCell.row + 1][currentCell.col + 1].obstacle) {
+        if (currentCell.row < grid.length - 1 && currentCell.col < grid[0].length - 1 && grid[currentCell.row + 1][currentCell.col + 1].wall > 0) {
             corners.push(collideWithPoint(pos, createVector(currentCell.pos.x + currentCell.r, currentCell.pos.y + currentCell.r), r, 1));
+        } else {
+            corners.push(false);
         }
 
         for (var i = 0; i < corners.length; i++) {
-            // If there is a collision, corners[i] will be different from pos, so this if statement checks if there is a collision
-            if ((pos.x != corners[i].x || pos.y != corners[i].y)) {
-                returnVector.x = corners[i].x;
-                returnVector.y = corners[i].y;
+            if (corners[i] !== false) {
+                // If there is a collision, corners[i] will be different from pos, so this if statement checks if there is a collision
+                if ((pos.x != corners[i].x || pos.y != corners[i].y)) {
+                    returnVector.x = corners[i].x;
+                    returnVector.y = corners[i].y;
+                    if (i == 0) {
+                        hit = grid[currentCell.row - 1][currentCell.col - 1];
+                    } else if (i == 1) {
+                        hit = grid[currentCell.row - 1][currentCell.col + 1];
+                    } else if (i == 2) {
+                        hit = grid[currentCell.row + 1][currentCell.col - 1];
+                    } else {
+                        hit = grid[currentCell.row + 1][currentCell.col + 1]
+                    }
+                }
             }
         }
     }
-    return returnVector;
+    // console.log(returnVector);
+    return [returnVector, hit];
 }

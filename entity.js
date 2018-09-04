@@ -1,12 +1,14 @@
-function Entity(row, col, r_, grid_) {
-	var x = (col + 0.5) * CELLSIZE;
+function Entity(game_, row, col, r_) {
+    this.game = game_;
+
+    var x = (col + 0.5) * CELLSIZE;
 	var y = (row + 0.5) * CELLSIZE;
 	this.pos = createVector(x, y);
 	this.vel = createVector(0, 0);
 
 	this.r = r_;
 
-    this.grid = grid_;
+    // this.grid = grid_;
 }
 
 Entity.prototype.move = function(entities) {
@@ -28,7 +30,8 @@ Entity.prototype.checkCollisions = function(all) {
 		}
 	}
 
-    var newPos = collideWithWalls(this.pos, this.r, this.grid);
+    var newPos = collideWithWalls(this.pos, this.r, this.game.grid)[0];
+    // newPos = newPos[0];
     this.pos.x = newPos.x;
     this.pos.y = newPos.y;
 }
