@@ -2,6 +2,12 @@ function Gun(game_, entity_, pivot_, l_, w_, l2_) {
     this.game = game_;
 
     this.entity = entity_;
+    if (this.entity instanceof Player) {
+        this.player = true;
+    } else {
+        this.player = false;
+    }
+
     this.pivot = pivot_;
     this.l = l_;
     this.w = w_;
@@ -39,7 +45,13 @@ Gun.prototype.shoot = function() {
         this.cooldown = 30;
 
         this.game.bullets.push(new Bullet(this.game, this, 5, this.direction, color(255)));
+
+        var pos = this.getPos(0);
+        var length = createVector(this.l, 0).rotate(this.direction);
+        pos.add(length);
+        this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 7, 5, color(255, 255, 0));
     }
+
 }
 
 Gun.prototype.getPos = function() {
@@ -57,8 +69,14 @@ Gun.prototype.draw = function(cam, scr) {
     scr.rotate(this.direction);
     scr.translate(p5.Vector.mult(this.pivot, drawR));
     scr.translate(-this.recoil, 0);
-	scr.fill(50, 0, 0);
-	scr.noStroke();
+
+    if (this.player) {
+	   scr.fill(50, 50, 150);
+       scr.stroke(25, 25, 50);
+       scr.strokeWeight(2);
+    }
+
+	
 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
     scr.rect(- this.l2, - this.w * 0.5, this.l + this.l2, this.w);
     scr.pop();

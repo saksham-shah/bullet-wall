@@ -28,6 +28,10 @@ Grid.prototype.getCell = function(pos) {
     var row = floor(pos.y / CELLSIZE);
     var col = floor(pos.x / CELLSIZE);
 
+    if (row < 0 || row >= this.grid.length || col < 0 || col >= this.grid[0].length) {
+    	return null;
+    }
+
     // if (row < 0) {
     //     row = 0;
     // } else if (row >= this.grid.length) {
