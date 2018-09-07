@@ -1,132 +1,86 @@
-function PathGrid(world) {
-    var size = world.length;
-    this.grid = [];
+function Map(size, defaultValue) {
+    this.map = [];
     for (var i = 0; i < size; i++) {
         var row = [];
         for (var j = 0; j < size; j++) {
-            row.push(new PathCell(i, j, this));
+            row.push(defaultValue);
         }
-        this.grid.push(row);
+        this.map.push(row);
     }
-    this.world = world;
 }
 
-function PathCell(row, col, grid) {
-    this.row = row;
-    this.col = col;
-    this.grid = grid.grid;
-    this.pathGrid = grid;
-
-    this.reset();
+Map.prototype.get = function(cell) {
+    return this.map[cell.row][cell.col];
 }
 
-PathCell.prototype.reset = function() {
-    this.gScore = Infinity;
-    this.fScore = Infinity
-
-    this.cameFrom = null;
+Map.prototype.set = function(cell, value) {
+    this.map[cell.row][cell.col] = value;
 }
 
-PathCell.prototype.getNeighbours = function() {
-    var neighbours = [];
-    if (this.row > 0) {
-        if (!this.pathGrid.world[this.row - 1][this.col].obstacle) {
-            neighbours.push(this.grid[this.row - 1][this.col])
-        }
+function reconstructPath(cameFrom, current) {
+    var path = [current];
+    while (cameFrom.get(current) !== null) {
+        current = cameFrom.get(current);
+        path.push(current);
     }
-    if (this.row < this.grid.length - 1) {
-        if (!this.pathGrid.world[this.row + 1][this.col].obstacle) {
-            neighbours.push(this.grid[this.row + 1][this.col])
-        }
-    }
-    if (this.col > 0) {
-        if (!this.pathGrid.world[this.row][this.col - 1].obstacle) {
-            neighbours.push(this.grid[this.row][this.col - 1])
-        }
-    }
-    if (this.col < this.grid.length - 1) {
-        if (!this.pathGrid.world[this.row][this.col + 1].obstacle) {
-            neighbours.push(this.grid[this.row][this.col + 1])
-        }
-    }
-    //     this.grid[this.row][this.col + 1],
-    //     this.grid[this.row + 1][this.col],
-    //     this.grid[this.row][this.col - 1],
-    //     this.grid[this.row - 1][this.col]
-    return neighbours;
+    return path;
 }
 
-PathGrid.prototype.findPath = function(start, end) {
-    this.reset();
-
-    var startCell = this.grid[start.row][start.col];
-    var endCell = this.grid[end.row][end.col];
+function findPath(grid, goal, start) {
     var closedSet = [];
-    var openSet = [startCell];
 
-    startCell.gScore = 0;
-    startCell.fScore = this.hScoreEstimate(startCell, endCell);
+    var openSet = [start];
 
-    while(openSet.length > 0) {
+    var cameFrom = new Map(grid.length, null);
+
+    var gScore = new Map(grid.length, Infinity);
+    gScore.set(start, 0);
+
+    var fScore = new Map(grid.length, Infinity);
+    fScore.set(start, costEstimate(start, goal));
+
+    while (openSet.length > 0) {
         openSet.sort(function(a, b) {
-            return a.fScore - b.fScore;
+            return fScore.get(a) - fScore.get(b);//a.fScore - b.fScore;
         })
         var current = openSet[0];
 
-        if (current == endCell) {
-            return this.createPath(current);
+        if (current === goal) {
+            return reconstructPath(cameFrom, current);
         }
 
         openSet.splice(0, 1);
         closedSet.push(current);
 
         var neighbours = current.getNeighbours();
-
         for (var i = 0; i < neighbours.length; i++) {
-            var currentNeighbour = neighbours[i];
-            if (!closedSet.includes(currentNeighbour)) {
-                var tentativeGScore = current.gScore + this.hScoreEstimate(current, currentNeighbour);
+            if (!closedSet.includes(neighbours[i])) {// && neighbours[i].wall == 0) {
+                tentativeGScore = gScore.get(current) + costEstimate(current, neighbours[i]);
+
                 var better = true;
-                if (!openSet.includes(currentNeighbour)) {
-                    openSet.push(currentNeighbour);
-                } else if (tentativeGScore >= currentNeighbour.gScore) {
+                if (!openSet.includes(neighbours[i])) {
+                    openSet.push(neighbours[i]);
+                } else if (tentativeGScore < gScore.get(neighbours[i])) {
                     better = false;
                 }
 
                 if (better) {
-                    currentNeighbour.cameFrom = current;
-                    currentNeighbour.gScore = tentativeGScore;
-                    currentNeighbour.fScore = currentNeighbour.gScore + this.hScoreEstimate(currentNeighbour, endCell);
+                    cameFrom.set(neighbours[i], current);
+                    gScore.set(neighbours[i], tentativeGScore);
+                    fScore.set(neighbours[i], tentativeGScore + costEstimate(neighbours[i], goal));
                 }
             }
         }
     }
-    return [];
-
 }
 
-PathGrid.prototype.hScoreEstimate = function(a, b) {
+function costEstimate(a, b) {
     var av = createVector(a.row, a.col);
     var bv = createVector(b.row, b.col);
-    return p5.Vector.dist(av, bv);
-    // var hScore = sqrt((a.row - b.row) * (a.col - b.col));
-    // return hScore;
-}
 
-PathGrid.prototype.createPath = function(current) {
-    var path = [this.world[current.row][current.col]];
-
-    while (current.cameFrom !== null) {
-        current = current.cameFrom;
-        path.push(this.world[current.row][current.col]);
-    }
-    return path;
-}
-
-PathGrid.prototype.reset = function() {
-    for (var i = 0; i < this.grid.length; i++) {
-        for (var j = 0; j < this.grid[0].length; j++) {
-            this.grid[i][j].reset();
-        }
+    if (b.wall == 0) {
+        return p5.Vector.dist(av, bv);
+    } else {
+        return p5.Vector.dist(av, bv) * 100;
     }
 }

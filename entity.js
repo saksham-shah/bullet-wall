@@ -8,6 +8,8 @@ function Entity(game_, row, col, r_) {
 
 	this.r = r_;
 
+    this.dead = false;
+
     // this.grid = grid_;
 }
 

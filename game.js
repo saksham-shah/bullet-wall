@@ -13,7 +13,7 @@ function Game(gridSize) {
 	this.grid = new Grid(this, gridSize);
 	this.cam = createGameCam(0, 0, width, height);
     this.player = new Player(this, 0, 0, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
-    var entity = new Entity(this, 0, 1, 10);
+    var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
     this.entities.push(this.player);
     this.entities.push(entity)
 
@@ -25,10 +25,13 @@ Game.prototype.update = function() {
 
 	for (var i = 0; i < this.entities.length; i++) {
 		this.entities[i].move(this.entities);
+		if (this.entities[i].dead) {
+			this.entities.splice(i, 1);
+		}
 	}
 
     for (var i = 0; i < this.bullets.length; i++) {
-		this.bullets[i].update();
+		this.bullets[i].update(this.entities);
         if (this.bullets[i].hit) {
         	var bullet = this.bullets[i];
         	this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 10, 7, color(255));
@@ -42,6 +45,14 @@ Game.prototype.update = function() {
             this.particles.splice(i, 1);
         }
 	}
+
+	// var mouseCell = this.grid.getCell(this.cam.getMousePos());
+	// if (mouseCell !== null) {
+	// 	var path = findPath(this.grid.grid, mouseCell, this.grid.grid[0][0]);
+	// 	for (var i = 0; i < path.length; i++) {
+	// 		path[i].path = true;
+	// 	}
+	// }
 
 	this.cam.update();
 }

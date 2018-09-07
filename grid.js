@@ -13,7 +13,7 @@ function Grid(game_, size) {
 	for (var i = 0; i < size; i++) {
 		var row = [];
 		for (var j = 0; j < size; j++) {
-			var cell = new Cell(game_, i, j, this);
+			var cell = new Cell(game_, i, j, this.grid);
 			row.push(cell);
 		}
 		this.grid.push(row);

@@ -19,6 +19,8 @@ function Cell(game_, row_, col_, grid_) {
 		this.obstacle = true;
         this.wall = 2;
 	}
+
+    this.path = false;
 }
 
 Cell.prototype.getNeighbours = function() {
@@ -42,7 +44,7 @@ Cell.prototype.draw = function(cam, scr) {
 	if (this.wall > 0) {
         var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
         var drawR = cam.getDrawSize(this.r);
-        scr.push(0);
+        scr.push();
         scr.translate(drawPos);
 	// 	var gameX = this.col * this.r;
 	// 	var gameY = this.row * this.r;
@@ -56,23 +58,20 @@ Cell.prototype.draw = function(cam, scr) {
             scr.line(0, this.r, this.r, 0);
         }
 
-
         scr.pop();
-    //
-	// 	if (this.state === GOLD) {
-	// 		scr.fill(255, 255, 0);
-	// 		scr.noStroke(0);
-	// 		scr.rect(drawPos.x, drawPos.y, drawR, drawR);
-	// 	}
-    //
-	// 	if (this.mouseHover) {
-	// 		scr.fill(255, 0, 0);
-	// 		scr.noStroke(0);
-	// 		scr.rect(drawPos.x, drawPos.y, drawR, drawR);
-	// 		this.mouseHover = false;
-	// 	}
-    //
-    //
+    }
+    if (this.path) {
+        var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+        var drawR = cam.getDrawSize(this.r);
+        scr.push();
+        scr.translate(drawPos);
+
+		scr.fill(255, 0, 0, 100);
+		scr.noStroke();
+		scr.rect(0, 0, drawR, drawR);
+		this.path = false;
+    
+        scr.pop();
 	}
 
 

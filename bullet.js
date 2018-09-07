@@ -18,7 +18,7 @@ function Bullet(game_, gun_, speed_, direction_, colour_) {
     this.hit = false;
 }
 
-Bullet.prototype.update = function() {
+Bullet.prototype.update = function(entities) {
     this.pos.add(this.vel);
 
     var wallCollision = collideWithWalls(this.pos, this.r, this.game.grid);
