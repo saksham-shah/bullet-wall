@@ -1,5 +1,5 @@
 function EnemyFast(game, row, col) {
-	Entity.call(this, game, row, col, 10);
+	Entity.call(this, game, row, col, 15);
 
 	this.speed = 2.5;
 
@@ -27,12 +27,14 @@ EnemyFast.prototype.update = function() {
 
 		if (this.game.grid.getCell(this.pos) === this.pathToTarget[0]) {
 			this.pathToTarget.splice(0, 1);
-			if (this.pathToTarget[0].wall == 0) {
-				this.pathToTarget.splice(0, 1);
+			if (this.pathToTarget.length > 0) {
+				if (this.pathToTarget[0].wall == 0) {
+					this.pathToTarget.splice(0, 1);
+				}
 			}
 		}
 
-		if (p5.Vector.dist(this.pos, this.target.pos) < CELLSIZE * 1.5) {
+		if (p5.Vector.dist(this.pos, this.target.pos) < CELLSIZE * 1.5 || this.pathToTarget.length == 0) {
 			this.moveTowards(this.target.pos);
 			this.pathToTarget = null;
 		} else {
@@ -66,8 +68,8 @@ EnemyFast.prototype.draw = function(cam, scr) {
     scr.push();
     scr.translate(drawPos);
 
-	scr.fill(200, 200, 250);
-	scr.stroke(160, 160, 200);
+	scr.fill(250, 200, 200);
+	scr.stroke(200, 160, 160);
     scr.strokeWeight(2);
 
 	scr.ellipse(0, 0, drawR * 2);

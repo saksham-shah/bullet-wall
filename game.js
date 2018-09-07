@@ -6,6 +6,8 @@
 
 function Game(gridSize) {
 
+	this.gridSize = gridSize;
+
     this.entities = [];
     this.bullets = [];
     this.particles = [];
@@ -13,15 +15,23 @@ function Game(gridSize) {
 	this.grid = new Grid(this, gridSize);
 	this.cam = createGameCam(0, 0, width, height);
     this.player = new Player(this, 0, 0, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
-    var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
+    // var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
     this.entities.push(this.player);
-    this.entities.push(entity)
+    // this.entities.push(entity)
 
     // this.cam.follow(this.player.pos, POSITION);
     this.cam.follow({x: gridSize * CELLSIZE * 0.5, y: gridSize * CELLSIZE * 0.5}, POSITION);
 }
 
 Game.prototype.update = function() {
+
+	if (random() < 0.005) {
+		var row = floor(random(this.gridSize));
+		var col = floor(random(this.gridSize));
+		if (this.grid.grid[row][col].wall == 0) {
+			this.entities.push(new EnemyFast(this, row, col));
+		}
+	}
 
 	for (var i = 0; i < this.entities.length; i++) {
 		this.entities[i].move(this.entities);

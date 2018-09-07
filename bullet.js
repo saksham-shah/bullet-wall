@@ -21,6 +21,14 @@ function Bullet(game_, gun_, speed_, direction_, colour_) {
 Bullet.prototype.update = function(entities) {
     this.pos.add(this.vel);
 
+    
+
+    this.checkWallHit();
+    this.checkEntityHits(entities);
+
+}
+
+Bullet.prototype.checkWallHit = function() {
     var wallCollision = collideWithWalls(this.pos, this.r, this.game.grid);
     if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
         this.hit = true;
@@ -34,16 +42,19 @@ Bullet.prototype.update = function(entities) {
             }
         }
     }
-
-    // this.checkWallHit();
-
 }
 
-// Bullet.prototype.checkWallHit = function() {
-//     if ()
-//     var currentCell = this.game.grid.getCell(this.pos);
-//     if (currentCell.)
-// }
+Bullet.prototype.checkEntityHits = function(entities) {
+    for (var i = 0; i < entities.length; i++) {
+        if ((this.gun.player && !(entities[i] instanceof Player)) || (!this.gun.player && (entities[i] instanceof Player))) {
+            var d = p5.Vector.dist(this.pos, entities[i].pos);
+            if (d < this.r + entities[i].r) {
+                entities[i].die();
+                this.hit = true;
+            }
+        }
+    }
+}
 
 Bullet.prototype.draw = function(cam, scr) {
     var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
