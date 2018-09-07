@@ -53,8 +53,8 @@ Bullet.prototype.draw = function(cam, scr) {
     scr.translate(drawPos);
 
     if (this.gun.player) {
-        scr.fill(150, 150, 255);
-        scr.stroke(200, 200, 255);
+        scr.fill(200, 200, 250);
+        scr.stroke(255);
         scr.strokeWeight(2);
     }
     // scr.fill(this.colour);

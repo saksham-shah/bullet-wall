@@ -35,9 +35,13 @@ Player.prototype.draw = function(cam, scr) {
 	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
 	var drawR = cam.getDrawSize(this.r);
     scr.push();
-    scr.translate(drawPos)
-	scr.fill(255);
-	scr.noStroke();
+    scr.translate(drawPos);
+
+	scr.fill(200, 200, 250);
+	scr.stroke(160, 160, 200);
+    scr.strokeWeight(2);
+
 	scr.ellipse(0, 0, drawR * 2);
+    
     scr.pop();
 }
