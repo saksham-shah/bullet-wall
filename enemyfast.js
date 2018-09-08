@@ -14,6 +14,9 @@ function EnemyFast(game, row, col) {
 	this.weaponPos = createVector(0, 0);
 	this.weaponExtend = 5;
 
+	this.cooldown = 0;
+	this.state = 0;
+
 
 }
 
@@ -27,6 +30,7 @@ EnemyFast.prototype.update = function() {
 	if (this.pathToTarget === null) {
 		if (p5.Vector.dist(this.pos, this.target.pos) < CELLSIZE * 1.5) {
 			this.moveTowards(this.target.pos);
+			this.attack();
 		} else {
 			this.calculatePath();
 		}
@@ -48,6 +52,7 @@ EnemyFast.prototype.update = function() {
 
 		if (p5.Vector.dist(this.pos, this.target.pos) < CELLSIZE * 1.5 || this.pathToTarget.length == 0) {
 			this.moveTowards(this.target.pos);
+			// this.attack();
 			this.pathToTarget = null;
 		} else {
 			var cellPos = this.pathToTarget[0].pos.copy();
@@ -55,9 +60,25 @@ EnemyFast.prototype.update = function() {
 			this.moveTowards(cellPos);
 		}
 	}
+	// this.attack();
+
+	this.cooldown -= 1;
+    if (this.state == 1) {
+        if (this.weaponExtend > 20) {
+            this.state = 2;
+        } else {
+            this.weaponExtend += 2;
+        }
+    } else if (this.state == 2) {
+        if (this.weaponExtend < 5) {
+            this.weaponExtend = 5;
+            this.state = 0;
+        } else {
+            this.weaponExtend -= 1;
+        }
+    }
 
 	this.weaponPos = this.pos.copy().add(createVector(this.weaponExtend, 0).rotate(this.vel.heading()));
-
 }
 
 EnemyFast.prototype.calculatePath = function() {
@@ -72,6 +93,14 @@ EnemyFast.prototype.moveTowards = function(pos) {
 	vectorToTarget.sub(this.vel);
 	vectorToTarget.limit(this.maxForce);
 	this.acc.add(vectorToTarget);
+}
+
+EnemyFast.prototype.attack = function() {
+	if (this.cooldown < 0) {
+		this.state = 1;
+		this.cooldown = this.hitSpeed;
+	}
+
 }
 
 EnemyFast.prototype.die = function() {
@@ -101,8 +130,8 @@ EnemyFast.prototype.draw = function(cam, scr) {
     scr.translate(drawPos);
 	// scr.rotate(this.vel.heading());
 
-	scr.fill(250, 200, 200);
-	scr.stroke(200, 160, 160);
+	scr.fill(250, 200 - (this.weaponExtend - 5) * 3, 200 - (this.weaponExtend - 5) * 3);
+	scr.stroke(185 + this.weaponExtend * 3, 160, 160);
     scr.strokeWeight(2);
 
 	scr.ellipse(0, 0, drawR);
