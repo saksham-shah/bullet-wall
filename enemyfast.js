@@ -1,17 +1,27 @@
 function EnemyFast(game, row, col) {
 	Entity.call(this, game, row, col, 15);
 
-	this.speed = 2.5;
+	this.maxVel = 3;
+	this.maxForce = 0.1;
 
 	this.target = game.player;
 	this.pathToTarget = null;
 
 	this.timeSinceLastPath = 0;
+
+	this.hitSpeed = 60;
+
+	this.weaponPos = createVector(0, 0);
+	this.weaponExtend = 5;
+
+
 }
 
 EnemyFast.prototype = Object.create(Entity.prototype);
 
 EnemyFast.prototype.update = function() {
+	// this.weaponPos = this.pos.copy().add(createVector(this.weaponExtend, 0).rotate(this.vel.heading()));
+
 	this.timeSinceLastPath ++;
 
 	if (this.pathToTarget === null) {
@@ -25,7 +35,9 @@ EnemyFast.prototype.update = function() {
 			this.calculatePath();
 		}
 
-		if (this.game.grid.getCell(this.pos) === this.pathToTarget[0]) {
+		//if (this.game.grid.getCell(this.pos) === this.pathToTarget[0]) {
+		var d = p5.Vector.dist(this.pos, this.pathToTarget[0].pos.copy().add(createVector(CELLSIZE * 0.5, CELLSIZE * 0.5)));
+		if (d < this.r + CELLSIZE) {
 			this.pathToTarget.splice(0, 1);
 			if (this.pathToTarget.length > 0) {
 				if (this.pathToTarget[0].wall == 0) {
@@ -42,9 +54,10 @@ EnemyFast.prototype.update = function() {
 			cellPos.add(createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
 			this.moveTowards(cellPos);
 		}
-		
-
 	}
+
+	this.weaponPos = this.pos.copy().add(createVector(this.weaponExtend, 0).rotate(this.vel.heading()));
+
 }
 
 EnemyFast.prototype.calculatePath = function() {
@@ -53,8 +66,12 @@ EnemyFast.prototype.calculatePath = function() {
 }
 
 EnemyFast.prototype.moveTowards = function(pos) {
-	var vectorToTarget = p5.Vector.sub(pos, this.pos).setMag(this.speed);
-	this.vel.add(vectorToTarget);
+	var vectorToTarget = p5.Vector.sub(pos, this.pos);
+	vectorToTarget.normalize();
+	vectorToTarget.mult(this.maxVel);
+	vectorToTarget.sub(this.vel);
+	vectorToTarget.limit(this.maxForce);
+	this.acc.add(vectorToTarget);
 }
 
 EnemyFast.prototype.die = function() {
@@ -67,12 +84,29 @@ EnemyFast.prototype.draw = function(cam, scr) {
 	var drawR = cam.getDrawSize(this.r);
     scr.push();
     scr.translate(drawPos);
+	scr.rotate(this.vel.heading());
 
 	scr.fill(250, 200, 200);
 	scr.stroke(200, 160, 160);
     scr.strokeWeight(2);
 
 	scr.ellipse(0, 0, drawR * 2);
-    
+	// scr.ellipse(drawR * 0.5, 0, drawR);
+
+    scr.pop();
+
+	var drawPos = cam.getDrawPos(this.weaponPos.x, this.weaponPos.y);
+	var drawR = cam.getDrawSize(this.r);
+    scr.push();
+    scr.translate(drawPos);
+	// scr.rotate(this.vel.heading());
+
+	scr.fill(250, 200, 200);
+	scr.stroke(200, 160, 160);
+    scr.strokeWeight(2);
+
+	scr.ellipse(0, 0, drawR);
+	// scr.ellipse(drawR * 0.5, 0, drawR);
+
     scr.pop();
 }

@@ -7,7 +7,7 @@ function Player(game, row, col, controls) {
 	        right: controls[3]
 	    };
 
-    this.speed = 1.5;
+    this.maxVel = 1.5;
 
     this.gun = new Gun(this.game, this, createVector(0, 6), 20, 12, 6);
 }
@@ -15,11 +15,12 @@ function Player(game, row, col, controls) {
 Player.prototype = Object.create(Entity.prototype);
 
 Player.prototype.update = function() {
+    this.vel.mult(0, 0);
     //Controls
-    if (keyIsDown(this.controls.left)) this.vel.x -= this.speed;
-    if (keyIsDown(this.controls.up)) this.vel.y -= this.speed;
-    if (keyIsDown(this.controls.right)) this.vel.x += this.speed;
-    if (keyIsDown(this.controls.down)) this.vel.y += this.speed;
+    if (keyIsDown(this.controls.left)) this.vel.x -= this.maxVel;
+    if (keyIsDown(this.controls.up)) this.vel.y -= this.maxVel;
+    if (keyIsDown(this.controls.right)) this.vel.x += this.maxVel;
+    if (keyIsDown(this.controls.down)) this.vel.y += this.maxVel;
 
     this.gun.update();
 
@@ -42,6 +43,6 @@ Player.prototype.draw = function(cam, scr) {
     scr.strokeWeight(2);
 
 	scr.ellipse(0, 0, drawR * 2);
-    
+
     scr.pop();
 }

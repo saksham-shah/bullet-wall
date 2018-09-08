@@ -25,6 +25,23 @@ function collideWithWalls(pos, r, grid_) {
 
     var hit = null;
 
+    // First checking if it is outside the boundary
+    if (currentCell === null) {
+        if (pos.x < r) {
+            returnVector.x = r;
+        } else if (pos.x > grid.length * CELLSIZE - r) {
+            returnVector.x = grid.length * CELLSIZE - r;
+        }
+
+        if (pos.y < r) {
+            returnVector.y = r;
+        } else if (pos.y > grid.length * CELLSIZE) {
+            returnVector.y = grid.length * CELLSIZE - r;
+        }
+
+        return [returnVector, hit];
+    }
+
     // Checking for collisions with each of the four neighbouring cells in turn
 
     // If the circle is overlapping with the neighbouring cell (on the left)

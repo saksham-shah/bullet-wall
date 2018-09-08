@@ -4,7 +4,8 @@ function Entity(game_, row, col, r_) {
     var x = (col + 0.5) * CELLSIZE;
 	var y = (row + 0.5) * CELLSIZE;
 	this.pos = createVector(x, y);
-	this.vel = createVector(0, 0);
+    this.vel = createVector(0, 0);
+    this.acc = createVector(0, 0);
 
 	this.r = r_;
 
@@ -14,13 +15,15 @@ function Entity(game_, row, col, r_) {
 }
 
 Entity.prototype.move = function(entities) {
+    this.acc.mult(0);
     if (this.update !== undefined) {
         this.update();
     }
 	this.pos.add(this.vel);
+    this.vel.add(this.acc);
+    this.vel.limit(this.maxVel);
     this.checkCollisions(entities);
 	// this.wallCollisions();
-	this.vel.mult(0);
 }
 
 Entity.prototype.checkCollisions = function(all) {
