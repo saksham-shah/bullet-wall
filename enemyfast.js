@@ -124,17 +124,24 @@ EnemyFast.prototype.draw = function(cam, scr) {
 
     scr.pop();
 
-	var drawPos = cam.getDrawPos(this.weaponPos.x, this.weaponPos.y);
+	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
 	var drawR = cam.getDrawSize(this.r);
     scr.push();
     scr.translate(drawPos);
-	// scr.rotate(this.vel.heading());
+	scr.rotate(this.vel.heading());
 
 	scr.fill(250, 200 - (this.weaponExtend - 5) * 3, 200 - (this.weaponExtend - 5) * 3);
 	scr.stroke(185 + this.weaponExtend * 3, 160, 160);
     scr.strokeWeight(2);
 
-	scr.ellipse(0, 0, drawR);
+	scr.beginShape();
+	scr.vertex(this.weaponExtend * drawR / 15, 0);
+	scr.vertex(0, 5 * drawR / 15);
+	scr.vertex(0, -5 * drawR / 15);
+	scr.vertex(this.weaponExtend * drawR / 15, 0);
+	scr.endShape();
+	
+	// scr.ellipse(0, 0, drawR);
 	// scr.ellipse(drawR * 0.5, 0, drawR);
 
     scr.pop();
