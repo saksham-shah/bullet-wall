@@ -1,5 +1,5 @@
 function EnemyFast(game, row, col) {
-	Enemy.call(this, game, row, col, 25, 0, CELLSIZE * 1.5);
+	Enemy.call(this, game, row, col, 40, 0, CELLSIZE * 1.5);
 
 	this.maxVel = 3;
 	this.maxForce = 0.1;
