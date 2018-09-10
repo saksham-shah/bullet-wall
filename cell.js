@@ -11,12 +11,11 @@ function Cell(game_, row_, col_, grid_) {
 	this.state = NORMAL;
 	// this.mouseHover = false;
 
-	this.obstacle = false;
     this.wall = 0;
 
 	if (this.col == 1 && this.row == 1) {
 	// 	// this.state = GOLD;
-		this.obstacle = true;
+		// this.obstacle = true;
         this.wall = 2;
 	}
 
@@ -70,7 +69,7 @@ Cell.prototype.draw = function(cam, scr) {
 		scr.noStroke();
 		scr.rect(0, 0, drawR, drawR);
 		this.path = false;
-    
+
         scr.pop();
 	}
 

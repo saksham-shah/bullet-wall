@@ -11,6 +11,7 @@ function Entity(game_, row, col, r_) {
 
     this.dead = false;
 
+    this.mass = 10;
     // this.grid = grid_;
 }
 
@@ -29,7 +30,7 @@ Entity.prototype.move = function(entities) {
 Entity.prototype.checkCollisions = function(all) {
 	for (var i = 0; i < all.length; i++) {
 		if (this !== all[i]) {
-            var newPos = collideWithPoint(this.pos, all[i].pos, this.r + all[i].r, 0.5);
+            var newPos = collideWithPoint(this.pos, all[i].pos, this.r + all[i].r, 10 / this.mass);
             this.pos.x = newPos.x;
             this.pos.y = newPos.y;
 		}

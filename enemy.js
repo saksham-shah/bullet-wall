@@ -81,6 +81,10 @@ Enemy.prototype.update = function() {
 			this.calculatePath();
 		}
 
+		if (this.pathToTarget[0].wall > 0) {
+			this.attack();
+		}
+
         if (p5.Vector.dist(this.pos, this.pathToTarget[0].pos.copy().add(createVector(CELLSIZE * 0.5, CELLSIZE * 0.5))) < this.r + CELLSIZE) {
             this.pathToTarget.splice(0, 1);
             if (this.pathToTarget.length > 1 && this.pathToTarget[0].wall == 0) {
@@ -99,7 +103,7 @@ Enemy.prototype.update = function() {
 }
 
 Enemy.prototype.calculatePath = function() {
-	this.pathToTarget = findPath(this.game.grid.grid, this.game.grid.getCell(this.pos), this.game.grid.getCell(this.target.pos));
+	this.pathToTarget = findPath(this.game.grid.grid, this.game.grid.getCell(this.pos), this.game.grid.getCell(this.target.pos), this);
 	this.timeSinceLastPath = 0;
 }
 

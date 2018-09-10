@@ -10,6 +10,8 @@ function Player(game, row, col, controls) {
     this.maxVel = 1.5;
 
     this.gun = new Gun(this.game, this, createVector(0, 6), 20, 12, 6);
+
+    this.mass = 50;
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -45,4 +47,10 @@ Player.prototype.draw = function(cam, scr) {
 	scr.ellipse(0, 0, drawR * 2);
 
     scr.pop();
+}
+
+Player.prototype.drawWeapon = function(cam, scr) {
+    this.gun.draw(cam, scr);
+    // console.log(this);
+    // cam.draw(this.gun);
 }

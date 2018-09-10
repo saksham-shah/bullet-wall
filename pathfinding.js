@@ -26,7 +26,7 @@ function reconstructPath(cameFrom, current) {
     return path;
 }
 
-function findPath(grid, goal, start) {
+function findPath(grid, goal, start, enemy) {
     var closedSet = [];
 
     var openSet = [start];
@@ -37,7 +37,7 @@ function findPath(grid, goal, start) {
     gScore.set(start, 0);
 
     var fScore = new Map(grid.length, Infinity);
-    fScore.set(start, costEstimate(start, goal));
+    fScore.set(start, costEstimate(start, goal, enemy));
 
     while (openSet.length > 0) {
         openSet.sort(function(a, b) {
@@ -55,7 +55,7 @@ function findPath(grid, goal, start) {
         var neighbours = current.getNeighbours();
         for (var i = 0; i < neighbours.length; i++) {
             if (!closedSet.includes(neighbours[i])) {// && neighbours[i].wall == 0) {
-                tentativeGScore = gScore.get(current) + costEstimate(current, neighbours[i]);
+                tentativeGScore = gScore.get(current) + costEstimate(current, neighbours[i], enemy);
 
                 var better = true;
                 if (!openSet.includes(neighbours[i])) {
@@ -67,20 +67,24 @@ function findPath(grid, goal, start) {
                 if (better) {
                     cameFrom.set(neighbours[i], current);
                     gScore.set(neighbours[i], tentativeGScore);
-                    fScore.set(neighbours[i], tentativeGScore + costEstimate(neighbours[i], goal));
+                    fScore.set(neighbours[i], tentativeGScore + costEstimate(neighbours[i], goal, enemy));
                 }
             }
         }
     }
 }
 
-function costEstimate(a, b) {
+function costEstimate(a, b, enemy) {
     var av = createVector(a.row, a.col);
     var bv = createVector(b.row, b.col);
+    var d = p5.Vector.dist(a.pos, b.pos);
+    // console.log(d);
+    d = d / enemy.maxVel + b.wall * enemy.wallDestroy;
+    return d;
 
-    if (b.wall == 0) {
-        return p5.Vector.dist(av, bv);
-    } else {
-        return p5.Vector.dist(av, bv) * 100;
-    }
+    // if (b.wall == 0) {
+    //     return p5.Vector.dist(av, bv);
+    // } else {
+    //     return p5.Vector.dist(av, bv) * 100;
+    // }
 }

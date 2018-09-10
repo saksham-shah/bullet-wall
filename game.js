@@ -70,7 +70,7 @@ Game.prototype.update = function() {
 Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleErr, acc, life, num, r, colour, cell) {
 	var speedErrNum = speed * speedErr * 0.01;
 	// var angleErrNum = angle * angleErr * 0.01;
-	
+
 	for (var i = 0; i < num; i++) {
 		if (cell !== undefined) {
 			pos = createVector(cell.pos.x + random(CELLSIZE), cell.pos.y + random(CELLSIZE));
@@ -97,8 +97,8 @@ Game.prototype.draw = function() {
 	}
 
     for (var i = 0; i < this.entities.length; i++) {
-        if (this.entities[i].gun !== undefined) {
-            this.cam.draw(this.entities[i].gun);
+        if (this.entities[i].drawWeapon !== undefined) {
+            this.entities[i].drawWeapon(this.cam, this.cam.screen);
         }
 	}
 
