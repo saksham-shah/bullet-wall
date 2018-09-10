@@ -9,7 +9,7 @@ var game;
 function setup() {
 	createCanvas(1200, 800);
 
-    game = new Game(15);
+    game = new Game();
 	// grid = new Grid(GRIDSIZE);
 	// cam = createGameCam(0, 0, width, height);
 	// var pos = {x: 0, y: 0};//new Soldier(0, 0, 10, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);

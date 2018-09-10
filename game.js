@@ -4,23 +4,23 @@
 // // const CELLSIZE = 30;
 // const GRIDSIZE = 10;
 
-function Game(gridSize) {
+function Game() {
 
-	this.gridSize = gridSize;
+	this.gridSize = 15;
 
     this.entities = [];
     this.bullets = [];
     this.particles = [];
 
-	this.grid = new Grid(this, gridSize);
+	this.grid = new Grid(this, this.gridSize);
 	this.cam = createGameCam(0, 0, width, height);
-    this.player = new Player(this, 0, 0, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
+    this.player = new Player(this, 1, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     // var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
     this.entities.push(this.player);
     // this.entities.push(entity)
 
     // this.cam.follow(this.player.pos, POSITION);
-    this.cam.follow({x: gridSize * CELLSIZE * 0.5, y: gridSize * CELLSIZE * 0.5, z: 2}, POSITION, ZOOM);
+    this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
 }
 
 Game.prototype.update = function() {
