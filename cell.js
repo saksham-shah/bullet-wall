@@ -48,13 +48,13 @@ Cell.prototype.draw = function(cam, scr) {
 	// 	var gameX = this.col * this.r;
 	// 	var gameY = this.row * this.r;
         scr.stroke(50);
-        scr.strokeWeight(4);
+        scr.strokeWeight(4 * drawR / this.r);
         scr.fill(100);
         scr.rect(0, 0, drawR, drawR);
 
         if (this.wall > 1) {
             // scr.line(0, 0, this.r, this.r);
-            scr.line(0, this.r, this.r, 0);
+            scr.line(0, drawR, drawR, 0);
         }
 
         scr.pop();

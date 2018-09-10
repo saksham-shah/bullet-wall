@@ -42,7 +42,7 @@ Player.prototype.draw = function(cam, scr) {
 
 	scr.fill(200, 200, 250);
 	scr.stroke(160, 160, 200);
-    scr.strokeWeight(2);
+    scr.strokeWeight(2 * drawR / this.r);
 
 	scr.ellipse(0, 0, drawR * 2);
 

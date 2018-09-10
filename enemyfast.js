@@ -126,7 +126,7 @@ EnemyFast.prototype.draw = function(cam, scr) {
 
 	scr.fill(250, 75, 75);
 	scr.stroke(200, 60, 60);
-    scr.strokeWeight(2);
+    scr.strokeWeight(2 * drawR / this.r);
 
 	scr.ellipse(0, 0, drawR * 2);
 	// scr.ellipse(drawR * 0.5, 0, drawR);
@@ -145,7 +145,7 @@ EnemyFast.prototype.drawWeapon = function(cam, scr) {
 
 	scr.fill(1.25 * (100 + this.weaponExtend * 3), 50, 50);
 	scr.stroke(100 + this.weaponExtend * 3, 50, 50);
-	scr.strokeWeight(2);
+	scr.strokeWeight(2 * drawR / this.r);
 
 	scr.beginShape();
 	scr.vertex(this.weaponExtend * drawR / 15, 0);

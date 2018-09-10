@@ -21,7 +21,7 @@ function Bullet(game_, gun_, speed_, direction_, colour_) {
 Bullet.prototype.update = function(entities) {
     this.pos.add(this.vel);
 
-    
+
 
     this.checkWallHit();
     this.checkEntityHits(entities);
@@ -66,11 +66,11 @@ Bullet.prototype.draw = function(cam, scr) {
     if (this.gun.player) {
         scr.fill(200, 200, 250);
         scr.stroke(255);
-        scr.strokeWeight(2);
+        scr.strokeWeight(2 * drawR / this.r);
     }
     // scr.fill(this.colour);
     // scr.noStroke();
-    
+
 
     scr.ellipse(0, 0, drawR * 2);
     scr.pop();

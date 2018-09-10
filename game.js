@@ -20,7 +20,7 @@ function Game(gridSize) {
     // this.entities.push(entity)
 
     // this.cam.follow(this.player.pos, POSITION);
-    this.cam.follow({x: gridSize * CELLSIZE * 0.5, y: gridSize * CELLSIZE * 0.5}, POSITION);
+    this.cam.follow({x: gridSize * CELLSIZE * 0.5, y: gridSize * CELLSIZE * 0.5, z: 2}, POSITION, ZOOM);
 }
 
 Game.prototype.update = function() {
@@ -28,7 +28,8 @@ Game.prototype.update = function() {
 	if (random() < 0.005) {
 		var row = floor(random(this.gridSize));
 		var col = floor(random(this.gridSize));
-		if (this.grid.grid[row][col].wall == 0) {
+		var cell = this.grid.grid[row][col];
+		if (cell.wall == 0 && p5.Vector.dist(cell.pos, this.player.pos) > CELLSIZE * 2) {
 			this.entities.push(new EnemyFast(this, row, col));
 		}
 	}

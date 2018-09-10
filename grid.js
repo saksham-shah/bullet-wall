@@ -55,7 +55,7 @@ Grid.prototype.draw = function(cam, scr) {
     scr.noStroke();
     scr.rect(drawPos.x, drawPos.y, drawR, drawR);
 
-	scr.strokeWeight(1);
+	scr.strokeWeight(1 * cam.getDrawSize(1));
 	scr.stroke(90, 120, 240);
 
     var interval = cam.getDrawSize(CELLSIZE);

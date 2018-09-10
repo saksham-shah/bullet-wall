@@ -73,11 +73,11 @@ Gun.prototype.draw = function(cam, scr) {
     if (this.player) {
 	   scr.fill(50, 50, 150);
        scr.stroke(25, 25, 50);
-       scr.strokeWeight(2);
+       scr.strokeWeight(2 * drawR);
     }
 
-	
+
 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
-    scr.rect(- this.l2, - this.w * 0.5, this.l + this.l2, this.w);
+    scr.rect(- this.l2 * drawR, - this.w * drawR * 0.5, this.l * drawR + this.l2 * drawR, this.w * drawR);
     scr.pop();
 }
