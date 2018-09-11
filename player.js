@@ -23,10 +23,10 @@ Player.prototype = Object.create(Entity.prototype);
 Player.prototype.update = function() {
     this.vel.mult(0, 0);
     //Controls
-    if (keyIsDown(this.controls.left)) this.vel.x -= this.maxVel;
-    if (keyIsDown(this.controls.up)) this.vel.y -= this.maxVel;
-    if (keyIsDown(this.controls.right)) this.vel.x += this.maxVel;
-    if (keyIsDown(this.controls.down)) this.vel.y += this.maxVel;
+    if (keyIsDown(this.controls.left) || keyIsDown(65)) this.vel.x -= this.maxVel;
+    if (keyIsDown(this.controls.up) || keyIsDown(87)) this.vel.y -= this.maxVel;
+    if (keyIsDown(this.controls.right) || keyIsDown(68)) this.vel.x += this.maxVel;
+    if (keyIsDown(this.controls.down) || keyIsDown(83)) this.vel.y += this.maxVel;
 
     this.gun.update();
 
