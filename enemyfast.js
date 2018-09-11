@@ -1,5 +1,5 @@
 function EnemyFast(game, row, col) {
-	Enemy.call(this, game, row, col, 40, 0, CELLSIZE * 1.5);
+	Enemy.call(this, game, row, col, 40, 0, CELLSIZE);
 
 	this.maxVel = 3;
 	this.maxForce = 0.1;
@@ -63,19 +63,20 @@ EnemyFast.prototype.specificUpdate = function() {
 	// }
 	// this.attack();
 
-	this.cooldown -= 1;
+	this.cooldown -= dt;
+	
     if (this.state == 1) {
         if (this.weaponExtend > 20) {
             this.state = 2;
         } else {
-            this.weaponExtend += 2;
+            this.weaponExtend += 2 * dt;
         }
     } else if (this.state == 2) {
         if (this.weaponExtend < 5) {
             this.weaponExtend = 5;
             this.state = 0;
         } else {
-            this.weaponExtend -= 1;
+            this.weaponExtend -= 1 * dt;
         }
     }
 
@@ -84,7 +85,15 @@ EnemyFast.prototype.specificUpdate = function() {
 	if (this.state == 1) {
 		var weaponCell = this.game.grid.getCell(this.weaponPos);
 		if (weaponCell !== null && weaponCell.wall > 0) {
-			weaponCell.wall--;
+			weaponCell.wall --;
+			var weaponCellMiddle = p5.Vector.add(weaponCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
+			this.game.particleExplosion(weaponCellMiddle, 1, 100, this.vel.heading(), HALF_PI * 0.5, createVector(0, 0), 30, 20, 5, color(50), weaponCell);
+			this.state = 2;
+		}
+
+		var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
+		if (d < this.game.player.r) {
+			this.game.player.damage(1);
 			this.state = 2;
 		}
 	}

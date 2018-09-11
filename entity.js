@@ -20,8 +20,8 @@ Entity.prototype.move = function(entities) {
     if (this.update !== undefined) {
         this.update();
     }
-	this.pos.add(this.vel);
-    this.vel.add(this.acc);
+	this.pos.add(p5.Vector.mult(this.vel, dt));
+    this.vel.add(p5.Vector.mult(this.acc, dt));
     this.vel.limit(this.maxVel);
     this.checkCollisions(entities);
 	// this.wallCollisions();
@@ -40,6 +40,19 @@ Entity.prototype.checkCollisions = function(all) {
     // newPos = newPos[0];
     this.pos.x = newPos.x;
     this.pos.y = newPos.y;
+}
+
+Entity.prototype.damage = function(num) {
+    this.health -= num;
+    // console.log(this.health);
+    if (this.health == 0) {
+        console.log("die");
+        // this.die();
+    }
+
+    if (this.damaged !== undefined) {
+        this.damaged = 25;
+    }
 }
 
 Entity.prototype.draw = function(cam, scr) {

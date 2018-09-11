@@ -12,6 +12,10 @@ function Player(game, row, col, controls) {
     this.gun = new Gun(this.game, this, createVector(0, 6), 20, 12, 6);
 
     this.mass = 50;
+
+    this.health = 3;
+
+    this.damaged = 0;
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -32,6 +36,8 @@ Player.prototype.update = function() {
     if (mouseIsPressed) {
         this.gun.shoot();
     }
+
+    this.damaged -= dt;
 }
 
 Player.prototype.draw = function(cam, scr) {
@@ -46,6 +52,10 @@ Player.prototype.draw = function(cam, scr) {
 
 	scr.ellipse(0, 0, drawR * 2);
 
+    scr.fill(255, 0, 0, this.damaged * 4);
+    scr.noStroke();
+    scr.ellipse(0, 0, drawR * 2);
+
     scr.pop();
 }
 
@@ -53,4 +63,8 @@ Player.prototype.drawWeapon = function(cam, scr) {
     this.gun.draw(cam, scr);
     // console.log(this);
     // cam.draw(this.gun);
+}
+
+Player.prototype.die = function() {
+
 }

@@ -3,6 +3,7 @@
 // var grid, cam;
 // // const CELLSIZE = 30;
 // const GRIDSIZE = 10;
+var dt;
 
 function Game() {
 
@@ -21,9 +22,24 @@ function Game() {
 
     // this.cam.follow(this.player.pos, POSITION);
     this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
+
+	this.lastUpdate = Date.now();
+
+	this.playSpeed = 1;
+	this.slowMo = 0;
 }
 
 Game.prototype.update = function() {
+	// Calculate Delta time in order to have smooth movement
+    var now = Date.now();
+    dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
+    this.lastUpdate = now;
+	dt = dt * this.playSpeed;
+	if (this.slowMo < 0) {
+		this.playSpeed = 1;
+	} else {
+		this.slowMo --;
+	}
 
 	if (random() < 0.005) {
 		var row = floor(random(this.gridSize));
@@ -45,7 +61,7 @@ Game.prototype.update = function() {
 		this.bullets[i].update(this.entities);
         if (this.bullets[i].hit) {
         	var bullet = this.bullets[i];
-        	this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 10, 7, color(255));
+        	this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 10, 3, color(255));
             this.bullets.splice(i, 1);
         }
 	}

@@ -17,7 +17,7 @@ Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.update = function() {
 	// this.weaponPos = this.pos.copy().add(createVector(this.weaponExtend, 0).rotate(this.vel.heading()));
 
-	this.timeSinceLastPath ++;
+	this.timeSinceLastPath += dt;
 
 	// if (this.pathToTarget === null) {
 	// 	if (p5.Vector.dist(this.pos, this.target.pos) < CELLSIZE * 1.5) {
@@ -116,7 +116,15 @@ Enemy.prototype.moveTowards = function(pos) {
 	this.acc.add(vectorToTarget);
 }
 
-Enemy.prototype.die = function() {
-	this.game.grid.getCell(this.pos).wall = 2;
+Enemy.prototype.die = function(bullet) {
+	var myCell = this.game.grid.getCell(this.pos);
+	var playerCell = this.game.grid.getCell(this.game.player.pos);
+	if (myCell !== playerCell) {
+		this.game.grid.getCell(this.pos).wall = 2;
+	}
 	this.dead = true;
+	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 45, 3, color(200, 60, 60));
+
+	this.game.slowMo = 60;
+	this.game.playSpeed = 0.2;
 }
