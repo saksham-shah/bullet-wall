@@ -5,11 +5,19 @@
 // const GRIDSIZE = 10;
 
 var game;
+var gs;
+var screen;
 
 function setup() {
 	createCanvas(1200, 800);
 
-    game = new Game();
+    // game = new Game();
+
+	gs = new GameScreen();
+	gs.newGame();
+	screen = gs;
+
+
 	// grid = new Grid(GRIDSIZE);
 	// cam = createGameCam(0, 0, width, height);
 	// var pos = {x: 0, y: 0};//new Soldier(0, 0, 10, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
@@ -30,8 +38,8 @@ function setup() {
 function draw() {
 
 
-    game.update();
-    game.draw();
+    screen.update();
+    screen.draw();
 
 	// var mousePos = cam.getMousePos();
 	// var mouseRow = floor(mousePos.y / CELLSIZE);

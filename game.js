@@ -34,6 +34,10 @@ Game.prototype.update = function() {
     var now = Date.now();
     dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
     this.lastUpdate = now;
+	if (dt > 2) {
+		dt = 2;
+	}
+
 	dt = dt * this.playSpeed;
 	if (this.slowMo < 0) {
 		this.playSpeed = 1;
