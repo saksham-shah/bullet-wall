@@ -15,13 +15,20 @@ function Game() {
 
 	this.grid = new Grid(this, this.gridSize);
 	this.cam = createGameCam(0, 0, width, height);
-    this.player = new Player(this, 1, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
+    this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     // var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
     this.entities.push(this.player);
     // this.entities.push(entity)
 
     // this.cam.follow(this.player.pos, POSITION);
     this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
+
+	this.score = 0;
+
+	this.combo = 0;
+	this.lastKill = 55;
+
+	this.gameOver = false;
 
 	this.lastUpdate = Date.now();
 
@@ -42,7 +49,16 @@ Game.prototype.update = function() {
 	if (this.slowMo < 0) {
 		this.playSpeed = 1;
 	} else {
-		this.slowMo --;
+		this.slowMo -= dt / this.playSpeed;
+	}
+
+	if (this.lastKill < 55) {
+		this.lastKill += dt * this.playSpeed;
+		// if (this.lastKill > 55) {
+		// 	this.lastKill = 55;
+		// }
+	} else {
+		this.combo = 0;
 	}
 
 	if (random() < 0.005) {
@@ -88,6 +104,18 @@ Game.prototype.update = function() {
 	this.cam.update();
 }
 
+Game.prototype.enemyDeath = function(enemy) {
+	this.combo++;
+	this.lastKill = 0;
+	this.slowMotion(60, 0.2);
+
+	var combo = this.combo;
+	if (combo > 10) {
+		combo = 10;
+	}
+	this.score += enemy.scoreValue * combo;
+}
+
 Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleErr, acc, life, num, r, colour, cell) {
 	var speedErrNum = speed * speedErr * 0.01;
 	// var angleErrNum = angle * angleErr * 0.01;
@@ -103,6 +131,15 @@ Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleEr
 	}
 }
 
+Game.prototype.slowMotion = function(time, speed) {
+	if (this.playSpeed >= speed) {
+		this.playSpeed = speed;
+		this.slowMo = time;
+	}
+
+	// this.playSpeed = speed;
+}
+
 Game.prototype.draw = function() {
 
 
@@ -110,7 +147,9 @@ Game.prototype.draw = function() {
 	this.cam.draw(this.grid);
 
 	for (var i = 0; i < this.entities.length; i++) {
-		this.cam.draw(this.entities[i]);
+		if (!this.entities[i].hide) {
+			this.cam.draw(this.entities[i]);
+		}
 	}
 
     for (var i = 0; i < this.bullets.length; i++) {
@@ -118,7 +157,7 @@ Game.prototype.draw = function() {
 	}
 
     for (var i = 0; i < this.entities.length; i++) {
-        if (this.entities[i].drawWeapon !== undefined) {
+        if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
             this.entities[i].drawWeapon(this.cam, this.cam.screen);
         }
 	}

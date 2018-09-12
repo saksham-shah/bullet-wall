@@ -13,11 +13,11 @@ function Cell(game_, row_, col_, grid_) {
 
     this.wall = 0;
 
-	if (this.col == 1 && this.row == 1) {
-	// 	// this.state = GOLD;
-		// this.obstacle = true;
-        this.wall = 2;
-	}
+	// if (this.col == 1 && this.row == 1) {
+	// // 	// this.state = GOLD;
+	// 	// this.obstacle = true;
+    //     this.wall = 2;
+	// }
 
     this.path = false;
 }

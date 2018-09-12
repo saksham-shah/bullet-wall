@@ -21,8 +21,6 @@ function Bullet(game_, gun_, speed_, direction_, colour_) {
 Bullet.prototype.update = function(entities) {
     this.pos.add(p5.Vector.mult(this.vel, dt));
 
-
-
     this.checkWallHit();
     this.checkEntityHits(entities);
 
@@ -49,8 +47,11 @@ Bullet.prototype.checkEntityHits = function(entities) {
         if ((this.gun.player && !(entities[i] instanceof Player)) || (!this.gun.player && (entities[i] instanceof Player))) {
             var d = p5.Vector.dist(this.pos, entities[i].pos);
             if (d < this.r + entities[i].r) {
-                entities[i].die(this);
+                entities[i].damage(1, this);
                 this.hit = true;
+                // if (this.gun.player && this.gun.cooldown < 20) {
+                //     this.gun.cooldown = 0;
+                // }
             }
         }
     }

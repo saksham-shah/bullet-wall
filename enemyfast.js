@@ -1,5 +1,5 @@
 function EnemyFast(game, row, col) {
-	Enemy.call(this, game, row, col, 40, 0, CELLSIZE);
+	Enemy.call(this, game, row, col, 45, 0, CELLSIZE);
 
 	this.maxVel = 3;
 	this.maxForce = 0.1;
@@ -18,7 +18,7 @@ function EnemyFast(game, row, col) {
 	this.cooldown = 0;
 	this.state = 0;
 
-
+	this.scoreValue = 10;
 }
 
 EnemyFast.prototype = Object.create(Enemy.prototype);
@@ -64,9 +64,9 @@ EnemyFast.prototype.specificUpdate = function() {
 	// this.attack();
 
 	this.cooldown -= dt;
-	
+
     if (this.state == 1) {
-        if (this.weaponExtend > 20) {
+        if (this.weaponExtend > 25) {
             this.state = 2;
         } else {
             this.weaponExtend += 2 * dt;
@@ -93,7 +93,7 @@ EnemyFast.prototype.specificUpdate = function() {
 
 		var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
 		if (d < this.game.player.r) {
-			this.game.player.damage(1);
+			this.game.player.damage(1, this);
 			this.state = 2;
 		}
 	}

@@ -121,10 +121,13 @@ Enemy.prototype.die = function(bullet) {
 	var playerCell = this.game.grid.getCell(this.game.player.pos);
 	if (myCell !== playerCell) {
 		this.game.grid.getCell(this.pos).wall = 2;
+		var myCellMiddle = p5.Vector.add(myCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
+		this.game.particleExplosion(myCellMiddle, 1, 100, PI, PI, createVector(0, 0), 30, 30, 7, color(50), myCell)
 	}
 	this.dead = true;
 	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 45, 3, color(200, 60, 60));
 
-	this.game.slowMo = 60;
-	this.game.playSpeed = 0.2;
+	this.game.enemyDeath(this);
+	// this.game.slowMo = 60;
+	// this.game.playSpeed = 0.2;
 }

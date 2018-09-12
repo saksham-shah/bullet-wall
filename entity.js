@@ -12,12 +12,17 @@ function Entity(game_, row, col, r_) {
     this.dead = false;
 
     this.mass = 10;
+
+    this.health = 1;
+
+    this.hide = false;
+    this.freeze = false;
     // this.grid = grid_;
 }
 
 Entity.prototype.move = function(entities) {
     this.acc.mult(0);
-    if (this.update !== undefined) {
+    if (this.update !== undefined && !this.freeze) {
         this.update();
     }
 	this.pos.add(p5.Vector.mult(this.vel, dt));
@@ -42,12 +47,16 @@ Entity.prototype.checkCollisions = function(all) {
     this.pos.y = newPos.y;
 }
 
-Entity.prototype.damage = function(num) {
-    this.health -= num;
+Entity.prototype.damage = function(num, cause) {
+    if (this.shield === true) {
+        this.shield = false;
+    } else {
+        this.health -= num;
+    }
     // console.log(this.health);
     if (this.health == 0) {
-        console.log("die");
-        // this.die();
+        // console.log("die");
+        this.die(cause);
     }
 
     if (this.damaged !== undefined) {
