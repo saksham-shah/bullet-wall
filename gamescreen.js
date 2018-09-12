@@ -187,12 +187,12 @@ GameScreen.prototype.drawCombo = function() {
         // if (percentage > 1) {
         //     percentage = 1;
         // }
-        // if (this.lastKill < 55) {
+        if (this.lastKill < 55) {
             arc(x, y, r * 2, r * 2, - HALF_PI, this.comboPercentage * TWO_PI - HALF_PI);
 
             fill(30, 40, 80);
             ellipse(x, y, r * 1.5);
-        // }
+        }
 
         fill(255);
 
