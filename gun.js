@@ -57,18 +57,19 @@ Gun.prototype.shoot = function() {
 
 Gun.prototype.getPos = function() {
     var pos = this.pivot.copy();
-    pos.rotate(this.direction);
+    pos.rotate(this.entity.direction);
     return pos.add(this.entity.pos);
 }
 
 Gun.prototype.draw = function(cam, scr) {
-    var drawPos = cam.getDrawPos(this.entity.pos.x, this.entity.pos.y);
+    // var drawPos = cam.getDrawPos(this.entity.pos.x, this.entity.pos.y);
+    var drawPos = cam.getDrawPos(this.getPos().x, this.getPos().y)
 	var drawR = cam.getDrawSize(1);
     // drawPos.add(p5.Vector.mult(this.pivot, drawR));
     scr.push();
     scr.translate(drawPos);
     scr.rotate(this.direction);
-    scr.translate(p5.Vector.mult(this.pivot, drawR));
+    // scr.translate(p5.Vector.mult(this.pivot, drawR));
     scr.translate(-this.recoil, 0);
 
     if (this.player) {

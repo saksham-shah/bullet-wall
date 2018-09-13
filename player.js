@@ -9,7 +9,10 @@ function Player(game, row, col, controls) {
 
     this.maxVel = 1.5;
 
-    this.gun = new Gun(this.game, this, createVector(0, 6), 20, 12, 6);
+    this.gun1 = new Gun(this.game, this, createVector(0, 8), 20, 12, 6);
+    this.gun2 = new Gun(this.game, this, createVector(0, -8), 20, 12, 6);
+    this.lastShot = 2;
+    this.guns = 1;
 
     this.mass = 50;
 
@@ -18,6 +21,8 @@ function Player(game, row, col, controls) {
     this.shield = true;
 
     this.damaged = 0;
+
+    this.direction = 0;
 }
 
 Player.prototype = Object.create(Entity.prototype);
@@ -32,13 +37,27 @@ Player.prototype.update = function() {
 
     this.checkWallHit();
 
-    this.gun.update();
+    this.gun1.update();
+    if (this.guns == 2) {
+        this.gun2.update();
+    }
 
     var mousePos = this.game.cam.getMousePos(0);
-    this.gun.direction = p5.Vector.sub(mousePos, this.gun.getPos()).heading();
+    this.direction = p5.Vector.sub(mousePos, this.pos).heading();
+    this.gun1.direction = p5.Vector.sub(mousePos, this.gun1.getPos()).heading();
+    this.gun2.direction = p5.Vector.sub(mousePos, this.gun2.getPos()).heading();
 
-    if (mouseIsPressed) {
-        this.gun.shoot();
+    if (this.cooldown > 0) {
+        this.cooldown -= dt;
+    } else if (mouseIsPressed) {
+        if (this.lastShot == 2 || this.guns == 1) {
+            this.gun1.shoot();
+            this.lastShot = 1;
+        } else {
+            this.gun2.shoot();
+            this.lastShot = 2;
+        }
+        this.cooldown = 15;
     }
 
     this.damaged -= dt;
@@ -76,7 +95,10 @@ Player.prototype.draw = function(cam, scr) {
 }
 
 Player.prototype.drawWeapon = function(cam, scr) {
-    this.gun.draw(cam, scr);
+    this.gun1.draw(cam, scr);
+    if (this.guns == 2) {
+        this.gun2.draw(cam, scr);
+    }
     // console.log(this);
     // cam.draw(this.gun);
 }
