@@ -50,6 +50,10 @@ GameScreen.prototype.update = function() {
 
         if (this.game.gameOver) {
             this.fade += dt / this.game.playSpeed;
+            if (this.fade > 300) {
+                nextScreen = ds;
+                ds.newDeath(this.game);
+            }
         }
     }
 }

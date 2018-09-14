@@ -105,15 +105,18 @@ Game.prototype.update = function() {
 }
 
 Game.prototype.enemyDeath = function(enemy) {
-	this.combo++;
-	this.lastKill = 0;
-	this.slowMotion(60, 0.2);
+	if (!this.gameOver) {
+		this.combo++;
+		this.lastKill = 0;
+		this.slowMotion(60, 0.2);
 
-	var combo = this.combo;
-	if (combo > 10) {
-		combo = 10;
+		var combo = this.combo;
+		if (combo > 10) {
+			combo = 10;
+		}
+
+		this.score += enemy.scoreValue * combo;
 	}
-	this.score += enemy.scoreValue * combo;
 }
 
 Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleErr, acc, life, num, r, colour, cell) {

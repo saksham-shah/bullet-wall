@@ -7,7 +7,7 @@
 var CELLSIZE = 40;
 
 function Grid(game_, size) {
-    this.game = game;
+    this.game = game_;
 
 	this.grid = []
 	for (var i = 0; i < size; i++) {

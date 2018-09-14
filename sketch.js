@@ -4,18 +4,22 @@
 // // const CELLSIZE = 30;
 // const GRIDSIZE = 10;
 
-var game;
-var gs;
-var screen;
+// var game;
+var gs, ms, ds;
+var screen, nextScreen;
 
 function setup() {
 	createCanvas(1200, 800);
 
     // game = new Game();
 
+	ms = new MenuScreen();
+
 	gs = new GameScreen();
-	gs.newGame();
-	screen = gs;
+
+	ds = new DeathScreen();
+
+	nextScreen = ms;
 
 
 	// grid = new Grid(GRIDSIZE);
@@ -37,9 +41,14 @@ function setup() {
 
 function draw() {
 
+	if (nextScreen !== screen) {
+		screen = nextScreen;
+	}
 
     screen.update();
     screen.draw();
+
+
 
 	// var mousePos = cam.getMousePos();
 	// var mouseRow = floor(mousePos.y / CELLSIZE);
