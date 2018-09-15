@@ -36,16 +36,18 @@ Button.prototype.draw = function() {
 
     rect(this.x, this.y, this.w, this.h);
 
-    noStroke();
-    textAlign(CENTER);
+    this.text.draw(this.x + this.w * 0.5, this.y + this.h * 0.5, this.r);
 
-    // var r = 50;
-    textSize(this.r);
+    // noStroke();
+    // textAlign(CENTER);
 
-    fill(250, 75, 75);
-    text(this.text.getText(), this.x + this.w * 0.5 - this.r / 35 * 2, this.y + this.h * 0.5 + this.r / 3 - this.r / 35 * 2);
-    fill(50);
-    text(this.text.getText(), this.x + this.w * 0.5 - this.r / 35, this.y + this.h * 0.5 + this.r / 3 - this.r / 35);
-    fill(255);
-    text(this.text.getText(), this.x + this.w * 0.5, this.y + this.h * 0.5 + this.r / 3);
+    // // var r = 50;
+    // textSize(this.r);
+
+    // fill(250, 75, 75);
+    // text(this.text.getText(), this.x + this.w * 0.5 - this.r / 35 * 2, this.y + this.h * 0.5 + this.r / 3 - this.r / 35 * 2);
+    // fill(50);
+    // text(this.text.getText(), this.x + this.w * 0.5 - this.r / 35, this.y + this.h * 0.5 + this.r / 3 - this.r / 35);
+    // fill(255);
+    // text(this.text.getText(), this.x + this.w * 0.5, this.y + this.h * 0.5 + this.r / 3);
 }

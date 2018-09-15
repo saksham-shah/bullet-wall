@@ -18,7 +18,7 @@ function Gun(game_, entity_, pivot_, l_, w_, l2_) {
     this.state = 0;
     this.recoil = 0;
 
-    this.cooldown = 0;
+    this.cooldown = 5;
 }
 
 Gun.prototype.update = function() {

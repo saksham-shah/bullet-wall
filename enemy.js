@@ -85,7 +85,7 @@ Enemy.prototype.update = function() {
 			this.attack();
 		}
 
-        if (p5.Vector.dist(this.pos, this.pathToTarget[0].pos.copy().add(createVector(CELLSIZE * 0.5, CELLSIZE * 0.5))) < this.r + CELLSIZE) {
+        if (p5.Vector.dist(this.pos, this.pathToTarget[0].middle()) < this.r + CELLSIZE) {
             this.pathToTarget.splice(0, 1);
             if (this.pathToTarget.length > 1 && this.pathToTarget[0].wall == 0) {
                 this.pathToTarget.splice(0, 1);
@@ -93,9 +93,9 @@ Enemy.prototype.update = function() {
         }
 
         if (this.pathToTarget.length > 0) {
-            var cellPos = this.pathToTarget[0].pos.copy();
-			cellPos.add(createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
-			this.moveTowards(cellPos);
+   //          var cellPos = this.pathToTarget[0].pos.copy();
+			// cellPos.add(createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
+			this.moveTowards(this.pathToTarget[0].middle());
         }
     }
 
@@ -120,9 +120,10 @@ Enemy.prototype.die = function(bullet) {
 	var myCell = this.game.grid.getCell(this.pos);
 	var playerCell = this.game.grid.getCell(this.game.player.pos);
 	if (myCell !== playerCell) {
-		this.game.grid.getCell(this.pos).wall = 2;
-		var myCellMiddle = p5.Vector.add(myCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
-		this.game.particleExplosion(myCellMiddle, 1, 100, PI, PI, createVector(0, 0), 30, 30, 7, color(50), myCell)
+		// this.game.grid.getCell(this.pos).wall = 2;
+		// var myCellMiddle = p5.Vector.add(myCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
+		// this.game.particleExplosion(myCellMiddle, 1, 100, PI, PI, createVector(0, 0), 30, 30, 7, color(50), myCell)
+		myCell.build();
 	}
 	this.dead = true;
 	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 45, 3, color(200, 60, 60));

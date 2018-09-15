@@ -70,9 +70,10 @@ Player.prototype.checkWallHit = function() {
     var wallCollision = collideWithWalls(futurePos, this.r, this.game.grid);
     if (wallCollision[0].x != futurePos.x || wallCollision[0].y != futurePos.y) {
         if (wallCollision[1] !== null && wallCollision[1].wall == 1) {
-            wallCollision[1].wall --;
-			var cellMiddle = p5.Vector.add(wallCollision[1].pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
-			this.game.particleExplosion(cellMiddle, 1, 100, this.vel.heading(), HALF_PI * 0.5, createVector(0, 0), 30, 20, 5, color(50), wallCollision[1]);
+   //          wallCollision[1].wall --;
+			// var cellMiddle = p5.Vector.add(wallCollision[1].pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
+			// this.game.particleExplosion(cellMiddle, 1, 100, this.vel.heading(), HALF_PI * 0.5, createVector(0, 0), 30, 20, 5, color(50), wallCollision[1]);
+            wallCollision[1].break(this.vel.heading());
         }
     }
 }

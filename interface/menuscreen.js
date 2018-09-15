@@ -9,11 +9,17 @@ function MenuScreen() {
 }
 
 MenuScreen.prototype.update = function() {
-    for (var i = 0; i < this.buttons.length; i++) {
-        this.buttons[i].update();
-    }
+    // for (var i = 0; i < this.buttons.length; i++) {
+    //     this.buttons[i].update();
+    // }
 
     this.title.startTyping();
+
+    if (this.title.done) {
+        for (var i = 0; i < this.buttons.length; i++) {
+            this.buttons[i].update();
+        }
+    }
 }
 
 MenuScreen.prototype.buttonClicked = function(button) {
@@ -26,21 +32,25 @@ MenuScreen.prototype.buttonClicked = function(button) {
 MenuScreen.prototype.draw = function() {
     background(30, 40, 80);
 
-    var r = 150;
+    // var r = 150;
 
-    textAlign(CENTER);
-    textSize(r);
-    noStroke();
+    // textAlign(CENTER);
+    // textSize(r);
+    // noStroke();
 
-    fill(250, 75, 75);
-    text(this.title.getText(), width/2 - r / 35 * 2, 200 - r / 35 * 2);
-    fill(50);
-    text(this.title.getText(), width/2 - r / 35, 200 - r / 35);
-    fill(255);
-    text(this.title.getText(), width/2, 200);
+    // fill(250, 75, 75);
+    // text(this.title.getText(), width/2 - r / 35 * 2, 200 - r / 35 * 2);
+    // fill(50);
+    // text(this.title.getText(), width/2 - r / 35, 200 - r / 35);
+    // fill(255);
+    // text(this.title.getText(), width/2, 200);
 
-    for (var i = 0; i < this.buttons.length; i++) {
-        this.buttons[i].draw();
+    this.title.draw(width * 0.5, 150, 150);
+
+    if (this.title.done) {
+        for (var i = 0; i < this.buttons.length; i++) {
+            this.buttons[i].draw();
+        }
     }
 
 }

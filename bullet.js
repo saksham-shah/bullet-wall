@@ -34,9 +34,10 @@ Bullet.prototype.checkWallHit = function() {
             var myCell = this.game.grid.getCell(this.pos);
             var playerCell = this.game.grid.getCell(this.game.player.pos);
             if (wallCollision[1] !== null && wallCollision[1].wall > 0 && myCell !== playerCell && this.game.grid.getCell(this.pos).wall == 0) {
-                myCell.wall = 2;
-                var myCellMiddle = p5.Vector.add(myCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
-                this.game.particleExplosion(myCellMiddle, 1, 100, PI, PI, createVector(0, 0), 30, 30, 7, color(50), myCell);
+                // myCell.wall = 2;
+                // var myCellMiddle = p5.Vector.add(myCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
+                // this.game.particleExplosion(myCellMiddle, 1, 100, PI, PI, createVector(0, 0), 30, 30, 7, color(50), myCell);
+                myCell.build();
             }
         }
     }

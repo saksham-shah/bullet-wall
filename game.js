@@ -108,7 +108,7 @@ Game.prototype.enemyDeath = function(enemy) {
 	if (!this.gameOver) {
 		this.combo++;
 		this.lastKill = 0;
-		this.slowMotion(60, 0.2);
+		this.slowMotion(60, 0.3);
 
 		var combo = this.combo;
 		if (combo > 10) {

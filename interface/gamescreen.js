@@ -1,6 +1,8 @@
 function GameScreen() {
     this.game = null;
 
+    this.text1 = new TypeText("SCORE");
+    this.text2 = new TypeText();
     // this.lives = 3;
     // this.shield = true;
     // this.fade = 0;
@@ -17,6 +19,8 @@ GameScreen.prototype.newGame = function() {
     this.comboPercentage = 0;
 
     this.fade = 0;
+
+    this.text1.stopTyping();
 }
 
 GameScreen.prototype.update = function() {
@@ -55,6 +59,8 @@ GameScreen.prototype.update = function() {
                 ds.newDeath(this.game);
             }
         }
+
+        this.text1.startTyping();
     }
 }
 
@@ -81,15 +87,18 @@ GameScreen.prototype.drawScore = function() {
     var y = 200;
     var r = 40;
 
-    textSize(r);
-    textAlign(CENTER);
-    fill(255);
-    noStroke();
+    // textSize(r);
+    // textAlign(CENTER);
+    // fill(255);
+    // noStroke();
 
-    text("SCORE", x, y - r / 3);
+    this.text1.draw(x, y, r);
 
-    textSize(r * 1.5);
-    text(this.score, x, y - r / 3 + r * 1.5);
+    if (this.text1.done) {
+        this.text2.draw(x, y + r * 1.5, r * 1.5, this.score);
+    }
+    
+    // text(this.score, x, y - r / 3 + r * 1.5);
 }
 
 GameScreen.prototype.drawLives = function() {

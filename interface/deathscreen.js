@@ -50,42 +50,47 @@ DeathScreen.prototype.buttonClicked = function(button) {
 DeathScreen.prototype.draw = function() {
     background(30, 40, 80);
 
-    var r = 100;
+    // var r = 100;
 
-    textAlign(CENTER);
-    textSize(r);
-    noStroke();
+    // textAlign(CENTER);
+    // textSize(r);
+    // noStroke();
 
-    fill(250, 75, 75);
-    text(this.text1.getText(), width/2 - r / 35 * 2, 200 - r / 35 * 2);
-    fill(50);
-    text(this.text1.getText(), width/2 - r / 35, 200 - r / 35);
-    fill(255);
-    text(this.text1.getText(), width/2, 200);
+    // fill(250, 75, 75);
+    // text(this.text1.getText(), width/2 - r / 35 * 2, 200 - r / 35 * 2);
+    // fill(50);
+    // text(this.text1.getText(), width/2 - r / 35, 200 - r / 35);
+    // fill(255);
+    // text(this.text1.getText(), width/2, 200);
+    this.text1.draw(width * 0.5, 150, 100);
 
     if (this.text1.done) {
-        var r = 50;
 
-        textSize(r);
+        this.text2.draw(width * 0.5, 300, 50);
+        // var r = 50;
 
-        fill(250, 75, 75);
-        text(this.text2.getText(), width/2 - r / 35 * 2, 350 - r / 35 * 2);
-        fill(50);
-        text(this.text2.getText(), width/2 - r / 35, 350 - r / 35);
-        fill(255);
-        text(this.text2.getText(), width/2, 350);
+        // textSize(r);
+
+        // fill(250, 75, 75);
+        // text(this.text2.getText(), width/2 - r / 35 * 2, 350 - r / 35 * 2);
+        // fill(50);
+        // text(this.text2.getText(), width/2 - r / 35, 350 - r / 35);
+        // fill(255);
+        // text(this.text2.getText(), width/2, 350);
 
         if (this.text2.done) {
-            var r = 150;
 
-            textSize(r);
+            this.text3.draw(width * 0.5, 450, 150);
+            // var r = 150;
 
-            fill(250, 75, 75);
-            text(this.text3.getText(), width/2 - r / 35 * 2, 500 - r / 35 * 2);
-            fill(50);
-            text(this.text3.getText(), width/2 - r / 35, 500 - r / 35);
-            fill(255);
-            text(this.text3.getText(), width/2, 500);
+            // textSize(r);
+
+            // fill(250, 75, 75);
+            // text(this.text3.getText(), width/2 - r / 35 * 2, 500 - r / 35 * 2);
+            // fill(50);
+            // text(this.text3.getText(), width/2 - r / 35, 500 - r / 35);
+            // fill(255);
+            // text(this.text3.getText(), width/2, 500);
 
             if (this.text3.done) {
                 for (var i = 0; i < this.buttons.length; i++) {

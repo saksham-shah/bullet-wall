@@ -1,6 +1,12 @@
 function TypeText(text_) {
     this.text = text_;
-    this.counter = this.text.length;
+
+    if (this.text !== undefined) {
+        this.counter = this.text.length;
+    } else {
+        this.counter = 0;
+    }
+
     this.timePassed = 0;
     this.typeSpeed = 8;
     this.typing = false;
@@ -38,4 +44,24 @@ TypeText.prototype.stopTyping = function() {
 
 TypeText.prototype.getText = function() {
     return this.text.slice(0, this.counter)
+}
+
+TypeText.prototype.draw = function(x, y, r, textToType) {
+    noStroke();
+    textAlign(CENTER);
+
+    textSize(r);
+
+    if (this.text !== undefined) {
+        var t = this.getText();
+    } else {
+        var t = textToType;
+    }
+
+    fill(250, 75, 75);
+    text(t, x - r / 35 * 2, y + r / 3 - r / 35 * 2);
+    fill(50);
+    text(t, x - r / 35, y + r / 3 - r / 35);
+    fill(255);
+    text(t, x, y + r / 3);
 }

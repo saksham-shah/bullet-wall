@@ -46,9 +46,10 @@ EnemyFast.prototype.specificUpdate = function() {
 	if (this.state == 1) {
 		var weaponCell = this.game.grid.getCell(this.weaponPos);
 		if (weaponCell !== null && weaponCell.wall > 0) {
-			weaponCell.wall --;
-			var weaponCellMiddle = p5.Vector.add(weaponCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
-			this.game.particleExplosion(weaponCellMiddle, 1, 100, this.vel.heading(), HALF_PI * 0.5, createVector(0, 0), 30, 20, 5, color(50), weaponCell);
+			// weaponCell.wall --;
+			// var weaponCellMiddle = p5.Vector.add(weaponCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
+			// this.game.particleExplosion(weaponCellMiddle, 1, 100, this.vel.heading(), HALF_PI * 0.5, createVector(0, 0), 30, 20, 5, color(50), weaponCell);
+			weaponCell.break(this.vel.heading());
 			this.state = 2;
 		}
 
