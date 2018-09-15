@@ -50,7 +50,7 @@ Gun.prototype.shoot = function() {
         var pos = this.getPos(0);
         var length = createVector(this.l, 0).rotate(this.direction);
         pos.add(length);
-        this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 10, 3, color(255, 255, 0));
+        this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, color(255, 255, 0));
     }
 
 }

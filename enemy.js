@@ -126,7 +126,7 @@ Enemy.prototype.die = function(bullet) {
 		myCell.build();
 	}
 	this.dead = true;
-	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 45, 3, color(200, 60, 60));
+	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 1, 45, 3, color(200, 60, 60));
 
 	this.game.enemyDeath(this);
 	// this.game.slowMo = 60;

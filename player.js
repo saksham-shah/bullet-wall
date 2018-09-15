@@ -112,7 +112,7 @@ Player.prototype.die = function(enemy) {
 
     this.game.slowMotion(360, 0.1);
 
-    this.game.particleExplosion(this.pos, 2, 100, PI, PI, createVector(0, 0.1), 50, 50, 3, color(160, 160, 200));
+    this.game.particleExplosion(this.pos, 2, 100, PI, PI, createVector(0, 0.1), 50, 5, 50, 3, color(160, 160, 200));
 
     this.game.gameOver = true;
     // console.log(enemy);
