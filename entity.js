@@ -14,6 +14,8 @@ function Entity(game_, row, col, r_) {
     this.mass = 10;
 
     this.health = 1;
+    this.damaged = 0;
+
 
     this.hide = false;
     this.freeze = false;
@@ -25,6 +27,8 @@ Entity.prototype.move = function(entities) {
     if (this.update !== undefined && !this.freeze) {
         this.update();
     }
+    this.damaged -= this.game.playSpeed;
+    
 	this.pos.add(p5.Vector.mult(this.vel, this.game.playSpeed));
     this.vel.add(p5.Vector.mult(this.acc, this.game.playSpeed));
     this.vel.limit(this.maxVel);
@@ -50,8 +54,12 @@ Entity.prototype.checkCollisions = function(all) {
 Entity.prototype.damage = function(num, cause) {
     if (this.shield === true) {
         this.shield = false;
-    } else {
+        this.shieldTimer = 180;
+    } else if (this.shieldTimer === undefined || this.shieldTimer <= 0) {
         this.health -= num;
+        if (this.damaged !== undefined) {
+            this.damaged = 25;
+        }
     }
     // console.log(this.health);
     if (this.health == 0) {
@@ -59,9 +67,7 @@ Entity.prototype.damage = function(num, cause) {
         this.die(cause);
     }
 
-    if (this.damaged !== undefined) {
-        this.damaged = 25;
-    }
+    
 }
 
 Entity.prototype.draw = function(cam, scr) {

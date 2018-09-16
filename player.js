@@ -19,8 +19,8 @@ function Player(game, row, col, controls) {
     this.health = 3;
 
     this.shield = true;
+    this.shieldTimer = 0;
 
-    this.damaged = 0;
 
     this.direction = 0;
 }
@@ -62,7 +62,11 @@ Player.prototype.update = function() {
         this.cooldown = 15;
     }
 
-    this.damaged -= this.game.playSpeed;
+    if (this.shieldTimer > 0) {
+        this.shieldTimer -= this.game.playSpeed;
+    }
+
+    
 }
 
 Player.prototype.checkWallHit = function() {

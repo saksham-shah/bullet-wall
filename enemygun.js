@@ -9,10 +9,10 @@ function EnemyGun(game, row, col) {
 
 	// this.timeSinceLastPath = 0;
 
-	this.hitSpeed = 60;
+	this.hitSpeed = 180;
 	this.wallDestroy = 60;
 
-    this.gun = new Gun(this.game, this, 10, createVector(0, 8), 20, 12, 6);
+    this.gun = new Gun(this.game, this, 15, createVector(0, 8), 20, 12, 6);
 
     this.cooldown = 30;
 
@@ -24,7 +24,7 @@ function EnemyGun(game, row, col) {
 	// this.cooldown = 0;
 	// this.state = 0;
 
-	this.scoreValue = 20;
+	this.scoreValue = 30;
 
     this.attacked = false;
 }
@@ -65,7 +65,7 @@ EnemyGun.prototype.attack = function(toAttack) {
         if (d < 0.1) {
             if (this.cooldown < 0) {
                 this.burst = 3;
-                this.cooldown = 180;
+                this.cooldown = this.hitSpeed;
             } else if (this.burst > 0) {
                 var shot = this.gun.shoot();
                 if (shot) {
