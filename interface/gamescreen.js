@@ -44,7 +44,7 @@ GameScreen.prototype.update = function() {
 
         var percentage = (55 - this.lastKill) / 55;
         if (this.comboPercentage < percentage) {
-            this.comboPercentage += dt / this.game.playSpeed * 0.1;
+            this.comboPercentage += 0.1;
             if (this.comboPercentage > percentage) {
                 this.comboPercentage = percentage;
             }
@@ -53,7 +53,8 @@ GameScreen.prototype.update = function() {
         }
 
         if (this.game.gameOver) {
-            this.fade += dt / this.game.playSpeed;
+            // this.fade += dt / this.game.playSpeed;
+            this.fade += 1;
             if (this.fade > 300) {
                 nextScreen = ds;
                 ds.newDeath(this.game);
@@ -97,7 +98,7 @@ GameScreen.prototype.drawScore = function() {
     if (this.text1.done) {
         this.text2.draw(x, y + r * 1.5, r * 1.5, this.score);
     }
-    
+
     // text(this.score, x, y - r / 3 + r * 1.5);
 }
 

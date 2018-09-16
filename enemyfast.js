@@ -24,20 +24,20 @@ function EnemyFast(game, row, col) {
 EnemyFast.prototype = Object.create(Enemy.prototype);
 
 EnemyFast.prototype.specificUpdate = function() {
-	this.cooldown -= dt;
+	this.cooldown -= this.game.playSpeed;
 
     if (this.state == 1) {
         if (this.weaponExtend > 30) {
             this.state = 2;
         } else {
-            this.weaponExtend += 2 * dt;
+            this.weaponExtend += 2 * this.game.playSpeed;
         }
     } else if (this.state == 2) {
         if (this.weaponExtend < 5) {
             this.weaponExtend = 5;
             this.state = 0;
         } else {
-            this.weaponExtend -= 1 * dt;
+            this.weaponExtend -= 1 * this.game.playSpeed;
         }
     }
 

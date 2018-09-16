@@ -22,20 +22,20 @@ function Gun(game_, entity_, pivot_, l_, w_, l2_) {
 }
 
 Gun.prototype.update = function() {
-    this.cooldown -= dt;
+    this.cooldown -= this.game.playSpeed;
 
     if (this.state == 1) {
         if (this.recoil > 5) {
             this.state = 2;
         } else {
-            this.recoil += 2 * dt;
+            this.recoil += 2 * this.game.playSpeed;
         }
     } else if (this.state == 2) {
         if (this.recoil < 0) {
             this.recoil = 0;
             this.state = 0;
         } else {
-            this.recoil -= 1 * dt;
+            this.recoil -= 1 * this.game.playSpeed;
         }
     }
 }

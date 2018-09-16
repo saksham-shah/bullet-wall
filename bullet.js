@@ -19,7 +19,7 @@ function Bullet(game_, gun_, speed_, direction_, colour_) {
 }
 
 Bullet.prototype.update = function(entities) {
-    this.pos.add(p5.Vector.mult(this.vel, dt));
+    this.pos.add(p5.Vector.mult(this.vel, this.game.playSpeed));
 
     this.checkWallHit();
     this.checkEntityHits(entities);

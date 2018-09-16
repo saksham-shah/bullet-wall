@@ -16,14 +16,14 @@ function Particle(game_, pos_, vel_, acc_, r_, life_, colour_, cell_) {
 }
 
 Particle.prototype.update = function() {
-	this.life -= dt;
+	this.life -= this.game.playSpeed;
 
 	if (this.life < 0) {
 		this.finished = true;
 	}
 
-	this.pos.add(p5.Vector.mult(this.vel, dt));
-    this.vel.add(p5.Vector.mult(this.acc, dt));
+	this.pos.add(p5.Vector.mult(this.vel, this.game.playSpeed));
+    this.vel.add(p5.Vector.mult(this.acc, this.game.playSpeed));
 }
 
 Particle.prototype.draw = function(cam, scr) {

@@ -5,9 +5,11 @@
 // const GRIDSIZE = 10;
 var dt;
 
+var GRIDSIZE = 15;
+
 function Game() {
 
-	this.gridSize = 15;
+	this.gridSize = GRIDSIZE;
 
     this.entities = [];
     this.bullets = [];
@@ -24,6 +26,11 @@ function Game() {
     this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
 
 	this.score = 0;
+	this.spawnPoints = 0;
+	this.counter = 0;
+	this.timeSinceWave = 0;
+	this.nextWave = 5;
+	this.timeSinceEnemy = 0;
 
 	this.combo = 0;
 	this.lastKill = 55;
@@ -38,22 +45,23 @@ function Game() {
 
 Game.prototype.update = function() {
 	// Calculate Delta time in order to have smooth movement
-    var now = Date.now();
-    dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
-    this.lastUpdate = now;
-	if (dt > 2) {
-		dt = 2;
-	}
+    // var now = Date.now();
+    // dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
+    // this.lastUpdate = now;
+	// if (dt > 2) {
+	// 	dt = 2;
+	// }
 
-	dt = dt * this.playSpeed;
+	// dt = dt * this.playSpeed;
 	if (this.slowMo < 0) {
 		this.playSpeed = 1;
 	} else {
-		this.slowMo -= dt / this.playSpeed;
+		// this.slowMo -= dt / this.playSpeed;
+		this.slowMo -= 1;
 	}
 
 	if (this.lastKill < 55) {
-		this.lastKill += dt;
+		this.lastKill += this.playSpeed;
 		// if (this.lastKill > 55) {
 		// 	this.lastKill = 55;
 		// }
@@ -61,14 +69,38 @@ Game.prototype.update = function() {
 		this.combo = 0;
 	}
 
-	if (random() < 0.005) {
-		var row = floor(random(this.gridSize));
-		var col = floor(random(this.gridSize));
-		var cell = this.grid.grid[row][col];
-		if (cell.wall == 0 && p5.Vector.dist(cell.pos, this.player.pos) > CELLSIZE * 2) {
-			this.entities.push(new EnemyFast(this, row, col));
-		}
+	// if (random() < 0.005) {
+	// 	// var row = floor(random(this.gridSize));
+	// 	// var col = floor(random(this.gridSize));
+	// 	// var cell = this.grid.grid[row][col];
+	// 	// if (cell.wall == 0 && p5.Vector.dist(cell.pos, this.player.pos) > CELLSIZE * 2) {
+	// 	// 	this.entities.push(new EnemyFast(this, row, col));
+	// 	// }
+	// 	var cell = this.randomCell();
+	// 	this.entities.push(new EnemyFast(this, cell.row, cell.col));
+	// }
+
+	this.timeSinceWave += this.playSpeed;
+	this.timeSinceEnemy += this.playSpeed;
+
+	if (this.timeSinceWave > 1200 || (this.spawnPoints <= 0 && this.entities.length == 1)) {
+		this.spawnPoints += this.nextWave;
+		this.nextWave += 1;
+		// console.log(this.spawnPoints);
+		this.timeSinceWave = 0;
 	}
+
+	if (this.counter < 0) {
+		this.counter = 30;
+		if (random() < this.spawnPoints * 0.025 || this.timeSinceEnemy > 180) {
+			this.spawnEnemy();
+			// console.log(this.spawnPoints);
+			this.timeSinceEnemy = 0;
+		}
+	} else {
+		this.counter -= this.playSpeed;
+	}
+
 
 	for (var i = 0; i < this.entities.length; i++) {
 		this.entities[i].move(this.entities);
