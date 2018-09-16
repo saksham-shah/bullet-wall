@@ -27,13 +27,17 @@ Cell.prototype.middle = function() {
 }
 
 Cell.prototype.build = function() {
-    this.wall = 2;
-    this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(50), this);
+    if (this.wall == 0) {
+        this.wall = 2;
+        this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(50), this);
+    }
 }
 
 Cell.prototype.break = function(direction) {
-    this.wall--;
-    this.game.particleExplosion(this.middle(), 1, 100, direction, HALF_PI * 0.5, createVector(0, 0), 30, 0, 20, 5, color(50), this);
+    if (this.wall > 0) {
+        this.wall--;
+        this.game.particleExplosion(this.middle(), 1, 100, direction, HALF_PI * 0.5, createVector(0, 0), 30, 0, 20, 5, color(50), this);
+    }
 
 }
 

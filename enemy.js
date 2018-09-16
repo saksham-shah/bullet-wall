@@ -53,12 +53,10 @@ Enemy.prototype.update = function() {
 	// 	}
 	// }
 
-    var d = p5.Vector.dist(this.pos, this.target.pos);
-    if (d < this.attackD) {
-        this.attack();
-    }
+
 
     // var moved = false;
+	// var attacked = false;
 
     if (d < this.stayD || d < this.followD) {
         this.pathToTarget = null;
@@ -82,7 +80,7 @@ Enemy.prototype.update = function() {
 		}
 
 		if (this.pathToTarget[0].wall > 0) {
-			this.attack();
+			this.attack(this.pathToTarget[0]);
 		}
 
         if (p5.Vector.dist(this.pos, this.pathToTarget[0].middle()) < this.r + CELLSIZE) {
@@ -97,6 +95,11 @@ Enemy.prototype.update = function() {
 			// cellPos.add(createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
 			this.moveTowards(this.pathToTarget[0].middle());
         }
+
+		var d = p5.Vector.dist(this.pos, this.target.pos);
+	    if (d < this.attackD) {
+	    	this.attack(this.target);
+	    }
     }
 
     this.specificUpdate();

@@ -186,16 +186,16 @@ Game.prototype.draw = function() {
 		if (!this.entities[i].hide) {
 			this.cam.draw(this.entities[i]);
 		}
-	}
-
-    for (var i = 0; i < this.bullets.length; i++) {
-		this.cam.draw(this.bullets[i]);
-	}
+	}    
 
     for (var i = 0; i < this.entities.length; i++) {
         if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
             this.entities[i].drawWeapon(this.cam, this.cam.screen);
         }
+	}
+
+	for (var i = 0; i < this.bullets.length; i++) {
+		this.cam.draw(this.bullets[i]);
 	}
 
 	for (var i = 0; i < this.particles.length; i++) {

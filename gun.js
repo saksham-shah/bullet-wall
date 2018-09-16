@@ -1,4 +1,4 @@
-function Gun(game_, entity_, pivot_, l_, w_, l2_) {
+function Gun(game_, entity_, shootSpeed_, pivot_, l_, w_, l2_) {
     this.game = game_;
 
     this.entity = entity_;
@@ -14,11 +14,14 @@ function Gun(game_, entity_, pivot_, l_, w_, l2_) {
     this.l2 = l2_;
 
     this.direction = 0;
+    this.targetDirection = 0;
 
     this.state = 0;
     this.recoil = 0;
 
     this.cooldown = 5;
+
+    this.shootSpeed = shootSpeed_;
 }
 
 Gun.prototype.update = function() {
@@ -38,12 +41,16 @@ Gun.prototype.update = function() {
             this.recoil -= 1 * this.game.playSpeed;
         }
     }
+
+    this.direction = rotateToAngle(this.direction, this.targetDirection, 0.2, 0.05);
+
+    // this.targetDirection =
 }
 
 Gun.prototype.shoot = function() {
     if (this.cooldown <= 0) {
         this.state = 1;
-        this.cooldown = 30;
+        this.cooldown = this.shootSpeed;
 
         this.game.bullets.push(new Bullet(this.game, this, 5, this.direction, color(255)));
 
@@ -51,8 +58,10 @@ Gun.prototype.shoot = function() {
         var length = createVector(this.l, 0).rotate(this.direction);
         pos.add(length);
         this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, color(255, 255, 0));
-    }
 
+        return true;
+    }
+    return false;
 }
 
 Gun.prototype.getPos = function() {
@@ -74,12 +83,39 @@ Gun.prototype.draw = function(cam, scr) {
 
     if (this.player) {
 	   scr.fill(50, 50, 150);
-       scr.stroke(25, 25, 50);
-       scr.strokeWeight(2 * drawR);
+    } else {
+       scr.fill(150, 50, 50);
     }
+
+    scr.stroke(25, 25, 50);
+    scr.strokeWeight(2 * drawR);
 
 
 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
     scr.rect(- this.l2 * drawR, - this.w * drawR * 0.5, this.l * drawR + this.l2 * drawR, this.w * drawR);
     scr.pop();
+}
+
+function rotateToAngle(current, target, buffer, speed) {
+    if (current > target) {
+        var d = current - target;
+        if (target + TWO_PI - current < d) {
+            target += TWO_PI;
+        }
+    } else if (target > current) {
+        var d = target - current;
+        if (current + TWO_PI - target < d) {
+            target -= TWO_PI;
+        }
+    }
+
+    var change = (target - current) / buffer;
+
+    if (change > 1) {
+        change = 1;
+    } else if (change < -1) {
+        change = -1;
+    }
+
+    return (current + speed * change) % TWO_PI;
 }

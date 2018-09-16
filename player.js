@@ -9,8 +9,8 @@ function Player(game, row, col, controls) {
 
     this.maxVel = 1.5;
 
-    this.gun1 = new Gun(this.game, this, createVector(0, 8), 20, 12, 6);
-    this.gun2 = new Gun(this.game, this, createVector(0, -8), 20, 12, 6);
+    this.gun1 = new Gun(this.game, this, 30, createVector(0, 8), 20, 12, 6);
+    this.gun2 = new Gun(this.game, this, 30, createVector(0, -8), 20, 12, 6);
     this.lastShot = 2;
     this.guns = 1;
 

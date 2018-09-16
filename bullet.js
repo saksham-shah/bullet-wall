@@ -30,16 +30,22 @@ Bullet.prototype.checkWallHit = function() {
     var wallCollision = collideWithWalls(this.pos, this.r, this.game.grid);
     if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
         this.hit = true;
-        if (this.gun.player) {
+        // if (this.gun.player) {
             var myCell = this.game.grid.getCell(this.pos);
             var playerCell = this.game.grid.getCell(this.game.player.pos);
-            if (wallCollision[1] !== null && wallCollision[1].wall > 0 && myCell !== playerCell && this.game.grid.getCell(this.pos).wall == 0) {
+            if (wallCollision[1] !== null) { //&& wallCollision[1].wall > 0 && myCell !== playerCell && this.game.grid.getCell(this.pos).wall == 0) {
                 // myCell.wall = 2;
                 // var myCellMiddle = p5.Vector.add(myCell.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
                 // this.game.particleExplosion(myCellMiddle, 1, 100, PI, PI, createVector(0, 0), 30, 30, 7, color(50), myCell);
-                myCell.build();
+                if (this.gun.player) {
+                    if (myCell !== playerCell) {
+                        myCell.build();
+                    }
+                } else {
+                    wallCollision[1].break(this.vel.heading());
+                }
             }
-        }
+        // }
     }
 }
 
@@ -67,9 +73,12 @@ Bullet.prototype.draw = function(cam, scr) {
 
     if (this.gun.player) {
         scr.fill(200, 200, 250);
-        scr.stroke(255);
-        scr.strokeWeight(2 * drawR / this.r);
+    } else {
+        scr.fill(250, 200, 200);
     }
+
+    scr.stroke(255);
+    scr.strokeWeight(2 * drawR / this.r);
     // scr.fill(this.colour);
     // scr.noStroke();
 

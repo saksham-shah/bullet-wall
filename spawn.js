@@ -6,35 +6,33 @@ function Spawn(reqPoints_, reqScore_, doFunction_) {
     this.randScore = 0;
 }
 
-Game.prototype.randomCell = function() {
-    done = false;
-    while (!done) {
+Game.prototype.randomCell = function(dFromPlayer) {
+    var done = false;
+    var tries = 1000;
+    while (!done && tries > 0) {
         var row = floor(random(this.gridSize));
         var col = floor(random(this.gridSize));
         var cell = this.grid.grid[row][col];
-        if (cell.wall == 0 && p5.Vector.dist(cell.pos, this.player.pos) > CELLSIZE * 2) {
+        if (cell.wall == 0 && p5.Vector.dist(cell.pos, this.player.pos) > dFromPlayer) {
             done = true;
             return cell;
         }
+        tries--;
     }
 }
 
 var spawns = [
     new Spawn(1, 0,
         function(game) {
-            var cell = game.randomCell();
+            var cell = game.randomCell(CELLSIZE * 2);
             game.entities.push(new EnemyFast(game, cell.row, cell.col));
-            // console.log("enemyfast");
         }
     ),
 
-    new Spawn(2, 100,
+    new Spawn(2, 200,
         function(game) {
-            for (var i = 0; i < 3; i++) {
-                var cell = game.randomCell();
-                game.entities.push(new EnemyFast(game, cell.row, cell.col));
-            }
-            // console.log("enemygun");
+            var cell = game.randomCell(CELLSIZE * 4);
+            game.entities.push(new EnemyGun(game, cell.row, cell.col));
         }
     ),
 ]
