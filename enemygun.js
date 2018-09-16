@@ -1,5 +1,5 @@
 function EnemyGun(game, row, col) {
-	Enemy.call(this, game, row, col, 400, 0, CELLSIZE);
+	Enemy.call(this, game, row, col, 600, 0, CELLSIZE);
 
 	this.maxVel = 1;
 	this.maxForce = 0.1;
@@ -10,7 +10,7 @@ function EnemyGun(game, row, col) {
 	// this.timeSinceLastPath = 0;
 
 	this.hitSpeed = 60;
-	this.wallDestroy = 15;
+	this.wallDestroy = 60;
 
     this.gun = new Gun(this.game, this, 10, createVector(0, 8), 20, 12, 6);
 

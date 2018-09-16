@@ -40,6 +40,7 @@ Bullet.prototype.checkWallHit = function() {
                 if (this.gun.player) {
                     if (myCell !== playerCell) {
                         myCell.build();
+                        this.game.score += 2;
                     }
                 } else {
                     wallCollision[1].break(this.vel.heading());

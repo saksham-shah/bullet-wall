@@ -60,7 +60,7 @@ Game.prototype.update = function() {
 		this.slowMo -= 1;
 	}
 
-	if (this.lastKill < 55) {
+	if (this.lastKill < 75) {
 		this.lastKill += this.playSpeed;
 		// if (this.lastKill > 55) {
 		// 	this.lastKill = 55;
@@ -186,7 +186,7 @@ Game.prototype.draw = function() {
 		if (!this.entities[i].hide) {
 			this.cam.draw(this.entities[i]);
 		}
-	}    
+	}
 
     for (var i = 0; i < this.entities.length; i++) {
         if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
