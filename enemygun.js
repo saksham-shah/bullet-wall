@@ -33,15 +33,17 @@ EnemyGun.prototype = Object.create(Enemy.prototype);
 
 EnemyGun.prototype.specificUpdate = function() {
 
+    this.direction = this.vel.heading();
+
     if (!this.attacked) {
-        this.gun.targetDirection = p5.Vector.sub(this.game.player.pos, this.gun.getPos()).heading();
+        // this.gun.targetDirection = p5.Vector.sub(this.game.player.pos, this.gun.getPos()).heading();
+        this.gun.targetDirection = this.direction;
     } else {
         this.attacked = false;
     }
 
     this.gun.update();
 
-    this.direction = this.vel.heading();
 
     this.cooldown -= this.game.playSpeed;
 
@@ -62,16 +64,18 @@ EnemyGun.prototype.attack = function(toAttack) {
         this.gun.targetDirection = direction;
 
         var d = abs(this.gun.direction - direction);
-        if (d < 0.1) {
-            if (this.cooldown < 0) {
-                this.burst = 3;
-                this.cooldown = this.hitSpeed;
-            } else if (this.burst > 0) {
-                var shot = this.gun.shoot();
-                if (shot) {
-                    this.burst--;
-                }
-            }
+        if (d < 0.1 && this.cooldown < 0) {
+            this.gun.shoot(3);
+            this.cooldown = this.hitSpeed;
+            // if (this.cooldown < 0) {
+            //     this.burst = 3;
+            //     this.cooldown = this.hitSpeed;
+            // } else if (this.burst > 0) {
+            //     var shot = this.gun.shoot();
+            //     if (shot) {
+            //         this.burst--;
+            //     }
+            // }
         }
         this.attacked = true;
     }

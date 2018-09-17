@@ -66,7 +66,7 @@ Player.prototype.update = function() {
         this.shieldTimer -= this.game.playSpeed;
     }
 
-    
+
 }
 
 Player.prototype.checkWallHit = function() {

@@ -20,12 +20,21 @@ function Gun(game_, entity_, shootSpeed_, pivot_, l_, w_, l2_) {
     this.recoil = 0;
 
     this.cooldown = 5;
+    this.burst = 0;
 
     this.shootSpeed = shootSpeed_;
 }
 
 Gun.prototype.update = function() {
     this.cooldown -= this.game.playSpeed;
+
+    if (this.burst > 0) {
+        // var shot = this.gun.shoot();
+        // if (shot) {
+        //     this.burst--;
+        // }
+        this.shoot();
+    }
 
     if (this.state == 1) {
         if (this.recoil > 5) {
@@ -47,7 +56,7 @@ Gun.prototype.update = function() {
     // this.targetDirection =
 }
 
-Gun.prototype.shoot = function() {
+Gun.prototype.shoot = function(bursts) {
     if (this.cooldown <= 0) {
         this.state = 1;
         this.cooldown = this.shootSpeed;
@@ -58,6 +67,14 @@ Gun.prototype.shoot = function() {
         var length = createVector(this.l, 0).rotate(this.direction);
         pos.add(length);
         this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, color(255, 255, 0));
+
+        if (bursts !== undefined) {
+            this.burst = bursts;
+        }
+
+        if (this.burst > 0) {
+            this.burst --;
+        }
 
         return true;
     }
