@@ -1,5 +1,5 @@
 function EnemyGun(game, row, col) {
-	Enemy.call(this, game, row, col, 600, 0, CELLSIZE);
+	Enemy.call(this, game, row, col, 300, 0, CELLSIZE);
 
 	this.maxVel = 1;
 	this.maxForce = 0.1;

@@ -29,7 +29,7 @@ var spawns = [
         }
     ),
 
-    new Spawn(3, 200,
+    new Spawn(3, 100,
         function(game) {
             var cell = game.randomCell(CELLSIZE * 4);
             game.entities.push(new EnemyGun(game, cell.row, cell.col));
