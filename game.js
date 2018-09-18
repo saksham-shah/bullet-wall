@@ -179,28 +179,55 @@ Game.prototype.slowMotion = function(time, speed) {
 Game.prototype.draw = function() {
 
 
-	this.cam.screen.background(30, 40, 80);
-	this.cam.draw(this.grid);
 
+	// this.cam.screen.background(30, 40, 80);
+	// this.cam.draw(this.grid);
+
+	// for (var i = 0; i < this.entities.length; i++) {
+	// 	if (!this.entities[i].hide) {
+	// 		this.cam.draw(this.entities[i]);
+	// 	}
+	// }
+
+	// for (var i = 0; i < this.bullets.length; i++) {
+	// 	this.cam.draw(this.bullets[i]);
+	// }
+
+    // for (var i = 0; i < this.entities.length; i++) {
+    //     if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
+    //         this.entities[i].drawWeapon(this.cam, this.cam.screen);
+    //     }
+	// }
+
+	// for (var i = 0; i < this.particles.length; i++) {
+    //     this.cam.draw(this.particles[i]);
+	// }
+
+	// this.cam.drawToCanvas();
+
+	background(30, 40, 80);
+	this.grid.draw();
+	//
 	for (var i = 0; i < this.entities.length; i++) {
 		if (!this.entities[i].hide) {
-			this.cam.draw(this.entities[i]);
+			// this.cam.draw(this.entities[i]);
+			this.entities[i].draw();
 		}
 	}
-
+	//
 	for (var i = 0; i < this.bullets.length; i++) {
-		this.cam.draw(this.bullets[i]);
+		// this.cam.draw(this.bullets[i]);
+		this.bullets[i].draw();
 	}
-
+	//
     for (var i = 0; i < this.entities.length; i++) {
         if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
-            this.entities[i].drawWeapon(this.cam, this.cam.screen);
+            this.entities[i].drawWeapon();
         }
 	}
-
+	//
 	for (var i = 0; i < this.particles.length; i++) {
-        this.cam.draw(this.particles[i]);
+        // this.cam.draw(this.particles[i]);
+		this.particles[i].draw();
 	}
-
-	this.cam.drawToCanvas();
 }

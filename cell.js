@@ -58,39 +58,76 @@ Cell.prototype.getNeighbours = function() {
     return neighbours;
 }
 
-Cell.prototype.draw = function(cam, scr) {
+Cell.prototype.draw = function() {
 	if (this.wall > 0) {
-        var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-        var drawR = cam.getDrawSize(this.r);
-        scr.push();
-        scr.translate(drawPos);
+        var drawPos = getDrawPos(this.pos);
+        // var drawR = cam.getDrawSize(this.r);
+        push();
+        translate(drawPos);
 	// 	var gameX = this.col * this.r;
 	// 	var gameY = this.row * this.r;
-        scr.stroke(50);
-        scr.strokeWeight(4 * drawR / this.r);
-        scr.fill(100);
-        scr.rect(0, 0, drawR, drawR);
+        stroke(50);
+        strokeWeight(4 * ZOOM);
+        fill(100);
+        rect(0, 0, this.r * ZOOM, this.r * ZOOM);
 
         if (this.wall > 1) {
             // scr.line(0, 0, this.r, this.r);
-            scr.line(0, drawR, drawR, 0);
+            line(0, this.r * ZOOM, this.r * ZOOM, 0);
         }
 
-        scr.pop();
+        pop();
     }
     if (this.path) {
-        var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-        var drawR = cam.getDrawSize(this.r);
-        scr.push();
-        scr.translate(drawPos);
+        var drawPos = getDrawPos(this.pos);
+        // var drawR = cam.getDrawSize(this.r);
+        push();
+        translate(drawPos);
 
-		scr.fill(255, 0, 0, 100);
-		scr.noStroke();
-		scr.rect(0, 0, drawR, drawR);
+		fill(255, 0, 0, 100);
+		noStroke();
+		rect(0, 0, this.r * ZOOM, this.r * ZOOM);
 		this.path = false;
 
-        scr.pop();
+        pop();
 	}
 
 
 }
+
+// Cell.prototype.draw = function(cam, scr) {
+// 	if (this.wall > 0) {
+//         var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+//         var drawR = cam.getDrawSize(this.r);
+//         scr.push();
+//         scr.translate(drawPos);
+// 	// 	var gameX = this.col * this.r;
+// 	// 	var gameY = this.row * this.r;
+//         scr.stroke(50);
+//         scr.strokeWeight(4 * drawR / this.r);
+//         scr.fill(100);
+//         scr.rect(0, 0, drawR, drawR);
+//
+//         if (this.wall > 1) {
+//             // scr.line(0, 0, this.r, this.r);
+//             scr.line(0, drawR, drawR, 0);
+//         }
+//
+//         scr.pop();
+//     }
+//     if (this.path) {
+//         var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+//         var drawR = cam.getDrawSize(this.r);
+//         scr.push();
+//         scr.translate(drawPos);
+//
+// 		scr.fill(255, 0, 0, 100);
+// 		scr.noStroke();
+// 		scr.rect(0, 0, drawR, drawR);
+// 		this.path = false;
+//
+//         scr.pop();
+// 	}
+//
+//
+// }

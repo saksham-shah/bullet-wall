@@ -81,24 +81,24 @@ EnemyGun.prototype.attack = function(toAttack) {
     }
 }
 
-EnemyGun.prototype.draw = function(cam, scr) {
-	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-	var drawR = cam.getDrawSize(this.r);
-    scr.push();
-    scr.translate(drawPos);
-	scr.rotate(this.vel.heading());
+EnemyGun.prototype.draw = function() {
+	var drawPos = getDrawPos(this.pos);
+	// var drawR = cam.getDrawSize(this.r);
+    push();
+    translate(drawPos);
+	rotate(this.vel.heading());
 
-	scr.fill(250, 75, 75);
-	scr.stroke(200, 60, 60);
-    scr.strokeWeight(2 * drawR / this.r);
+	fill(250, 75, 75);
+	stroke(200, 60, 60);
+    strokeWeight(2 * ZOOM);
 
-	scr.ellipse(0, 0, drawR * 2);
+	ellipse(0, 0, this.r * ZOOM * 2);
 
-    scr.pop();
+    pop();
 }
 
-EnemyGun.prototype.drawWeapon = function(cam, scr) {
-    this.gun.draw(cam, scr);
+EnemyGun.prototype.drawWeapon = function() {
+    this.gun.draw();
 
     // var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
 	// var drawR = cam.getDrawSize(this.r);
@@ -119,3 +119,42 @@ EnemyGun.prototype.drawWeapon = function(cam, scr) {
     //
 	// scr.pop()
 }
+
+// EnemyGun.prototype.draw = function(cam, scr) {
+// 	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+// 	var drawR = cam.getDrawSize(this.r);
+//     scr.push();
+//     scr.translate(drawPos);
+// 	scr.rotate(this.vel.heading());
+//
+// 	scr.fill(250, 75, 75);
+// 	scr.stroke(200, 60, 60);
+//     scr.strokeWeight(2 * drawR / this.r);
+//
+// 	scr.ellipse(0, 0, drawR * 2);
+//
+//     scr.pop();
+// }
+//
+// EnemyGun.prototype.drawWeapon = function(cam, scr) {
+//     this.gun.draw(cam, scr);
+//
+//     // var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+// 	// var drawR = cam.getDrawSize(this.r);
+// 	// scr.push();
+// 	// scr.translate(drawPos);
+// 	// scr.rotate(this.vel.heading());
+//     //
+// 	// scr.fill(1.25 * (100 + this.weaponExtend * 3), 50, 50);
+// 	// scr.stroke(100 + this.weaponExtend * 3, 50, 50);
+// 	// scr.strokeWeight(2 * drawR / this.r);
+//     //
+// 	// scr.beginShape();
+// 	// scr.vertex(this.weaponExtend * drawR / 15, 0);
+// 	// scr.vertex(0, 5 * drawR / 15);
+// 	// scr.vertex(0, -5 * drawR / 15);
+// 	// scr.vertex(this.weaponExtend * drawR / 15, 0);
+// 	// scr.endShape();
+//     //
+// 	// scr.pop()
+// }

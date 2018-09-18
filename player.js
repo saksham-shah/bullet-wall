@@ -82,34 +82,6 @@ Player.prototype.checkWallHit = function() {
     }
 }
 
-Player.prototype.draw = function(cam, scr) {
-	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-	var drawR = cam.getDrawSize(this.r);
-    scr.push();
-    scr.translate(drawPos);
-
-	scr.fill(200, 200, 250);
-	scr.stroke(160, 160, 200);
-    scr.strokeWeight(2 * drawR / this.r);
-
-	scr.ellipse(0, 0, drawR * 2);
-
-    scr.fill(255, 0, 0, this.damaged * 4);
-    scr.noStroke();
-    scr.ellipse(0, 0, drawR * 2);
-
-    scr.pop();
-}
-
-Player.prototype.drawWeapon = function(cam, scr) {
-    this.gun1.draw(cam, scr);
-    if (this.guns == 2) {
-        this.gun2.draw(cam, scr);
-    }
-    // console.log(this);
-    // cam.draw(this.gun);
-}
-
 Player.prototype.die = function(enemy) {
     this.hide = true;
     this.freeze = true;
@@ -121,3 +93,58 @@ Player.prototype.die = function(enemy) {
     this.game.gameOver = true;
     // console.log(enemy);
 }
+
+Player.prototype.draw = function() {
+	var drawPos = getDrawPos(this.pos);
+	// var drawR = cam.getDrawSize(this.r);
+
+    push();
+    translate(drawPos);
+
+	fill(200, 200, 250);
+	stroke(160, 160, 200);
+    strokeWeight(2 * ZOOM);
+
+	ellipse(0, 0, this.r * ZOOM * 2);
+
+    fill(255, 0, 0, this.damaged * 4);
+    noStroke();
+    ellipse(0, 0, this.r * ZOOM * 2);
+
+    pop();
+}
+
+Player.prototype.drawWeapon = function() {
+    this.gun1.draw();
+    if (this.guns == 2) {
+        this.gun2.draw();
+    }
+}
+
+// Player.prototype.draw = function(cam, scr) {
+// 	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+// 	var drawR = cam.getDrawSize(this.r);
+//     scr.push();
+//     scr.translate(drawPos);
+//
+// 	scr.fill(200, 200, 250);
+// 	scr.stroke(160, 160, 200);
+//     scr.strokeWeight(2 * drawR / this.r);
+//
+// 	scr.ellipse(0, 0, drawR * 2);
+//
+//     scr.fill(255, 0, 0, this.damaged * 4);
+//     scr.noStroke();
+//     scr.ellipse(0, 0, drawR * 2);
+//
+//     scr.pop();
+// }
+//
+// Player.prototype.drawWeapon = function(cam, scr) {
+//     this.gun1.draw(cam, scr);
+//     if (this.guns == 2) {
+//         this.gun2.draw(cam, scr);
+//     }
+//     // console.log(this);
+//     // cam.draw(this.gun);
+// }
