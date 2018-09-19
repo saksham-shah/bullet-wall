@@ -10,6 +10,7 @@ var screen, nextScreen;
 
 function setup() {
 	// createCanvas(1800, 1200);
+	// createCanvas(1800, 1200);
 	createCanvas(windowWidth - 100, windowHeight - 100);
 
     // game = new Game();

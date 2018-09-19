@@ -16,14 +16,14 @@ function Game() {
     this.particles = [];
 
 	this.grid = new Grid(this, this.gridSize);
-	this.cam = createGameCam(0, 0, width, height);
+	// this.cam = createGameCam(0, 0, width, height);
     this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     // var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
     this.entities.push(this.player);
     // this.entities.push(entity)
 
     // this.cam.follow(this.player.pos, POSITION);
-    this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
+    // this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
 
 	this.score = 0;
 	this.spawnPoints = 0;
@@ -133,7 +133,7 @@ Game.prototype.update = function() {
 	// 	}
 	// }
 
-	this.cam.update();
+	// this.cam.update();
 }
 
 Game.prototype.enemyDeath = function(enemy) {
