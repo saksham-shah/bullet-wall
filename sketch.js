@@ -16,11 +16,15 @@ var screen, nextScreen;
 function setup() {
 	// createCanvas(w, h);
 	// createCanvas(1200, 800);
-	createCanvas(2100, 1400);
+	// createCanvas(2100, 1400);
 	// createCanvas(windowHeight * 1.5 - 150, windowHeight - 100);
-	// createCanvas(windowWidth - 100, windowHeight - 100);
+	// createCanvas(windowWidth - 300, windowHeight - 300);
 
-
+	if (windowWidth > windowHeight) {
+		createCanvas((windowHeight - 100) * 1.5, windowHeight - 100);
+	} else {
+		createCanvas(windowWidth - 100, (windowWidth - 100) * 2 / 3);
+	}
 
 	calcOffsets();
 
@@ -66,6 +70,38 @@ function draw() {
 	noStroke();
 
 	text(floor(this.frameRate()), width - 50, height - 50);
+}
+
+function windowResized() {
+	// resizeCanvas(windowWidth - 300, windowHeight - 300);
+	if (windowWidth > windowHeight) {
+		resizeCanvas((windowHeight - 100) * 1.5, windowHeight - 100);
+	} else {
+		resizeCanvas(windowWidth - 100, (windowWidth - 100) * 2 / 3);
+	}
+
+
+	calcOffsets();
+
+	if (screen == ms) {
+		var wasScreen = "ms";
+	} else if (screen == ds) {
+		var wasScreen = "ds";
+	}
+
+	ms = new MenuScreen();
+
+	// gs = new GameScreen();
+
+	ds = new DeathScreen();
+
+	if (wasScreen == "ms") {
+		nextScreen = ms;
+	} else if (wasScreen == "ds") {
+		nextScreen = ds;
+	}
+
+}
 
 
 	// var mousePos = cam.getMousePos();
@@ -118,4 +154,3 @@ function draw() {
     // // cam.draw(entity);
     //
 	// cam.drawToCanvas();
-}
