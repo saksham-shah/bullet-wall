@@ -44,7 +44,7 @@ Player.prototype.update = function() {
         this.gun2.update();
     }
 
-    var mousePos = this.game.cam.getMousePos(0);
+    var mousePos = getMousePos();
     this.direction = p5.Vector.sub(mousePos, this.pos).heading();
     this.gun1.direction = p5.Vector.sub(mousePos, this.gun1.getPos()).heading();
     this.gun2.direction = p5.Vector.sub(mousePos, this.gun2.getPos()).heading();

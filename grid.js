@@ -53,7 +53,7 @@ Grid.prototype.draw = function() {
 
     fill(45, 60, 120);
     noStroke();
-    rect(drawPos.x, drawPos.y, this.grid.length * CELLSIZE, this.grid.length * CELLSIZE);
+    rect(drawPos.x, drawPos.y, this.grid.length * CELLSIZE * ZOOM, this.grid.length * CELLSIZE * ZOOM);
 
 	strokeWeight(1 * ZOOM);
 	stroke(90, 120, 240);
