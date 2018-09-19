@@ -8,7 +8,7 @@ function calcOffsets() {
 	if (height / 800 < zoom) {
 		zoom = height / 800;
 	}
-    
+
     xOff = (width - GRIDSIZE * CELLSIZE * zoom) * 0.5;
     yOff = (height - GRIDSIZE * CELLSIZE * zoom) * 0.5;
 }
@@ -20,10 +20,4 @@ function getDrawPos(gamePos) {
 function getMousePos() {
     var mousePos = createVector(mouseX, mouseY).sub(createVector(xOff, yOff));
     return mousePos.div(zoom);
-}
-
-function mousePressed() {
-    console.log(mouseX);
-    console.log(mouseY);
-
 }

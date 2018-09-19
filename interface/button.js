@@ -28,7 +28,7 @@ Button.prototype.update = function() {
 Button.prototype.draw = function() {
     fill(60, 80, 160);
     stroke(45, 60, 120);
-    strokeWeight(7);
+    strokeWeight(7 * zoom);
 
     if (this.hovered) {
         fill(75, 100, 200);

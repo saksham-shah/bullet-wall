@@ -18,12 +18,12 @@ function setup() {
 	// createCanvas(1200, 800);
 	// createCanvas(2100, 1400);
 	// createCanvas(windowHeight * 1.5 - 150, windowHeight - 100);
-	// createCanvas(windowWidth - 300, windowHeight - 300);
+	// createCanvas(windowWidth - 10, windowHeight - 10);
 
-	if (windowWidth > windowHeight) {
-		createCanvas((windowHeight - 100) * 1.5, windowHeight - 100);
+	if (windowWidth > windowHeight * 16 / 9) {
+		createCanvas((windowHeight - 10) * 16 / 9, windowHeight - 10);
 	} else {
-		createCanvas(windowWidth - 100, (windowWidth - 100) * 2 / 3);
+		createCanvas(windowWidth - 10, (windowWidth - 10) * 9 / 16);
 	}
 
 	calcOffsets();
@@ -73,11 +73,11 @@ function draw() {
 }
 
 function windowResized() {
-	// resizeCanvas(windowWidth - 300, windowHeight - 300);
-	if (windowWidth > windowHeight) {
-		resizeCanvas((windowHeight - 100) * 1.5, windowHeight - 100);
+	// resizeCanvas(windowWidth - 10, windowHeight - 10);
+	if (windowWidth > windowHeight * 16 / 9) {
+		createCanvas((windowHeight - 10) * 16 / 9, windowHeight - 10);
 	} else {
-		resizeCanvas(windowWidth - 100, (windowWidth - 100) * 2 / 3);
+		createCanvas(windowWidth - 10, (windowWidth - 10) * 9 / 16);
 	}
 
 
@@ -85,9 +85,6 @@ function windowResized() {
 
 	ms.createButtons();
 	ds.createButtons();
-
-	console.log("hi");
-
 }
 
 

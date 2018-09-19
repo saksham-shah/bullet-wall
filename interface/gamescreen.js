@@ -132,7 +132,7 @@ GameScreen.prototype.drawLives = function() {
             stroke(120);
         }
 
-        strokeWeight(3);
+        strokeWeight(r / 10);
 
         arc(x - r * 0.5, y, r, r, - PI, 0, OPEN);
         arc(x + r * 0.5, y, r, r, - PI, 0, OPEN);
@@ -180,7 +180,7 @@ GameScreen.prototype.drawShield = function() {
 
     noFill();
     stroke(100 * colourMult);
-    strokeWeight(4);
+    strokeWeight(r / 12.5);
     beginShape();
     vertex(x, y);
     vertex(x + r, y);

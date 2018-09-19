@@ -94,7 +94,7 @@ Gun.prototype.draw = function() {
     translate(drawPos);
     rotate(this.direction);
     // scr.translate(p5.Vector.mult(this.pivot, drawR));
-    translate(-this.recoil, 0);
+    translate(-this.recoil * zoom, 0);
 
     if (this.player) {
 	   fill(50, 50, 150);
