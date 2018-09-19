@@ -56,7 +56,7 @@ GameScreen.prototype.update = function() {
         }
 
         if (this.game.gameOver) {
-            // this.fade += dt / this.game.playSpeed;
+            // this.fade += dt / this.game.gameSpeed;
             this.fade += 1;
             if (this.fade > 300) {
                 nextScreen = ds;

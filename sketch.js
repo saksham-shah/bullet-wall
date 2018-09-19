@@ -16,10 +16,14 @@ var zoom;
 function setup() {
 	// createCanvas(w, h);
 	// createCanvas(1200, 800);
-	createCanvas(1800, 1200);
+	createCanvas(2100, 1400);
+	// createCanvas(windowHeight * 1.5 - 150, windowHeight - 100);
 	// createCanvas(windowWidth - 100, windowHeight - 100);
 
 	zoom = width / 1200;
+	if (height / 800 < zoom) {
+		zoom = height / 800;
+	}
 
 	calcOffsets();
 

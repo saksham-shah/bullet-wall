@@ -39,29 +39,32 @@ function Game() {
 
 	this.lastUpdate = Date.now();
 
+	this.gameSpeed = 1;
 	this.playSpeed = 1;
 	this.slowMo = 0;
 }
 
 Game.prototype.update = function() {
 	// Calculate Delta time in order to have smooth movement
-    // var now = Date.now();
-    // dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
-    // this.lastUpdate = now;
-	// if (dt > 2) {
-	// 	dt = 2;
-	// }
+    var now = Date.now();
+    var dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
+    this.lastUpdate = now;
+	if (dt > 2) {
+		dt = 2;
+	}
 
-	// dt = dt * this.playSpeed;
+	// dt = dt * this.gameSpeed;
 	if (this.slowMo < 0) {
 		this.playSpeed = 1;
 	} else {
-		// this.slowMo -= dt / this.playSpeed;
-		this.slowMo -= 1;
+		// this.slowMo -= dt / this.gameSpeed;
+		this.slowMo -= dt;
 	}
 
+	this.gameSpeed = this.playSpeed * dt;
+
 	if (this.lastKill < 75) {
-		this.lastKill += this.playSpeed;
+		this.lastKill += this.gameSpeed;
 		// if (this.lastKill > 55) {
 		// 	this.lastKill = 55;
 		// }
@@ -80,8 +83,8 @@ Game.prototype.update = function() {
 	// 	this.entities.push(new EnemyFast(this, cell.row, cell.col));
 	// }
 
-	this.timeSinceWave += this.playSpeed;
-	this.timeSinceEnemy += this.playSpeed;
+	this.timeSinceWave += this.gameSpeed;
+	this.timeSinceEnemy += this.gameSpeed;
 
 	if (this.timeSinceWave > 1200 || (this.spawnPoints <= 0 && this.entities.length == 1)) {
 		this.spawnPoints += this.nextWave;
@@ -98,7 +101,7 @@ Game.prototype.update = function() {
 			this.timeSinceEnemy = 0;
 		}
 	} else {
-		this.counter -= this.playSpeed;
+		this.counter -= this.gameSpeed;
 	}
 
 
@@ -173,7 +176,7 @@ Game.prototype.slowMotion = function(time, speed) {
 		this.slowMo = time;
 	}
 
-	// this.playSpeed = speed;
+	// this.gameSpeed = speed;
 }
 
 Game.prototype.draw = function() {

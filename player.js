@@ -50,7 +50,7 @@ Player.prototype.update = function() {
     this.gun2.direction = p5.Vector.sub(mousePos, this.gun2.getPos()).heading();
 
     if (this.cooldown > 0) {
-        this.cooldown -= this.game.playSpeed;
+        this.cooldown -= this.game.gameSpeed;
     } else if (mouseIsPressed) {
         if (this.lastShot == 2 || this.guns == 1) {
             this.gun1.shoot();
@@ -63,14 +63,14 @@ Player.prototype.update = function() {
     }
 
     if (this.shieldTimer > 0) {
-        this.shieldTimer -= this.game.playSpeed;
+        this.shieldTimer -= this.game.gameSpeed;
     }
 
 
 }
 
 Player.prototype.checkWallHit = function() {
-    var futurePos = p5.Vector.add(this.pos, p5.Vector.mult(this.vel, this.game.playSpeed));
+    var futurePos = p5.Vector.add(this.pos, p5.Vector.mult(this.vel, this.game.gameSpeed));
     var wallCollision = collideWithWalls(futurePos, this.r, this.game.grid);
     if (wallCollision[0].x != futurePos.x || wallCollision[0].y != futurePos.y) {
         if (wallCollision[1] !== null && wallCollision[1].wall == 1) {

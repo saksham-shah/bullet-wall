@@ -45,7 +45,7 @@ EnemyGun.prototype.specificUpdate = function() {
     this.gun.update();
 
 
-    this.cooldown -= this.game.playSpeed;
+    this.cooldown -= this.game.gameSpeed;
 
 }
 
