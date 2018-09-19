@@ -78,18 +78,18 @@ GameScreen.prototype.draw = function() {
         this.drawCombo();
 
         // Game over fade
-        fill(30, 40, 80, this.fade);
-        noStroke();
+        // fill(30, 40, 80, this.fade);
+        // noStroke();
 
-        rect(0, 0, width, height);
+        // rect(0, 0, width, height);
     }
 
 }
 
 GameScreen.prototype.drawScore = function() {
-    var x = 1050;
-    var y = 200;
-    var r = 40;
+    var x = width - xOff * 0.5;
+    var y = height * 0.25;
+    var r = 40 * zoom;
 
     // textSize(r);
     // textAlign(CENTER);
@@ -108,9 +108,9 @@ GameScreen.prototype.drawScore = function() {
 GameScreen.prototype.drawLives = function() {
     // Lives
     for (var i = 0; i < 3; i++) {
-        var x = i * 80 + 70;
-        var y = 600;
-        var r = 30;
+        var x = (i - 1) * 80 * zoom + xOff * 0.5;
+        var y = height * 0.75;
+        var r = 30 * zoom;
 
         if (this.lives > i) {
             fill(250, 75, 75);
@@ -144,9 +144,9 @@ GameScreen.prototype.drawLives = function() {
 
 GameScreen.prototype.drawShield = function() {
     // Shield
-    var x = 150;
-    var y = 400;
-    var r = 50;
+    var x = xOff * 0.5;
+    var y = height * 0.5;
+    var r = 50 * zoom;
 
     noStroke();
 
@@ -201,9 +201,9 @@ GameScreen.prototype.drawShield = function() {
 
 GameScreen.prototype.drawCombo = function() {
     if (this.combo > 0) {
-        var x = 150;
-        var y = 200;
-        var r = 60;
+        var x = xOff * 0.5;
+        var y = height * 0.25;
+        var r = 60 * zoom;
 
         textSize(r);
         textAlign(CENTER);

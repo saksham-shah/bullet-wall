@@ -1,14 +1,19 @@
-var XOFF = 300;
-var YOFF = 100;
-var ZOOM = 2;
+var xOff = 0;
+var yOff = 0;
+// var ZOOM = w / 1200;
+
+function calcOffsets() {
+    xOff = (width - GRIDSIZE * CELLSIZE * zoom) * 0.5;
+    yOff = (height - GRIDSIZE * CELLSIZE * zoom) * 0.5;
+}
 
 function getDrawPos(gamePos) {
-    return p5.Vector.add(p5.Vector.mult(gamePos, ZOOM), createVector(XOFF, YOFF));
+    return p5.Vector.add(p5.Vector.mult(gamePos, zoom), createVector(xOff, yOff));
 }
 
 function getMousePos() {
-    var mousePos = createVector(mouseX, mouseY).sub(createVector(XOFF, YOFF));
-    return mousePos.div(ZOOM);
+    var mousePos = createVector(mouseX, mouseY).sub(createVector(xOff, yOff));
+    return mousePos.div(zoom);
 }
 
 function mousePressed() {

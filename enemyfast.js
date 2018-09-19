@@ -78,9 +78,9 @@ EnemyFast.prototype.draw = function() {
 
 	fill(250, 75, 75);
 	stroke(200, 60, 60);
-    strokeWeight(2 * ZOOM);
+    strokeWeight(2 * zoom);
 
-	ellipse(0, 0, this.r * ZOOM * 2);
+	ellipse(0, 0, this.r * zoom * 2);
 
     pop();
 }
@@ -94,13 +94,13 @@ EnemyFast.prototype.drawWeapon = function() {
 
 	fill(1.25 * (100 + this.weaponExtend * 3), 50, 50);
 	stroke(100 + this.weaponExtend * 3, 50, 50);
-	strokeWeight(2 * ZOOM);
+	strokeWeight(2 * zoom);
 
 	beginShape();
-	vertex(this.weaponExtend * this.r * ZOOM / 15, 0);
-	vertex(0, 5 * this.r * ZOOM / 15);
-	vertex(0, -5 * this.r * ZOOM / 15);
-	vertex(this.weaponExtend * this.r * ZOOM / 15, 0);
+	vertex(this.weaponExtend * this.r * zoom / 15, 0);
+	vertex(0, 5 * this.r * zoom / 15);
+	vertex(0, -5 * this.r * zoom / 15);
+	vertex(this.weaponExtend * this.r * zoom / 15, 0);
 	endShape();
 
 	pop()

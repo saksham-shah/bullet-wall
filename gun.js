@@ -103,11 +103,11 @@ Gun.prototype.draw = function() {
     }
 
     stroke(25, 25, 50);
-    strokeWeight(2 * ZOOM);
+    strokeWeight(2 * zoom);
 
 
 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
-    rect(- this.l2 * ZOOM, - this.w * ZOOM * 0.5, this.l * ZOOM + this.l2 * ZOOM, this.w * ZOOM);
+    rect(- this.l2 * zoom, - this.w * zoom * 0.5, this.l * zoom + this.l2 * zoom, this.w * zoom);
     pop();
 }
 

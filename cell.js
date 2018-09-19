@@ -67,13 +67,13 @@ Cell.prototype.draw = function() {
 	// 	var gameX = this.col * this.r;
 	// 	var gameY = this.row * this.r;
         stroke(50);
-        strokeWeight(4 * ZOOM);
+        strokeWeight(4 * zoom);
         fill(100);
-        rect(0, 0, this.r * ZOOM, this.r * ZOOM);
+        rect(0, 0, this.r * zoom, this.r * zoom);
 
         if (this.wall > 1) {
             // scr.line(0, 0, this.r, this.r);
-            line(0, this.r * ZOOM, this.r * ZOOM, 0);
+            line(0, this.r * zoom, this.r * zoom, 0);
         }
 
         pop();
@@ -86,7 +86,7 @@ Cell.prototype.draw = function() {
 
 		fill(255, 0, 0, 100);
 		noStroke();
-		rect(0, 0, this.r * ZOOM, this.r * ZOOM);
+		rect(0, 0, this.r * zoom, this.r * zoom);
 		this.path = false;
 
         pop();

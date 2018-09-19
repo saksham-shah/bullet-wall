@@ -90,9 +90,9 @@ EnemyGun.prototype.draw = function() {
 
 	fill(250, 75, 75);
 	stroke(200, 60, 60);
-    strokeWeight(2 * ZOOM);
+    strokeWeight(2 * zoom);
 
-	ellipse(0, 0, this.r * ZOOM * 2);
+	ellipse(0, 0, this.r * zoom * 2);
 
     pop();
 }

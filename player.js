@@ -103,13 +103,13 @@ Player.prototype.draw = function() {
 
 	fill(200, 200, 250);
 	stroke(160, 160, 200);
-    strokeWeight(2 * ZOOM);
+    strokeWeight(2 * zoom);
 
-	ellipse(0, 0, this.r * ZOOM * 2);
+	ellipse(0, 0, this.r * zoom * 2);
 
     fill(255, 0, 0, this.damaged * 4);
     noStroke();
-    ellipse(0, 0, this.r * ZOOM * 2);
+    ellipse(0, 0, this.r * zoom * 2);
 
     pop();
 }

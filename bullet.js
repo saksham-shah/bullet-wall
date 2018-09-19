@@ -79,12 +79,12 @@ Bullet.prototype.draw = function() {
     }
 
     stroke(255);
-    strokeWeight(2 * ZOOM);
+    strokeWeight(2 * zoom);
     // scr.fill(this.colour);
     // scr.noStroke();
 
 
-    ellipse(0, 0, this.r * ZOOM * 2);
+    ellipse(0, 0, this.r * zoom * 2);
     pop();
 }
 

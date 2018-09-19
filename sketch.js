@@ -8,10 +8,20 @@
 var gs, ms, ds;
 var screen, nextScreen;
 
+// var w = windowWidth - 100;
+// var h = windowHeight - 100;
+
+var zoom;
+
 function setup() {
-	// createCanvas(1800, 1200);
-	// createCanvas(1800, 1200);
-	createCanvas(windowWidth - 100, windowHeight - 100);
+	// createCanvas(w, h);
+	// createCanvas(1200, 800);
+	createCanvas(1800, 1200);
+	// createCanvas(windowWidth - 100, windowHeight - 100);
+
+	zoom = width / 1200;
+
+	calcOffsets();
 
     // game = new Game();
 
@@ -50,6 +60,11 @@ function draw() {
     screen.update();
     screen.draw();
 
+	textSize(20);
+	fill(255);
+	noStroke();
+
+	text(floor(this.frameRate()), width - 50, height - 50);
 
 
 	// var mousePos = cam.getMousePos();

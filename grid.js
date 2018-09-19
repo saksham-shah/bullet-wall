@@ -53,9 +53,9 @@ Grid.prototype.draw = function() {
 
     fill(45, 60, 120);
     noStroke();
-    rect(drawPos.x, drawPos.y, this.grid.length * CELLSIZE * ZOOM, this.grid.length * CELLSIZE * ZOOM);
+    rect(drawPos.x, drawPos.y, this.grid.length * CELLSIZE * zoom, this.grid.length * CELLSIZE * zoom);
 
-	strokeWeight(1 * ZOOM);
+	strokeWeight(1 * zoom);
 	stroke(90, 120, 240);
 
     // var interval = cam.getDrawSize(CELLSIZE);
@@ -66,8 +66,8 @@ Grid.prototype.draw = function() {
 
 	for (var i = 0; i <= this.grid.length; i++) {
 		line(top.x, top.y, bottom.x, bottom.y);
-		top.x += CELLSIZE * ZOOM;
-		bottom.x += CELLSIZE * ZOOM;
+		top.x += CELLSIZE * zoom;
+		bottom.x += CELLSIZE * zoom;
 	}
 
 	var left = getDrawPos(createVector(0, 0));
@@ -76,8 +76,8 @@ Grid.prototype.draw = function() {
 
 	for (var i = 0; i <= this.grid.length; i++) {
 		line(left.x, left.y, right.x, right.y);
-		left.y += CELLSIZE * ZOOM;
-		right.y += CELLSIZE * ZOOM;
+		left.y += CELLSIZE * zoom;
+		right.y += CELLSIZE * zoom;
 	}
 
 	for (var i = 0; i < this.grid.length; i++) {

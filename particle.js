@@ -47,7 +47,7 @@ Particle.prototype.draw = function() {
 
 		fill(this.colour);
 		noStroke();
-		ellipse(0, 0, this.r * this.life / this.maxLife * ZOOM * 2);
+		ellipse(0, 0, this.r * this.life / this.maxLife * zoom * 2);
 
 		pop();
 	}
