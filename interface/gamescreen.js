@@ -78,10 +78,10 @@ GameScreen.prototype.draw = function() {
         this.drawCombo();
 
         // Game over fade
-        // fill(30, 40, 80, this.fade);
-        // noStroke();
+        fill(30, 40, 80, this.fade);
+        noStroke();
 
-        // rect(0, 0, width, height);
+        rect(0, 0, width, height);
     }
 
 }

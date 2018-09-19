@@ -1,8 +1,14 @@
-var xOff = 0;
-var yOff = 0;
+var xOff;
+var yOff;
+var zoom;
 // var ZOOM = w / 1200;
 
 function calcOffsets() {
+    zoom = width / 1200;
+	if (height / 800 < zoom) {
+		zoom = height / 800;
+	}
+    
     xOff = (width - GRIDSIZE * CELLSIZE * zoom) * 0.5;
     yOff = (height - GRIDSIZE * CELLSIZE * zoom) * 0.5;
 }

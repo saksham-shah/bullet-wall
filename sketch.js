@@ -11,7 +11,7 @@ var screen, nextScreen;
 // var w = windowWidth - 100;
 // var h = windowHeight - 100;
 
-var zoom;
+// var zoom;
 
 function setup() {
 	// createCanvas(w, h);
@@ -20,10 +20,7 @@ function setup() {
 	// createCanvas(windowHeight * 1.5 - 150, windowHeight - 100);
 	// createCanvas(windowWidth - 100, windowHeight - 100);
 
-	zoom = width / 1200;
-	if (height / 800 < zoom) {
-		zoom = height / 800;
-	}
+
 
 	calcOffsets();
 
