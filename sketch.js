@@ -65,11 +65,11 @@ function draw() {
     screen.update();
     screen.draw();
 
-	textSize(20);
+	textSize(20 * zoom);
 	fill(255);
 	noStroke();
 
-	text(floor(this.frameRate()), width - 50, height - 50);
+	text(floor(this.frameRate()), width - 50 * zoom, height - 50 * zoom);
 }
 
 function windowResized() {
@@ -83,23 +83,10 @@ function windowResized() {
 
 	calcOffsets();
 
-	if (screen == ms) {
-		var wasScreen = "ms";
-	} else if (screen == ds) {
-		var wasScreen = "ds";
-	}
+	ms.createButtons();
+	ds.createButtons();
 
-	ms = new MenuScreen();
-
-	// gs = new GameScreen();
-
-	ds = new DeathScreen();
-
-	if (wasScreen == "ms") {
-		nextScreen = ms;
-	} else if (wasScreen == "ds") {
-		nextScreen = ds;
-	}
+	console.log("hi");
 
 }
 

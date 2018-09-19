@@ -1,11 +1,21 @@
 function MenuScreen() {
+
+    this.createButtons();
+    // this.buttons = [];
+    //
+    // this.playButton = new Button(this, width * 0.5 - 200 * zoom, height * 0.5 - 100 * zoom, 400 * zoom, 200 * zoom, "PLAY", 100 * zoom);
+    //
+    // this.buttons.push(this.playButton);
+
+    this.title = new TypeText("BULLET WALL");
+}
+
+MenuScreen.prototype.createButtons = function() {
     this.buttons = [];
 
     this.playButton = new Button(this, width * 0.5 - 200 * zoom, height * 0.5 - 100 * zoom, 400 * zoom, 200 * zoom, "PLAY", 100 * zoom);
 
     this.buttons.push(this.playButton);
-
-    this.title = new TypeText("BULLET WALL");
 }
 
 MenuScreen.prototype.update = function() {
