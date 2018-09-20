@@ -44,13 +44,13 @@ Player.prototype.update = function() {
         this.gun2.update();
     }
 
-    var mousePos = this.game.cam.getMousePos(0);
+    var mousePos = getMousePos();
     this.direction = p5.Vector.sub(mousePos, this.pos).heading();
     this.gun1.direction = p5.Vector.sub(mousePos, this.gun1.getPos()).heading();
     this.gun2.direction = p5.Vector.sub(mousePos, this.gun2.getPos()).heading();
 
     if (this.cooldown > 0) {
-        this.cooldown -= this.game.playSpeed;
+        this.cooldown -= this.game.gameSpeed;
     } else if (mouseIsPressed) {
         if (this.lastShot == 2 || this.guns == 1) {
             this.gun1.shoot();
@@ -63,14 +63,14 @@ Player.prototype.update = function() {
     }
 
     if (this.shieldTimer > 0) {
-        this.shieldTimer -= this.game.playSpeed;
+        this.shieldTimer -= this.game.gameSpeed;
     }
 
 
 }
 
 Player.prototype.checkWallHit = function() {
-    var futurePos = p5.Vector.add(this.pos, p5.Vector.mult(this.vel, this.game.playSpeed));
+    var futurePos = p5.Vector.add(this.pos, p5.Vector.mult(this.vel, this.game.gameSpeed));
     var wallCollision = collideWithWalls(futurePos, this.r, this.game.grid);
     if (wallCollision[0].x != futurePos.x || wallCollision[0].y != futurePos.y) {
         if (wallCollision[1] !== null && wallCollision[1].wall == 1) {
@@ -80,34 +80,6 @@ Player.prototype.checkWallHit = function() {
             wallCollision[1].break(this.vel.heading());
         }
     }
-}
-
-Player.prototype.draw = function(cam, scr) {
-	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-	var drawR = cam.getDrawSize(this.r);
-    scr.push();
-    scr.translate(drawPos);
-
-	scr.fill(200, 200, 250);
-	scr.stroke(160, 160, 200);
-    scr.strokeWeight(2 * drawR / this.r);
-
-	scr.ellipse(0, 0, drawR * 2);
-
-    scr.fill(255, 0, 0, this.damaged * 4);
-    scr.noStroke();
-    scr.ellipse(0, 0, drawR * 2);
-
-    scr.pop();
-}
-
-Player.prototype.drawWeapon = function(cam, scr) {
-    this.gun1.draw(cam, scr);
-    if (this.guns == 2) {
-        this.gun2.draw(cam, scr);
-    }
-    // console.log(this);
-    // cam.draw(this.gun);
 }
 
 Player.prototype.die = function(enemy) {
@@ -121,3 +93,58 @@ Player.prototype.die = function(enemy) {
     this.game.gameOver = true;
     // console.log(enemy);
 }
+
+Player.prototype.draw = function() {
+	var drawPos = getDrawPos(this.pos);
+	// var drawR = cam.getDrawSize(this.r);
+
+    push();
+    translate(drawPos);
+
+	fill(200, 200, 250);
+	stroke(160, 160, 200);
+    strokeWeight(2 * zoom);
+
+	ellipse(0, 0, this.r * zoom * 2);
+
+    fill(255, 0, 0, this.damaged * 4);
+    noStroke();
+    ellipse(0, 0, this.r * zoom * 2);
+
+    pop();
+}
+
+Player.prototype.drawWeapon = function() {
+    this.gun1.draw();
+    if (this.guns == 2) {
+        this.gun2.draw();
+    }
+}
+
+// Player.prototype.draw = function(cam, scr) {
+// 	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+// 	var drawR = cam.getDrawSize(this.r);
+//     scr.push();
+//     scr.translate(drawPos);
+//
+// 	scr.fill(200, 200, 250);
+// 	scr.stroke(160, 160, 200);
+//     scr.strokeWeight(2 * drawR / this.r);
+//
+// 	scr.ellipse(0, 0, drawR * 2);
+//
+//     scr.fill(255, 0, 0, this.damaged * 4);
+//     scr.noStroke();
+//     scr.ellipse(0, 0, drawR * 2);
+//
+//     scr.pop();
+// }
+//
+// Player.prototype.drawWeapon = function(cam, scr) {
+//     this.gun1.draw(cam, scr);
+//     if (this.guns == 2) {
+//         this.gun2.draw(cam, scr);
+//     }
+//     // console.log(this);
+//     // cam.draw(this.gun);
+// }

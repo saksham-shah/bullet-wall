@@ -4,11 +4,12 @@ function DeathScreen() {
     this.text1 = new TypeText("GAME OVER");
     this.text2 = new TypeText("YOU SCORED");
 
-    this.buttons = [];
-
-    this.restartButton = new Button(this, 450, 600, 300, 150, "RESTART", 50);
-
-    this.buttons.push(this.restartButton);
+    this.createButtons();
+    // this.buttons = [];
+    //
+    // this.restartButton = new Button(this, width * 0.5 - 150 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "RESTART", 50 * zoom);
+    //
+    // this.buttons.push(this.restartButton);
 
 }
 
@@ -20,6 +21,14 @@ DeathScreen.prototype.newDeath = function(game) {
     this.text1.stopTyping();
     this.text2.stopTyping();
 
+}
+
+DeathScreen.prototype.createButtons = function() {
+    this.buttons = [];
+
+    this.restartButton = new Button(this, width * 0.5 - 150 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "RESTART", 50 * zoom);
+
+    this.buttons.push(this.restartButton);
 }
 
 DeathScreen.prototype.update = function() {
@@ -62,11 +71,11 @@ DeathScreen.prototype.draw = function() {
     // text(this.text1.getText(), width/2 - r / 35, 200 - r / 35);
     // fill(255);
     // text(this.text1.getText(), width/2, 200);
-    this.text1.draw(width * 0.5, 150, 100);
+    this.text1.draw(width * 0.5, height * 0.2, 100 * zoom);
 
     if (this.text1.done) {
 
-        this.text2.draw(width * 0.5, 300, 50);
+        this.text2.draw(width * 0.5, height * 0.4, 50 * zoom);
         // var r = 50;
 
         // textSize(r);
@@ -80,7 +89,7 @@ DeathScreen.prototype.draw = function() {
 
         if (this.text2.done) {
 
-            this.text3.draw(width * 0.5, 450, 150);
+            this.text3.draw(width * 0.5, height * 0.6, 150 * zoom);
             // var r = 150;
 
             // textSize(r);

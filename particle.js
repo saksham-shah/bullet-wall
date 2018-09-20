@@ -16,17 +16,17 @@ function Particle(game_, pos_, vel_, acc_, r_, life_, colour_, cell_) {
 }
 
 Particle.prototype.update = function() {
-	this.life -= this.game.playSpeed;
+	this.life -= this.game.gameSpeed;
 
 	if (this.life < 0) {
 		this.finished = true;
 	}
 
-	this.pos.add(p5.Vector.mult(this.vel, this.game.playSpeed));
-    this.vel.add(p5.Vector.mult(this.acc, this.game.playSpeed));
+	this.pos.add(p5.Vector.mult(this.vel, this.game.gameSpeed));
+    this.vel.add(p5.Vector.mult(this.acc, this.game.gameSpeed));
 }
 
-Particle.prototype.draw = function(cam, scr) {
+Particle.prototype.draw = function() {
 	this.canDraw = true;
 	var myCell = this.game.grid.getCell(this.pos);
 	if (this.cell !== undefined && myCell !== null) {
@@ -39,16 +39,43 @@ Particle.prototype.draw = function(cam, scr) {
 	}
 
 	if (this.canDraw) {
-		var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-		var drawR = cam.getDrawSize(this.r * this.life / this.maxLife);
+		var drawPos = getDrawPos(this.pos);
+		// var drawR = cam.getDrawSize(this.r * this.life / this.maxLife);
 
-		scr.push();
-		scr.translate(drawPos);
+		push();
+		translate(drawPos);
 
-		scr.fill(this.colour);
-		scr.noStroke();
-		scr.ellipse(0, 0, drawR * 2);
+		fill(this.colour);
+		noStroke();
+		ellipse(0, 0, this.r * this.life / this.maxLife * zoom * 2);
 
-		scr.pop();
+		pop();
 	}
 }
+
+// Particle.prototype.draw = function(cam, scr) {
+// 	this.canDraw = true;
+// 	var myCell = this.game.grid.getCell(this.pos);
+// 	if (this.cell !== undefined && myCell !== null) {
+// 		if (myCell.wall > 0) {// === this.cell && this.cell.wall > 0) {
+// 			this.canDraw = false;
+// 			if (myCell !== this.cell) {
+// 				this.finished = true;
+// 			}
+// 		}
+// 	}
+//
+// 	if (this.canDraw) {
+// 		var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
+// 		var drawR = cam.getDrawSize(this.r * this.life / this.maxLife);
+//
+// 		scr.push();
+// 		scr.translate(drawPos);
+//
+// 		scr.fill(this.colour);
+// 		scr.noStroke();
+// 		scr.ellipse(0, 0, drawR * 2);
+//
+// 		scr.pop();
+// 	}
+// }

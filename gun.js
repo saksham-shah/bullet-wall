@@ -26,7 +26,7 @@ function Gun(game_, entity_, shootSpeed_, pivot_, l_, w_, l2_) {
 }
 
 Gun.prototype.update = function() {
-    this.cooldown -= this.game.playSpeed;
+    this.cooldown -= this.game.gameSpeed;
 
     if (this.burst > 0) {
         // var shot = this.gun.shoot();
@@ -40,14 +40,14 @@ Gun.prototype.update = function() {
         if (this.recoil > 5) {
             this.state = 2;
         } else {
-            this.recoil += 2 * this.game.playSpeed;
+            this.recoil += 2 * this.game.gameSpeed;
         }
     } else if (this.state == 2) {
         if (this.recoil < 0) {
             this.recoil = 0;
             this.state = 0;
         } else {
-            this.recoil -= 1 * this.game.playSpeed;
+            this.recoil -= 1 * this.game.gameSpeed;
         }
     }
 
@@ -87,31 +87,55 @@ Gun.prototype.getPos = function() {
     return pos.add(this.entity.pos);
 }
 
-Gun.prototype.draw = function(cam, scr) {
-    // var drawPos = cam.getDrawPos(this.entity.pos.x, this.entity.pos.y);
-    var drawPos = cam.getDrawPos(this.getPos().x, this.getPos().y)
-	var drawR = cam.getDrawSize(1);
-    // drawPos.add(p5.Vector.mult(this.pivot, drawR));
-    scr.push();
-    scr.translate(drawPos);
-    scr.rotate(this.direction);
+Gun.prototype.draw = function() {
+    var drawPos = getDrawPos(this.getPos());
+	// var drawR = cam.getDrawSize(1);
+    push();
+    translate(drawPos);
+    rotate(this.direction);
     // scr.translate(p5.Vector.mult(this.pivot, drawR));
-    scr.translate(-this.recoil, 0);
+    translate(-this.recoil * zoom, 0);
 
     if (this.player) {
-	   scr.fill(50, 50, 150);
+	   fill(50, 50, 150);
     } else {
-       scr.fill(150, 50, 50);
+       fill(150, 50, 50);
     }
 
-    scr.stroke(25, 25, 50);
-    scr.strokeWeight(2 * drawR);
+    stroke(25, 25, 50);
+    strokeWeight(2 * zoom);
 
 
 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
-    scr.rect(- this.l2 * drawR, - this.w * drawR * 0.5, this.l * drawR + this.l2 * drawR, this.w * drawR);
-    scr.pop();
+    rect(- this.l2 * zoom, - this.w * zoom * 0.5, this.l * zoom + this.l2 * zoom, this.w * zoom);
+    pop();
 }
+
+// Gun.prototype.draw = function(cam, scr) {
+//     // var drawPos = cam.getDrawPos(this.entity.pos.x, this.entity.pos.y);
+//     var drawPos = cam.getDrawPos(this.getPos().x, this.getPos().y)
+// 	var drawR = cam.getDrawSize(1);
+//     // drawPos.add(p5.Vector.mult(this.pivot, drawR));
+//     scr.push();
+//     scr.translate(drawPos);
+//     scr.rotate(this.direction);
+//     // scr.translate(p5.Vector.mult(this.pivot, drawR));
+//     scr.translate(-this.recoil, 0);
+//
+//     if (this.player) {
+// 	   scr.fill(50, 50, 150);
+//     } else {
+//        scr.fill(150, 50, 50);
+//     }
+//
+//     scr.stroke(25, 25, 50);
+//     scr.strokeWeight(2 * drawR);
+//
+//
+// 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
+//     scr.rect(- this.l2 * drawR, - this.w * drawR * 0.5, this.l * drawR + this.l2 * drawR, this.w * drawR);
+//     scr.pop();
+// }
 
 function rotateToAngle(current, target, buffer, speed) {
     if (current > target) {

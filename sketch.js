@@ -8,8 +8,25 @@
 var gs, ms, ds;
 var screen, nextScreen;
 
+// var w = windowWidth - 100;
+// var h = windowHeight - 100;
+
+// var zoom;
+
 function setup() {
-	createCanvas(1200, 800);
+	// createCanvas(w, h);
+	// createCanvas(1200, 800);
+	// createCanvas(2100, 1400);
+	// createCanvas(windowHeight * 1.5 - 150, windowHeight - 100);
+	// createCanvas(windowWidth - 10, windowHeight - 10);
+
+	if (windowWidth > windowHeight * 16 / 9) {
+		createCanvas((windowHeight - 10) * 16 / 9, windowHeight - 10);
+	} else {
+		createCanvas(windowWidth - 10, (windowWidth - 10) * 9 / 16);
+	}
+
+	calcOffsets();
 
     // game = new Game();
 
@@ -48,6 +65,27 @@ function draw() {
     screen.update();
     screen.draw();
 
+	textSize(20 * zoom);
+	fill(255);
+	noStroke();
+
+	text(floor(this.frameRate()), width - 50 * zoom, height - 50 * zoom);
+}
+
+function windowResized() {
+	// resizeCanvas(windowWidth - 10, windowHeight - 10);
+	if (windowWidth > windowHeight * 16 / 9) {
+		createCanvas((windowHeight - 10) * 16 / 9, windowHeight - 10);
+	} else {
+		createCanvas(windowWidth - 10, (windowWidth - 10) * 9 / 16);
+	}
+
+
+	calcOffsets();
+
+	ms.createButtons();
+	ds.createButtons();
+}
 
 
 	// var mousePos = cam.getMousePos();
@@ -100,4 +138,3 @@ function draw() {
     // // cam.draw(entity);
     //
 	// cam.drawToCanvas();
-}

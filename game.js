@@ -16,14 +16,14 @@ function Game() {
     this.particles = [];
 
 	this.grid = new Grid(this, this.gridSize);
-	this.cam = createGameCam(0, 0, width, height);
+	// this.cam = createGameCam(0, 0, width, height);
     this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     // var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
     this.entities.push(this.player);
     // this.entities.push(entity)
 
     // this.cam.follow(this.player.pos, POSITION);
-    this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
+    // this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
 
 	this.score = 0;
 	this.spawnPoints = 0;
@@ -39,29 +39,32 @@ function Game() {
 
 	this.lastUpdate = Date.now();
 
+	this.gameSpeed = 1;
 	this.playSpeed = 1;
 	this.slowMo = 0;
 }
 
 Game.prototype.update = function() {
 	// Calculate Delta time in order to have smooth movement
-    // var now = Date.now();
-    // dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
-    // this.lastUpdate = now;
-	// if (dt > 2) {
-	// 	dt = 2;
-	// }
+    var now = Date.now();
+    var dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
+    this.lastUpdate = now;
+	if (dt > 3) {
+		dt = 3;
+	}
 
-	// dt = dt * this.playSpeed;
+	// dt = dt * this.gameSpeed;
 	if (this.slowMo < 0) {
 		this.playSpeed = 1;
 	} else {
-		// this.slowMo -= dt / this.playSpeed;
-		this.slowMo -= 1;
+		// this.slowMo -= dt / this.gameSpeed;
+		this.slowMo -= dt;
 	}
 
+	this.gameSpeed = this.playSpeed * dt;
+
 	if (this.lastKill < 75) {
-		this.lastKill += this.playSpeed;
+		this.lastKill += this.gameSpeed;
 		// if (this.lastKill > 55) {
 		// 	this.lastKill = 55;
 		// }
@@ -80,8 +83,8 @@ Game.prototype.update = function() {
 	// 	this.entities.push(new EnemyFast(this, cell.row, cell.col));
 	// }
 
-	this.timeSinceWave += this.playSpeed;
-	this.timeSinceEnemy += this.playSpeed;
+	this.timeSinceWave += this.gameSpeed;
+	this.timeSinceEnemy += this.gameSpeed;
 
 	if (this.timeSinceWave > 1200 || (this.spawnPoints <= 0 && this.entities.length == 1)) {
 		this.spawnPoints += this.nextWave;
@@ -98,7 +101,7 @@ Game.prototype.update = function() {
 			this.timeSinceEnemy = 0;
 		}
 	} else {
-		this.counter -= this.playSpeed;
+		this.counter -= this.gameSpeed;
 	}
 
 
@@ -133,7 +136,7 @@ Game.prototype.update = function() {
 	// 	}
 	// }
 
-	this.cam.update();
+	// this.cam.update();
 }
 
 Game.prototype.enemyDeath = function(enemy) {
@@ -173,34 +176,61 @@ Game.prototype.slowMotion = function(time, speed) {
 		this.slowMo = time;
 	}
 
-	// this.playSpeed = speed;
+	// this.gameSpeed = speed;
 }
 
 Game.prototype.draw = function() {
 
 
-	this.cam.screen.background(30, 40, 80);
-	this.cam.draw(this.grid);
 
+	// this.cam.screen.background(30, 40, 80);
+	// this.cam.draw(this.grid);
+
+	// for (var i = 0; i < this.entities.length; i++) {
+	// 	if (!this.entities[i].hide) {
+	// 		this.cam.draw(this.entities[i]);
+	// 	}
+	// }
+
+	// for (var i = 0; i < this.bullets.length; i++) {
+	// 	this.cam.draw(this.bullets[i]);
+	// }
+
+    // for (var i = 0; i < this.entities.length; i++) {
+    //     if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
+    //         this.entities[i].drawWeapon(this.cam, this.cam.screen);
+    //     }
+	// }
+
+	// for (var i = 0; i < this.particles.length; i++) {
+    //     this.cam.draw(this.particles[i]);
+	// }
+
+	// this.cam.drawToCanvas();
+
+	background(30, 40, 80);
+	this.grid.draw();
+	//
 	for (var i = 0; i < this.entities.length; i++) {
 		if (!this.entities[i].hide) {
-			this.cam.draw(this.entities[i]);
+			// this.cam.draw(this.entities[i]);
+			this.entities[i].draw();
 		}
 	}
-
+	//
 	for (var i = 0; i < this.bullets.length; i++) {
-		this.cam.draw(this.bullets[i]);
+		// this.cam.draw(this.bullets[i]);
+		this.bullets[i].draw();
 	}
-
+	//
     for (var i = 0; i < this.entities.length; i++) {
         if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
-            this.entities[i].drawWeapon(this.cam, this.cam.screen);
+            this.entities[i].drawWeapon();
         }
 	}
-
+	//
 	for (var i = 0; i < this.particles.length; i++) {
-        this.cam.draw(this.particles[i]);
+        // this.cam.draw(this.particles[i]);
+		this.particles[i].draw();
 	}
-
-	this.cam.drawToCanvas();
 }

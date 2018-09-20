@@ -47,43 +47,85 @@ Grid.prototype.getCell = function(pos) {
     return this.grid[row][col];
 }
 
-Grid.prototype.draw = function(cam, scr) {
-    var drawPos = cam.getDrawPos(0, 0);
-    var drawR = cam.getDrawSize(this.grid.length * CELLSIZE);
+Grid.prototype.draw = function() {
+    var drawPos = getDrawPos(createVector(0, 0));
+    // var drawR = cam.getDrawSize(this.grid.length * CELLSIZE);
 
-    scr.fill(45, 60, 120);
-    scr.noStroke();
-    scr.rect(drawPos.x, drawPos.y, drawR, drawR);
+    fill(45, 60, 120);
+    noStroke();
+    rect(drawPos.x, drawPos.y, this.grid.length * CELLSIZE * zoom, this.grid.length * CELLSIZE * zoom);
 
-	scr.strokeWeight(1 * cam.getDrawSize(1));
-	scr.stroke(90, 120, 240);
+	strokeWeight(1 * zoom);
+	stroke(90, 120, 240);
 
-    var interval = cam.getDrawSize(CELLSIZE);
+    // var interval = cam.getDrawSize(CELLSIZE);
 
-	var top = cam.getDrawPos(0, 0);
-	var bottom = cam.getDrawPos(0, this.grid.length * CELLSIZE);
+	var top = getDrawPos(createVector(0, 0));
+	var bottom = getDrawPos(createVector(0, this.grid.length * CELLSIZE));
 	// var currentX = 0;
 
 	for (var i = 0; i <= this.grid.length; i++) {
-		scr.line(top.x, top.y, bottom.x, bottom.y);
-		top.x += interval;
-		bottom.x += interval;
+		line(top.x, top.y, bottom.x, bottom.y);
+		top.x += CELLSIZE * zoom;
+		bottom.x += CELLSIZE * zoom;
 	}
 
-	var left = cam.getDrawPos(0, 0);
-	var right = cam.getDrawPos(this.grid.length * CELLSIZE, 0);
+	var left = getDrawPos(createVector(0, 0));
+	var right = getDrawPos(createVector(this.grid.length * CELLSIZE, 0));
 	// var currentY = 0;
 
 	for (var i = 0; i <= this.grid.length; i++) {
-		scr.line(left.x, left.y, right.x, right.y);
-		left.y += interval;
-		right.y += interval;
+		line(left.x, left.y, right.x, right.y);
+		left.y += CELLSIZE * zoom;
+		right.y += CELLSIZE * zoom;
 	}
 
 	for (var i = 0; i < this.grid.length; i++) {
 		var row = this.grid[i];
 		for (var j = 0; j < row.length; j++) {
-			cam.draw(row[j]);
+            row[j].draw();
+            // cam.draw(row[j]);
 		}
 	}
 }
+
+// Grid.prototype.draw = function(cam, scr) {
+//     var drawPos = cam.getDrawPos(0, 0);
+//     var drawR = cam.getDrawSize(this.grid.length * CELLSIZE);
+//
+//     scr.fill(45, 60, 120);
+//     scr.noStroke();
+//     scr.rect(drawPos.x, drawPos.y, drawR, drawR);
+//
+// 	scr.strokeWeight(1 * cam.getDrawSize(1));
+// 	scr.stroke(90, 120, 240);
+//
+//     var interval = cam.getDrawSize(CELLSIZE);
+//
+// 	var top = cam.getDrawPos(0, 0);
+// 	var bottom = cam.getDrawPos(0, this.grid.length * CELLSIZE);
+// 	// var currentX = 0;
+//
+// 	for (var i = 0; i <= this.grid.length; i++) {
+// 		scr.line(top.x, top.y, bottom.x, bottom.y);
+// 		top.x += interval;
+// 		bottom.x += interval;
+// 	}
+//
+// 	var left = cam.getDrawPos(0, 0);
+// 	var right = cam.getDrawPos(this.grid.length * CELLSIZE, 0);
+// 	// var currentY = 0;
+//
+// 	for (var i = 0; i <= this.grid.length; i++) {
+// 		scr.line(left.x, left.y, right.x, right.y);
+// 		left.y += interval;
+// 		right.y += interval;
+// 	}
+//
+// 	for (var i = 0; i < this.grid.length; i++) {
+// 		var row = this.grid[i];
+// 		for (var j = 0; j < row.length; j++) {
+// 			cam.draw(row[j]);
+// 		}
+// 	}
+// }

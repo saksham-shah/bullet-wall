@@ -27,10 +27,10 @@ Entity.prototype.move = function(entities) {
     if (this.update !== undefined && !this.freeze) {
         this.update();
     }
-    this.damaged -= this.game.playSpeed;
+    this.damaged -= this.game.gameSpeed;
     
-	this.pos.add(p5.Vector.mult(this.vel, this.game.playSpeed));
-    this.vel.add(p5.Vector.mult(this.acc, this.game.playSpeed));
+	this.pos.add(p5.Vector.mult(this.vel, this.game.gameSpeed));
+    this.vel.add(p5.Vector.mult(this.acc, this.game.gameSpeed));
     this.vel.limit(this.maxVel);
     this.checkCollisions(entities);
 	// this.wallCollisions();

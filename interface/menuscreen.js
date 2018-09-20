@@ -1,11 +1,21 @@
 function MenuScreen() {
-    this.buttons = [];
 
-    this.playButton = new Button(this, 400, 300, 400, 200, "PLAY", 100);
-
-    this.buttons.push(this.playButton);
+    this.createButtons();
+    // this.buttons = [];
+    //
+    // this.playButton = new Button(this, width * 0.5 - 200 * zoom, height * 0.5 - 100 * zoom, 400 * zoom, 200 * zoom, "PLAY", 100 * zoom);
+    //
+    // this.buttons.push(this.playButton);
 
     this.title = new TypeText("BULLET WALL");
+}
+
+MenuScreen.prototype.createButtons = function() {
+    this.buttons = [];
+
+    this.playButton = new Button(this, width * 0.5 - 200 * zoom, height * 0.5 - 100 * zoom, 400 * zoom, 200 * zoom, "PLAY", 100 * zoom);
+
+    this.buttons.push(this.playButton);
 }
 
 MenuScreen.prototype.update = function() {
@@ -45,7 +55,7 @@ MenuScreen.prototype.draw = function() {
     // fill(255);
     // text(this.title.getText(), width/2, 200);
 
-    this.title.draw(width * 0.5, 150, 150);
+    this.title.draw(width * 0.5, height * 0.2, 150 * zoom);
 
     if (this.title.done) {
         for (var i = 0; i < this.buttons.length; i++) {

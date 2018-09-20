@@ -17,7 +17,7 @@ Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.update = function() {
 	// this.weaponPos = this.pos.copy().add(createVector(this.weaponExtend, 0).rotate(this.vel.heading()));
 
-	this.timeSinceLastPath += this.game.playSpeed;
+	this.timeSinceLastPath += this.game.gameSpeed;
 
 	// if (this.pathToTarget === null) {
 	// 	if (p5.Vector.dist(this.pos, this.target.pos) < CELLSIZE * 1.5) {
@@ -133,5 +133,5 @@ Enemy.prototype.die = function(bullet) {
 
 	this.game.enemyDeath(this);
 	// this.game.slowMo = 60;
-	// this.game.playSpeed = 0.2;
+	// this.game.gameSpeed = 0.2;
 }
