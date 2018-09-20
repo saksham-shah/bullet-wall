@@ -14,7 +14,7 @@ function EnemyGun(game, row, col) {
 
     this.gun = new Gun(this.game, this, 15, createVector(0, 8), 20, 12, 6);
 
-    this.cooldown = 30;
+    this.cooldown = 120;
 
     this.burst = 0;
 
@@ -64,7 +64,7 @@ EnemyGun.prototype.attack = function(toAttack) {
         this.gun.targetDirection = direction;
 
         var d = abs(this.gun.direction - direction);
-        if (d < 0.1 && this.cooldown < 0) {
+        if (d < 0.2 && this.cooldown < 0) {
             this.gun.shoot(3);
             this.cooldown = this.hitSpeed;
             // if (this.cooldown < 0) {

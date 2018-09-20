@@ -13,7 +13,7 @@ Game.prototype.randomCell = function(dFromPlayer) {
         var row = floor(random(this.gridSize));
         var col = floor(random(this.gridSize));
         var cell = this.grid.grid[row][col];
-        if (cell.wall == 0 && p5.Vector.dist(cell.pos, this.player.pos) > dFromPlayer) {
+        if (cell.wall == 0 && p5.Vector.dist(cell.middle(), this.player.pos) > dFromPlayer) {
             done = true;
             return cell;
         }
@@ -24,7 +24,7 @@ Game.prototype.randomCell = function(dFromPlayer) {
 var spawns = [
     new Spawn(1, 0,
         function(game) {
-            var cell = game.randomCell(CELLSIZE * 3);
+            var cell = game.randomCell(CELLSIZE * 6);
             game.entities.push(new EnemyFast(game, cell.row, cell.col));
         }
     ),

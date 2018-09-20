@@ -42,6 +42,8 @@ function Game() {
 	this.gameSpeed = 1;
 	this.playSpeed = 1;
 	this.slowMo = 0;
+
+	this.comboTime = 90;
 }
 
 Game.prototype.update = function() {
@@ -63,7 +65,7 @@ Game.prototype.update = function() {
 
 	this.gameSpeed = this.playSpeed * dt;
 
-	if (this.lastKill < 75) {
+	if (this.lastKill < this.comboTime) {
 		this.lastKill += this.gameSpeed;
 		// if (this.lastKill > 55) {
 		// 	this.lastKill = 55;

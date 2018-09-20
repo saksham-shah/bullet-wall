@@ -2,7 +2,7 @@ function EnemyFast(game, row, col) {
 	Enemy.call(this, game, row, col, 60, 0, CELLSIZE);
 
 	this.maxVel = 3;
-	this.maxForce = 0.1;
+	this.maxForce = 0.15;
 
 	// this.target = game.player;
 	// this.pathToTarget = null;

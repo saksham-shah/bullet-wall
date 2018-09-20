@@ -7,7 +7,7 @@ function Player(game, row, col, controls) {
 	        right: controls[3]
 	    };
 
-    this.maxVel = 1.5;
+    this.maxVel = 2;
 
     this.gun1 = new Gun(this.game, this, 30, createVector(0, 8), 20, 12, 6);
     this.gun2 = new Gun(this.game, this, 30, createVector(0, -8), 20, 12, 6);

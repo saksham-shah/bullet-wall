@@ -45,7 +45,7 @@ GameScreen.prototype.update = function() {
         var lastKill = this.game.lastKill;
         this.lastKill = lastKill;
 
-        var percentage = (75 - this.lastKill) / 75;
+        var percentage = (this.game.comboTime - this.lastKill) / this.game.comboTime;
         if (this.comboPercentage < percentage) {
             this.comboPercentage += 0.1;
             if (this.comboPercentage > percentage) {
@@ -215,7 +215,7 @@ GameScreen.prototype.drawCombo = function() {
         // if (percentage > 1) {
         //     percentage = 1;
         // }
-        if (this.lastKill < 75) {
+        if (this.lastKill < this.game.comboTime) {
             arc(x, y, r * 2, r * 2, - HALF_PI, this.comboPercentage * TWO_PI - HALF_PI);
 
             fill(30, 40, 80);
