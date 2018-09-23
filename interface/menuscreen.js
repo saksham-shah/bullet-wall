@@ -62,5 +62,4 @@ MenuScreen.prototype.draw = function() {
             this.buttons[i].draw();
         }
     }
-
 }

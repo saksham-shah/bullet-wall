@@ -83,7 +83,7 @@ Enemy.prototype.update = function() {
 			this.attack(this.pathToTarget[0]);
 		}
 
-        if (p5.Vector.dist(this.pos, this.pathToTarget[0].middle()) < this.r + CELLSIZE * 0.5 - 2) {
+        if (p5.Vector.dist(this.pos, this.pathToTarget[0].middle()) < this.r + CELLSIZE * 0.4) {
             this.pathToTarget.splice(0, 1);
             if (this.pathToTarget.length > 1 && this.pathToTarget[0].wall == 0) {
                 this.pathToTarget.splice(0, 1);

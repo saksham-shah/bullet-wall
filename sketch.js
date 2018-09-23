@@ -64,12 +64,6 @@ function draw() {
 
     screen.update();
     screen.draw();
-
-	textSize(20 * zoom);
-	fill(255);
-	noStroke();
-
-	text(floor(this.frameRate()), width - 50 * zoom, height - 50 * zoom);
 }
 
 function windowResized() {
@@ -85,6 +79,12 @@ function windowResized() {
 
 	ms.createButtons();
 	ds.createButtons();
+
+	textSize(20 * zoom);
+	fill(255);
+	noStroke();
+
+	text("v1.1.2a", width - 48 * zoom, height - 27 * zoom);
 }
 
 

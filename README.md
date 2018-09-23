@@ -1,5 +1,7 @@
 # bullet-wall
 
+Play the game here: https://rawgit.com/saksham-shah/bullet-wall/master/index.html
+
 Change log:
 
 20 September - V1.1.2 - Speedy Player
@@ -24,7 +26,7 @@ Change log:
 * Every 20 seconds, the difficulty suddenly increases and then gradually cools down
 * Combos can now be made within 1.25 seconds of the last kill (from 1s)
 
-14 September - V1.0.5 - The Menu is Here
+14 September - V1.0.1 - The Menu is Here
 
 * Added a menu screen
 * Added a death screen with restart buttons

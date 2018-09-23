@@ -47,6 +47,10 @@ Bullet.prototype.checkWallHit = function() {
                 }
             }
         // }
+    } else {
+        if (this.game.grid.getCell(this.pos).wall > 0) {
+            this.hit = true;
+        }
     }
 }
 

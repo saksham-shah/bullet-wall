@@ -1,5 +1,5 @@
 function EnemyGun(game, row, col) {
-	Enemy.call(this, game, row, col, 300, 0, CELLSIZE);
+	Enemy.call(this, game, row, col, 400, 0, CELLSIZE);
 
 	this.maxVel = 1;
 	this.maxForce = 0.1;
@@ -64,7 +64,7 @@ EnemyGun.prototype.attack = function(toAttack) {
         this.gun.targetDirection = direction;
 
         var d = abs(this.gun.direction - direction);
-        if (d < 0.2 && this.cooldown < 0) {
+        if (this.cooldown < 0) {
             this.gun.shoot(3);
             this.cooldown = this.hitSpeed;
             // if (this.cooldown < 0) {
