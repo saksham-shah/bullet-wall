@@ -1,5 +1,5 @@
 var gs, ms, ds;
-var screen, nextScreen;
+var currentScreen, nextScreen;
 
 function setup() {
 	if (windowWidth > windowHeight * 16 / 9) {
@@ -23,12 +23,12 @@ function setup() {
 
 function draw() {
 
-	if (nextScreen !== screen) {
-		screen = nextScreen;
+	if (nextScreen !== currentScreen) {
+		currentScreen = nextScreen;
 	}
 
-    screen.update();
-    screen.draw();
+    currentScreen.update();
+    currentScreen.draw();
 
 	textSize(20 * zoom);
 	fill(255);
@@ -39,10 +39,10 @@ function draw() {
 }
 
 function mouseClicked() {
-	if (screen.buttons !== undefined) {
-		for (var i = 0; i < screen.buttons.length; i++) {
-			if (screen.buttons[i].hovered) {
-				screen.buttonClicked(screen.buttons[i]);
+	if (currentScreen.buttons !== undefined) {
+		for (var i = 0; i < currentScreen.buttons.length; i++) {
+			if (currentScreen.buttons[i].hovered) {
+				currentScreen.buttonClicked(currentScreen.buttons[i]);
 			}
 		}
 	}
