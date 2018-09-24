@@ -4,12 +4,21 @@ Play the game here: https://rawgit.com/saksham-shah/bullet-wall/master/index.htm
 
 Change log:
 
+24 September - V1.1.3 - Insaaane
+
+* New difficulty setting - play the game in Easy, Normal, Hard and Insane mode
+* You can now pause the game by pressing the spacebar
+* Increased range of gun enemy by 33% (from 7.5 cells to 10)
+* FIX: Bullets sometimes going through walls
+* FIX: Gun enemy still not shooting sometimes
+* FIX: Walls being damaged as soon as they spawn
+
 20 September - V1.1.2 - Speedy Player
 
 * Player speed increased by 33% (from 1.5 to 2)
 * Combos cam now be made within 1.5 seconds of the last kill (from 1.25)
 * Fast enemy now turns faster
-* FIX - Gun enemy doesn't shoot sometimes
+* FIX - Gun enemy not shooting sometimes
 
 19 September - V1.1.1 - Fills your Screen
 

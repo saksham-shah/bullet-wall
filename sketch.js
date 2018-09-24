@@ -16,6 +16,8 @@ function setup() {
 
 	ds = new DeathScreen();
 
+	ps = new PauseScreen();
+
 	nextScreen = ms;
 }
 
@@ -33,7 +35,17 @@ function draw() {
 	noStroke();
 
 	// Current version
-	text("v1.1.2b", width - 48 * zoom, height - 27 * zoom);
+	text("v1.1.3", width - 48 * zoom, height - 27 * zoom);
+}
+
+function mouseClicked() {
+	if (screen.buttons !== undefined) {
+		for (var i = 0; i < screen.buttons.length; i++) {
+			if (screen.buttons[i].hovered) {
+				screen.buttonClicked(screen.buttons[i]);
+			}
+		}
+	}
 }
 
 function windowResized() {
@@ -48,4 +60,5 @@ function windowResized() {
 
 	ms.createButtons();
 	ds.createButtons();
+	ps.createButtons();
 }

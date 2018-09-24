@@ -1,5 +1,10 @@
+// Words for each of the difficulties
+var DIFFICULTIES = ["EASY", "NORMAL", "HARD", "INSANE"];
+
 // Starting menu screen of the game
 function MenuScreen() {
+
+    this.difficulty = 1;
 
     this.createButtons();
 
@@ -10,8 +15,10 @@ MenuScreen.prototype.createButtons = function() {
     this.buttons = [];
 
     this.playButton = new Button(this, width * 0.5 - 200 * zoom, height * 0.5 - 100 * zoom, 400 * zoom, 200 * zoom, "PLAY", 100 * zoom);
+    this.difficultyButton = new Button(this, width * 0.5 - 125 * zoom, height * 0.8, 250 * zoom, 100 * zoom, DIFFICULTIES[this.difficulty], 50 * zoom);
 
     this.buttons.push(this.playButton);
+    this.buttons.push(this.difficultyButton);
 }
 
 MenuScreen.prototype.update = function() {
@@ -28,7 +35,10 @@ MenuScreen.prototype.buttonClicked = function(button) {
     // Start game
     if (button === this.playButton) {
         nextScreen = gs;
-        gs.newGame();
+        gs.newGame(this.difficulty);
+    } else if (button === this.difficultyButton) {
+        this.difficulty = (this.difficulty + 1) % DIFFICULTIES.length;
+        button.text = new TypeText(DIFFICULTIES[this.difficulty])
     }
 }
 

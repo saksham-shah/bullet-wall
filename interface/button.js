@@ -18,9 +18,9 @@ Button.prototype.update = function() {
         // Makes the text type
         this.text.startTyping();
 
-        if (mouseIsPressed) {
-            this.screen.buttonClicked(this);
-        }
+        // if (mouseIsPressed) {
+        //     this.screen.buttonClicked(this);
+        // }
 
     } else {
         this.hovered = false;

@@ -7,8 +7,8 @@ function GameScreen() {
 }
 
 // Starts a new game
-GameScreen.prototype.newGame = function() {
-    this.game = new Game();
+GameScreen.prototype.newGame = function(difficulty) {
+    this.game = new Game(difficulty);
 
     // GS holds all of the stats of the game, to display them to the player
     this.score = 0;
@@ -64,13 +64,17 @@ GameScreen.prototype.update = function() {
                 ds.newDeath(this.game);
             }
         }
+    }
 
-        this.text1.startTyping();
+    if (keyIsDown(32) && this.fade == 0) {
+        nextScreen = ps;
     }
 }
 
 GameScreen.prototype.draw = function() {
     if (this.game !== null) {
+        this.text1.startTyping();
+
         this.game.draw();
 
         // Draw all of the stats

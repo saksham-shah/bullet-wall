@@ -3,14 +3,18 @@ function DeathScreen() {
     this.game = null;
 
     this.createButtons();
+
+    this.difficultyText = new TypeText();
 }
 
 DeathScreen.prototype.createButtons = function() {
     this.buttons = [];
 
-    this.restartButton = new Button(this, width * 0.5 - 150 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "RESTART", 50 * zoom);
+    this.restartButton = new Button(this, width * 0.5 - 350 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "RESTART", 50 * zoom);
+    this.menuButton = new Button(this, width * 0.5 + 50 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "MENU", 50 * zoom);
 
     this.buttons.push(this.restartButton);
+    this.buttons.push(this.menuButton);
 }
 
 // When the player dies, the game is sent to DS
@@ -42,12 +46,19 @@ DeathScreen.prototype.buttonClicked = function(button) {
     if (button === this.restartButton) {
         nextScreen = gs;
         gs.newGame();
+    } else if (button === this.menuButton) {
+        nextScreen = ms;
     }
 }
 
 DeathScreen.prototype.draw = function() {
     background(30, 40, 80);
 
+    fill(45, 60, 120);
+    noStroke();
+    rect(0, 0, width, height * 0.1);
+
+    this.difficultyText.draw(width * 0.5, height * 0.05, 30 * zoom, DIFFICULTIES[this.game.difficulty]);
     this.textLines.draw(width * 0.5, height * 0.2, height * 0.15, 100 * zoom, 50 * zoom, 150 * zoom, 50 * zoom);
 
     if (this.textLines.isFinished()) {

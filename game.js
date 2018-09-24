@@ -1,7 +1,7 @@
 var GRIDSIZE = 15;
 
 // Main object that controls the whole game
-function Game() {
+function Game(difficulty) {
 
 	this.gridSize = GRIDSIZE;
 
@@ -17,8 +17,27 @@ function Game() {
 	this.spawnPoints = 0;
 	this.counter = 0;
 	this.timeSinceWave = 0;
-	this.nextWave = 5;
 	this.timeSinceEnemy = 0;
+
+	if (difficulty == 0) {
+		// Easy
+		this.nextWave = 2;
+		this.waveStep = 0.5;
+	} else if (difficulty == 1) {
+		// Normal
+		this.nextWave = 5;
+		this.waveStep = 1;
+	} else if (difficulty == 2) {
+		// Hard
+		this.nextWave = 10;
+		this.waveStep = 2;
+	} else if (difficulty == 3) {
+		// Insane
+		this.nextWave = 20;
+		this.waveStep = 4;
+	}
+
+	this.difficulty = difficulty;
 
 	this.combo = 0;
 	this.lastKill = 55;
@@ -69,7 +88,7 @@ Game.prototype.update = function() {
 	if (this.timeSinceWave > 1200 || (this.spawnPoints < 1 && this.entities.length == 1)) {
 		this.spawnPoints += this.nextWave;
 		// Each wave gets slightly harder
-		this.nextWave += 1;
+		this.nextWave += this.waveStep;
 		this.timeSinceWave = 0;
 	}
 
