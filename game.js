@@ -1,12 +1,6 @@
-// var entities = [];
-// var bullets = [];
-// var grid, cam;
-// // const CELLSIZE = 30;
-// const GRIDSIZE = 10;
-var dt;
-
 var GRIDSIZE = 15;
 
+// Main object that controls the whole game
 function Game() {
 
 	this.gridSize = GRIDSIZE;
@@ -16,14 +10,8 @@ function Game() {
     this.particles = [];
 
 	this.grid = new Grid(this, this.gridSize);
-	// this.cam = createGameCam(0, 0, width, height);
     this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
-    // var entity = new EnemyFast(this, gridSize - 1, gridSize - 1);
     this.entities.push(this.player);
-    // this.entities.push(entity)
-
-    // this.cam.follow(this.player.pos, POSITION);
-    // this.cam.follow({x: this.gridSize * CELLSIZE * 0.5, y: this.gridSize * CELLSIZE * 0.5, z: 1}, POSITION, ZOOM);
 
 	this.score = 0;
 	this.spawnPoints = 0;
@@ -43,6 +31,9 @@ function Game() {
 	this.playSpeed = 1;
 	this.slowMo = 0;
 
+	this.gameTime = 0;
+
+	// Maximum time between two kills for it to count as a combo
 	this.comboTime = 90;
 }
 
@@ -55,96 +46,83 @@ Game.prototype.update = function() {
 		dt = 3;
 	}
 
-	// dt = dt * this.gameSpeed;
+	// If the slow motion is over
 	if (this.slowMo < 0) {
 		this.playSpeed = 1;
 	} else {
-		// this.slowMo -= dt / this.gameSpeed;
 		this.slowMo -= dt;
 	}
 
 	this.gameSpeed = this.playSpeed * dt;
+	this.gameTime += this.gameSpeed;
 
 	if (this.lastKill < this.comboTime) {
 		this.lastKill += this.gameSpeed;
-		// if (this.lastKill > 55) {
-		// 	this.lastKill = 55;
-		// }
 	} else {
 		this.combo = 0;
 	}
 
-	// if (random() < 0.005) {
-	// 	// var row = floor(random(this.gridSize));
-	// 	// var col = floor(random(this.gridSize));
-	// 	// var cell = this.grid.grid[row][col];
-	// 	// if (cell.wall == 0 && p5.Vector.dist(cell.pos, this.player.pos) > CELLSIZE * 2) {
-	// 	// 	this.entities.push(new EnemyFast(this, row, col));
-	// 	// }
-	// 	var cell = this.randomCell();
-	// 	this.entities.push(new EnemyFast(this, cell.row, cell.col));
-	// }
-
 	this.timeSinceWave += this.gameSpeed;
 	this.timeSinceEnemy += this.gameSpeed;
 
-	if (this.timeSinceWave > 1200 || (this.spawnPoints <= 0 && this.entities.length == 1)) {
+	// If it has been 20 seconds since the last wave or all enemies of this wave have been killed
+	if (this.timeSinceWave > 1200 || (this.spawnPoints < 1 && this.entities.length == 1)) {
 		this.spawnPoints += this.nextWave;
+		// Each wave gets slightly harder
 		this.nextWave += 1;
-		// console.log(this.spawnPoints);
 		this.timeSinceWave = 0;
 	}
 
 	if (this.counter < 0) {
 		this.counter = 30;
+		// The more spawnPoints there are, the higher chance of an enemy spawning
+		// This means whenever a new wave begins, lots of enemies suddenly spawn
 		if (random() < this.spawnPoints * 0.025 || this.timeSinceEnemy > 180) {
 			this.spawnEnemy();
-			// console.log(this.spawnPoints);
 			this.timeSinceEnemy = 0;
 		}
 	} else {
 		this.counter -= this.gameSpeed;
 	}
 
+	// Updates all game objects (e.g. entities, bullets, particles)
 
 	for (var i = 0; i < this.entities.length; i++) {
-		this.entities[i].move(this.entities);
+		// If the entity is dead, remove it from the list
 		if (this.entities[i].dead) {
 			this.entities.splice(i, 1);
+		} else {
+			this.entities[i].move(this.entities);
 		}
 	}
 
     for (var i = 0; i < this.bullets.length; i++) {
-		this.bullets[i].update(this.entities);
         if (this.bullets[i].hit) {
         	var bullet = this.bullets[i];
         	this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, color(255));
             this.bullets.splice(i, 1);
-        }
+        } else {
+			this.bullets[i].update(this.entities);
+		}
 	}
 
 	for (var i = 0; i < this.particles.length; i++) {
-		this.particles[i].update();
         if (this.particles[i].finished) {
             this.particles.splice(i, 1);
-        }
+        } else {
+			this.particles[i].update();
+		}
 	}
-
-	// var mouseCell = this.grid.getCell(this.cam.getMousePos());
-	// if (mouseCell !== null) {
-	// 	var path = findPath(this.grid.grid, mouseCell, this.grid.grid[0][0]);
-	// 	for (var i = 0; i < path.length; i++) {
-	// 		path[i].path = true;
-	// 	}
-	// }
-
-	// this.cam.update();
 }
 
+// When an enemy dies
 Game.prototype.enemyDeath = function(enemy) {
 	if (!this.gameOver) {
+		// Increase combo
 		this.combo++;
 		this.lastKill = 0;
+
+		// Set slow motion
 		this.slowMotion(60, 0.3);
 
 		var combo = this.combo;
@@ -152,13 +130,14 @@ Game.prototype.enemyDeath = function(enemy) {
 			combo = 10;
 		}
 
+		// Increase score
 		this.score += enemy.scoreValue * combo;
 	}
 }
 
+// Creates particles (for animation only, no impact on gameplay)
 Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleErr, acc, life, lifeErr, num, r, colour, cell) {
 	var speedErrNum = speed * speedErr * 0.01;
-	// var angleErrNum = angle * angleErr * 0.01;
 
 	for (var i = 0; i < num; i++) {
 		if (cell !== undefined) {
@@ -166,73 +145,42 @@ Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleEr
 		}
 		var vel = p5.Vector.fromAngle(random(angle - angleErr, angle + angleErr)).setMag(random(speed - speedErrNum, speed + speedErrNum));
 		life += random(lifeErr);
-		// var vel = p5.Vector.fromAngle(random(angle - 1, angle + 1)).setMag(random(speed - speedErrNum, speed + speedErrNum));
 		var particle = new Particle(this, pos, vel, acc, r, life, colour, cell);
 		this.particles.push(particle);
 	}
 }
 
+// Sets the game to slow motion
 Game.prototype.slowMotion = function(time, speed) {
 	if (this.playSpeed >= speed) {
 		this.playSpeed = speed;
 		this.slowMo = time;
 	}
-
-	// this.gameSpeed = speed;
 }
 
 Game.prototype.draw = function() {
-
-
-
-	// this.cam.screen.background(30, 40, 80);
-	// this.cam.draw(this.grid);
-
-	// for (var i = 0; i < this.entities.length; i++) {
-	// 	if (!this.entities[i].hide) {
-	// 		this.cam.draw(this.entities[i]);
-	// 	}
-	// }
-
-	// for (var i = 0; i < this.bullets.length; i++) {
-	// 	this.cam.draw(this.bullets[i]);
-	// }
-
-    // for (var i = 0; i < this.entities.length; i++) {
-    //     if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
-    //         this.entities[i].drawWeapon(this.cam, this.cam.screen);
-    //     }
-	// }
-
-	// for (var i = 0; i < this.particles.length; i++) {
-    //     this.cam.draw(this.particles[i]);
-	// }
-
-	// this.cam.drawToCanvas();
-
 	background(30, 40, 80);
 	this.grid.draw();
-	//
+
+	// Draws all game objects
+
 	for (var i = 0; i < this.entities.length; i++) {
 		if (!this.entities[i].hide) {
-			// this.cam.draw(this.entities[i]);
 			this.entities[i].draw();
 		}
 	}
-	//
+
 	for (var i = 0; i < this.bullets.length; i++) {
-		// this.cam.draw(this.bullets[i]);
 		this.bullets[i].draw();
 	}
-	//
+
     for (var i = 0; i < this.entities.length; i++) {
         if (!this.entities[i].hide && this.entities[i].drawWeapon !== undefined) {
             this.entities[i].drawWeapon();
         }
 	}
-	//
+
 	for (var i = 0; i < this.particles.length; i++) {
-        // this.cam.draw(this.particles[i]);
 		this.particles[i].draw();
 	}
 }

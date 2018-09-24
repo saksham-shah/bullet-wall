@@ -1,3 +1,4 @@
+// Used by the player and Gun Enemy
 function Gun(game_, entity_, shootSpeed_, pivot_, l_, w_, l2_) {
     this.game = game_;
 
@@ -28,14 +29,12 @@ function Gun(game_, entity_, shootSpeed_, pivot_, l_, w_, l2_) {
 Gun.prototype.update = function() {
     this.cooldown -= this.game.gameSpeed;
 
+    // Burst fire
     if (this.burst > 0) {
-        // var shot = this.gun.shoot();
-        // if (shot) {
-        //     this.burst--;
-        // }
         this.shoot();
     }
 
+    // Recoil animation - works the same way as the weapon of the Fast Enemy
     if (this.state == 1) {
         if (this.recoil > 5) {
             this.state = 2;
@@ -52,10 +51,9 @@ Gun.prototype.update = function() {
     }
 
     this.direction = rotateToAngle(this.direction, this.targetDirection, 0.2, 0.05);
-
-    // this.targetDirection =
 }
 
+// Shoots a bullet
 Gun.prototype.shoot = function(bursts) {
     if (this.cooldown <= 0) {
         this.state = 1;
@@ -63,7 +61,8 @@ Gun.prototype.shoot = function(bursts) {
 
         this.game.bullets.push(new Bullet(this.game, this, 5, this.direction, color(255)));
 
-        var pos = this.getPos(0);
+        // Particle explosion is created at the gun's position
+        var pos = this.getPos();
         var length = createVector(this.l, 0).rotate(this.direction);
         pos.add(length);
         this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, color(255, 255, 0));
@@ -81,6 +80,7 @@ Gun.prototype.shoot = function(bursts) {
     return false;
 }
 
+// Returns the position of the gun, taking into account the position of the entity holding the gun
 Gun.prototype.getPos = function() {
     var pos = this.pivot.copy();
     pos.rotate(this.entity.direction);
@@ -89,13 +89,12 @@ Gun.prototype.getPos = function() {
 
 Gun.prototype.draw = function() {
     var drawPos = getDrawPos(this.getPos());
-	// var drawR = cam.getDrawSize(1);
     push();
     translate(drawPos);
     rotate(this.direction);
-    // scr.translate(p5.Vector.mult(this.pivot, drawR));
     translate(-this.recoil * zoom, 0);
 
+    // Blue if held by the player, red if held by the enemy
     if (this.player) {
 	   fill(50, 50, 150);
     } else {
@@ -105,38 +104,11 @@ Gun.prototype.draw = function() {
     stroke(25, 25, 50);
     strokeWeight(2 * zoom);
 
-
-	// scr.rect(- this.w * 0.5, 0, drawR * 2);
     rect(- this.l2 * zoom, - this.w * zoom * 0.5, this.l * zoom + this.l2 * zoom, this.w * zoom);
     pop();
 }
 
-// Gun.prototype.draw = function(cam, scr) {
-//     // var drawPos = cam.getDrawPos(this.entity.pos.x, this.entity.pos.y);
-//     var drawPos = cam.getDrawPos(this.getPos().x, this.getPos().y)
-// 	var drawR = cam.getDrawSize(1);
-//     // drawPos.add(p5.Vector.mult(this.pivot, drawR));
-//     scr.push();
-//     scr.translate(drawPos);
-//     scr.rotate(this.direction);
-//     // scr.translate(p5.Vector.mult(this.pivot, drawR));
-//     scr.translate(-this.recoil, 0);
-//
-//     if (this.player) {
-// 	   scr.fill(50, 50, 150);
-//     } else {
-//        scr.fill(150, 50, 50);
-//     }
-//
-//     scr.stroke(25, 25, 50);
-//     scr.strokeWeight(2 * drawR);
-//
-//
-// 	// scr.rect(- this.w * 0.5, 0, drawR * 2);
-//     scr.rect(- this.l2 * drawR, - this.w * drawR * 0.5, this.l * drawR + this.l2 * drawR, this.w * drawR);
-//     scr.pop();
-// }
-
+// Rotates the gun towards the target direction
 function rotateToAngle(current, target, buffer, speed) {
     if (current > target) {
         var d = current - target;

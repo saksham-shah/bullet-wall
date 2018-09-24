@@ -1,3 +1,5 @@
+// Algorithm from Wikipedia
+
 function Map(size, defaultValue) {
     this.map = [];
     for (var i = 0; i < size; i++) {
@@ -26,6 +28,7 @@ function reconstructPath(cameFrom, current) {
     return path;
 }
 
+//  Uses the A* algorithm to find a path from the start to the goal
 function findPath(grid, goal, start, enemy) {
     var closedSet = [];
 
@@ -41,7 +44,7 @@ function findPath(grid, goal, start, enemy) {
 
     while (openSet.length > 0) {
         openSet.sort(function(a, b) {
-            return fScore.get(a) - fScore.get(b);//a.fScore - b.fScore;
+            return fScore.get(a) - fScore.get(b)
         })
         var current = openSet[0];
 
@@ -54,7 +57,7 @@ function findPath(grid, goal, start, enemy) {
 
         var neighbours = current.getNeighbours();
         for (var i = 0; i < neighbours.length; i++) {
-            if (!closedSet.includes(neighbours[i])) {// && neighbours[i].wall == 0) {
+            if (!closedSet.includes(neighbours[i])) {
                 tentativeGScore = gScore.get(current) + costEstimate(current, neighbours[i], enemy);
 
                 var better = true;
@@ -78,13 +81,7 @@ function costEstimate(a, b, enemy) {
     var av = createVector(a.row, a.col);
     var bv = createVector(b.row, b.col);
     var d = p5.Vector.dist(a.pos, b.pos);
-    // console.log(d);
     d = d / enemy.maxVel + b.wall * enemy.wallDestroy;
     return d;
 
-    // if (b.wall == 0) {
-    //     return p5.Vector.dist(av, bv);
-    // } else {
-    //     return p5.Vector.dist(av, bv) * 100;
-    // }
 }

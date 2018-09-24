@@ -137,6 +137,5 @@ function collideWithWalls(pos, r, grid_) {
             }
         }
     }
-    // console.log(returnVector);
     return [returnVector, hit];
 }

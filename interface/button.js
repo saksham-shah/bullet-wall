@@ -1,3 +1,4 @@
+// Button with typing text
 function Button(screen_, x_, y_, w_, h_, text_, r_) {
     this.x = x_;
     this.y = y_;
@@ -11,8 +12,10 @@ function Button(screen_, x_, y_, w_, h_, text_, r_) {
 }
 
 Button.prototype.update = function() {
+    // If mouse is hovering over the button
     if (mouseX > this.x && mouseX < this.x + this.w && mouseY > this.y && mouseY < this.y + this.h) {
         this.hovered = true;
+        // Makes the text type
         this.text.startTyping();
 
         if (mouseIsPressed) {
@@ -30,6 +33,7 @@ Button.prototype.draw = function() {
     stroke(45, 60, 120);
     strokeWeight(7 * zoom);
 
+    // Lighter blue if hovered
     if (this.hovered) {
         fill(75, 100, 200);
     }
@@ -37,17 +41,4 @@ Button.prototype.draw = function() {
     rect(this.x, this.y, this.w, this.h);
 
     this.text.draw(this.x + this.w * 0.5, this.y + this.h * 0.5, this.r);
-
-    // noStroke();
-    // textAlign(CENTER);
-
-    // // var r = 50;
-    // textSize(this.r);
-
-    // fill(250, 75, 75);
-    // text(this.text.getText(), this.x + this.w * 0.5 - this.r / 35 * 2, this.y + this.h * 0.5 + this.r / 3 - this.r / 35 * 2);
-    // fill(50);
-    // text(this.text.getText(), this.x + this.w * 0.5 - this.r / 35, this.y + this.h * 0.5 + this.r / 3 - this.r / 35);
-    // fill(255);
-    // text(this.text.getText(), this.x + this.w * 0.5, this.y + this.h * 0.5 + this.r / 3);
 }

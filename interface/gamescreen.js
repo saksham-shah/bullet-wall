@@ -1,16 +1,16 @@
+// Screen where the game takes place
 function GameScreen() {
     this.game = null;
 
     this.text1 = new TypeText("SCORE");
     this.text2 = new TypeText();
-    // this.lives = 3;
-    // this.shield = true;
-    // this.fade = 0;
 }
 
+// Starts a new game
 GameScreen.prototype.newGame = function() {
     this.game = new Game();
 
+    // GS holds all of the stats of the game, to display them to the player
     this.score = 0;
     this.lives = 3;
     this.shield = true;
@@ -45,6 +45,7 @@ GameScreen.prototype.update = function() {
         var lastKill = this.game.lastKill;
         this.lastKill = lastKill;
 
+        // Converts the combo to a percentage
         var percentage = (this.game.comboTime - this.lastKill) / this.game.comboTime;
         if (this.comboPercentage < percentage) {
             this.comboPercentage += 0.1;
@@ -55,8 +56,8 @@ GameScreen.prototype.update = function() {
             this.comboPercentage = percentage;
         }
 
+        // Game fades out when the player dies
         if (this.game.gameOver) {
-            // this.fade += dt / this.game.gameSpeed;
             this.fade += this.game.gameSpeed / this.game.playSpeed;
             if (this.fade > 300) {
                 nextScreen = ds;
@@ -72,6 +73,7 @@ GameScreen.prototype.draw = function() {
     if (this.game !== null) {
         this.game.draw();
 
+        // Draw all of the stats
         this.drawScore();
         this.drawLives();
         this.drawShield();
@@ -86,23 +88,18 @@ GameScreen.prototype.draw = function() {
 
 }
 
+// Rest of the functions simply draw various shapes (e.g. hearts for lives, a shield)
+
 GameScreen.prototype.drawScore = function() {
     var x = width - xOff * 0.5;
     var y = height * 0.25;
     var r = 40 * zoom;
-
-    // textSize(r);
-    // textAlign(CENTER);
-    // fill(255);
-    // noStroke();
 
     this.text1.draw(x, y, r);
 
     if (this.text1.done) {
         this.text2.draw(x, y + r * 1.5, r * 1.5, this.score);
     }
-
-    // text(this.score, x, y - r / 3 + r * 1.5);
 }
 
 GameScreen.prototype.drawLives = function() {
@@ -211,10 +208,6 @@ GameScreen.prototype.drawCombo = function() {
 
         fill(0, 150, 0);
 
-        // var percentage = this.comboPercentage;
-        // if (percentage > 1) {
-        //     percentage = 1;
-        // }
         if (this.lastKill < this.game.comboTime) {
             arc(x, y, r * 2, r * 2, - HALF_PI, this.comboPercentage * TWO_PI - HALF_PI);
 
@@ -226,5 +219,4 @@ GameScreen.prototype.drawCombo = function() {
 
         text(this.combo + "x", x, y + r / 3);
     }
-    // ellipse(x, y, 5);
 }

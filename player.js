@@ -1,3 +1,4 @@
+// Player entity, controlled by the keyboard
 function Player(game, row, col, controls) {
     Entity.call(this, game, row, col, 15);
     this.controls = {
@@ -29,11 +30,13 @@ Player.prototype = Object.create(Entity.prototype);
 
 Player.prototype.update = function() {
     this.vel.mult(0, 0);
-    //Controls
+    // Controlled by arrow keys or WASD
     if (keyIsDown(this.controls.left) || keyIsDown(65)) this.vel.x -= 1;
     if (keyIsDown(this.controls.up) || keyIsDown(87)) this.vel.y -= 1;
     if (keyIsDown(this.controls.right) || keyIsDown(68)) this.vel.x += 1;
     if (keyIsDown(this.controls.down) || keyIsDown(83)) this.vel.y += 1;
+
+    // Moves at the same speed no matter which direction it is in
     this.vel.normalize();
     this.vel.mult(this.maxVel);
 
@@ -44,6 +47,7 @@ Player.prototype.update = function() {
         this.gun2.update();
     }
 
+    // Points towards the mouse
     var mousePos = getMousePos();
     this.direction = p5.Vector.sub(mousePos, this.pos).heading();
     this.gun1.direction = p5.Vector.sub(mousePos, this.gun1.getPos()).heading();
@@ -52,6 +56,7 @@ Player.prototype.update = function() {
     if (this.cooldown > 0) {
         this.cooldown -= this.game.gameSpeed;
     } else if (mouseIsPressed) {
+        // If guns = 2, shots are taken with alternate guns
         if (this.lastShot == 2 || this.guns == 1) {
             this.gun1.shoot();
             this.lastShot = 1;
@@ -69,34 +74,32 @@ Player.prototype.update = function() {
 
 }
 
+// If you collide with a 'soft wall' (wall which has already been attacked once), you break it
 Player.prototype.checkWallHit = function() {
     var futurePos = p5.Vector.add(this.pos, p5.Vector.mult(this.vel, this.game.gameSpeed));
     var wallCollision = collideWithWalls(futurePos, this.r, this.game.grid);
     if (wallCollision[0].x != futurePos.x || wallCollision[0].y != futurePos.y) {
         if (wallCollision[1] !== null && wallCollision[1].wall == 1) {
-   //          wallCollision[1].wall --;
-			// var cellMiddle = p5.Vector.add(wallCollision[1].pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
-			// this.game.particleExplosion(cellMiddle, 1, 100, this.vel.heading(), HALF_PI * 0.5, createVector(0, 0), 30, 20, 5, color(50), wallCollision[1]);
             wallCollision[1].break(this.vel.heading());
         }
     }
 }
 
+// When the player dies, the game ends
 Player.prototype.die = function(enemy) {
     this.hide = true;
     this.freeze = true;
 
+    // Mega slow motion
     this.game.slowMotion(360, 0.1);
 
     this.game.particleExplosion(this.pos, 2, 100, PI, PI, createVector(0, 0.1), 50, 5, 50, 3, color(160, 160, 200));
 
     this.game.gameOver = true;
-    // console.log(enemy);
 }
 
 Player.prototype.draw = function() {
 	var drawPos = getDrawPos(this.pos);
-	// var drawR = cam.getDrawSize(this.r);
 
     push();
     translate(drawPos);
@@ -120,31 +123,3 @@ Player.prototype.drawWeapon = function() {
         this.gun2.draw();
     }
 }
-
-// Player.prototype.draw = function(cam, scr) {
-// 	var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-// 	var drawR = cam.getDrawSize(this.r);
-//     scr.push();
-//     scr.translate(drawPos);
-//
-// 	scr.fill(200, 200, 250);
-// 	scr.stroke(160, 160, 200);
-//     scr.strokeWeight(2 * drawR / this.r);
-//
-// 	scr.ellipse(0, 0, drawR * 2);
-//
-//     scr.fill(255, 0, 0, this.damaged * 4);
-//     scr.noStroke();
-//     scr.ellipse(0, 0, drawR * 2);
-//
-//     scr.pop();
-// }
-//
-// Player.prototype.drawWeapon = function(cam, scr) {
-//     this.gun1.draw(cam, scr);
-//     if (this.guns == 2) {
-//         this.gun2.draw(cam, scr);
-//     }
-//     // console.log(this);
-//     // cam.draw(this.gun);
-// }

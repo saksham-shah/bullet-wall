@@ -1,26 +1,8 @@
+// Screen which displays score after the player dies
 function DeathScreen() {
     this.game = null;
 
-    this.text1 = new TypeText("GAME OVER");
-    this.text2 = new TypeText("YOU SCORED");
-
     this.createButtons();
-    // this.buttons = [];
-    //
-    // this.restartButton = new Button(this, width * 0.5 - 150 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "RESTART", 50 * zoom);
-    //
-    // this.buttons.push(this.restartButton);
-
-}
-
-DeathScreen.prototype.newDeath = function(game) {
-    this.game = game;
-
-    this.text3 = new TypeText(String(this.game.score));
-
-    this.text1.stopTyping();
-    this.text2.stopTyping();
-
 }
 
 DeathScreen.prototype.createButtons = function() {
@@ -31,25 +13,32 @@ DeathScreen.prototype.createButtons = function() {
     this.buttons.push(this.restartButton);
 }
 
+// When the player dies, the game is sent to DS
+DeathScreen.prototype.newDeath = function(game) {
+    this.game = game;
+
+    var secs = this.game.gameTime / 60;
+    var min = floor(secs / 60);
+    var sec = floor(secs % 60);
+
+    var timeText = leadingZeroes(min) + ":" + leadingZeroes(sec);
+
+    this.textLines = new TypeLines("GAME OVER", "YOU SCORED", String(this.game.score), "AND SURVIVED FOR " + timeText);
+
+}
+
 DeathScreen.prototype.update = function() {
-    this.text1.startTyping();
+    this.textLines.update();
 
-    if (this.text1.done) {
-        this.text2.startTyping();
-
-        if (this.text2.done) {
-            this.text3.startTyping();
-
-            if (this.text3.done) {
-                for (var i = 0; i < this.buttons.length; i++) {
-                    this.buttons[i].update();
-                }
-            }
+    if (this.textLines.isFinished()) {
+        for (var i = 0; i < this.buttons.length; i++) {
+            this.buttons[i].update();
         }
     }
 }
 
 DeathScreen.prototype.buttonClicked = function(button) {
+    // Restart game
     if (button === this.restartButton) {
         nextScreen = gs;
         gs.newGame();
@@ -59,55 +48,19 @@ DeathScreen.prototype.buttonClicked = function(button) {
 DeathScreen.prototype.draw = function() {
     background(30, 40, 80);
 
-    // var r = 100;
+    this.textLines.draw(width * 0.5, height * 0.2, height * 0.15, 100 * zoom, 50 * zoom, 150 * zoom, 50 * zoom);
 
-    // textAlign(CENTER);
-    // textSize(r);
-    // noStroke();
-
-    // fill(250, 75, 75);
-    // text(this.text1.getText(), width/2 - r / 35 * 2, 200 - r / 35 * 2);
-    // fill(50);
-    // text(this.text1.getText(), width/2 - r / 35, 200 - r / 35);
-    // fill(255);
-    // text(this.text1.getText(), width/2, 200);
-    this.text1.draw(width * 0.5, height * 0.2, 100 * zoom);
-
-    if (this.text1.done) {
-
-        this.text2.draw(width * 0.5, height * 0.4, 50 * zoom);
-        // var r = 50;
-
-        // textSize(r);
-
-        // fill(250, 75, 75);
-        // text(this.text2.getText(), width/2 - r / 35 * 2, 350 - r / 35 * 2);
-        // fill(50);
-        // text(this.text2.getText(), width/2 - r / 35, 350 - r / 35);
-        // fill(255);
-        // text(this.text2.getText(), width/2, 350);
-
-        if (this.text2.done) {
-
-            this.text3.draw(width * 0.5, height * 0.6, 150 * zoom);
-            // var r = 150;
-
-            // textSize(r);
-
-            // fill(250, 75, 75);
-            // text(this.text3.getText(), width/2 - r / 35 * 2, 500 - r / 35 * 2);
-            // fill(50);
-            // text(this.text3.getText(), width/2 - r / 35, 500 - r / 35);
-            // fill(255);
-            // text(this.text3.getText(), width/2, 500);
-
-            if (this.text3.done) {
-                for (var i = 0; i < this.buttons.length; i++) {
-                    this.buttons[i].draw();
-                }
-            }
-
+    if (this.textLines.isFinished()) {
+        for (var i = 0; i < this.buttons.length; i++) {
+            this.buttons[i].draw();
         }
     }
+}
 
+function leadingZeroes(num) {
+    num = String(num);
+    if (num.length < 2) {
+        num = "0" + num;
+    }
+    return num;
 }

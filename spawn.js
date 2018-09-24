@@ -6,6 +6,7 @@ function Spawn(reqPoints_, reqScore_, doFunction_) {
     this.randScore = 0;
 }
 
+// Returns a random cell at least dFromPlayer far from the player. Used to spawn enemies randomly
 Game.prototype.randomCell = function(dFromPlayer) {
     var done = false;
     var tries = 1000;
@@ -17,18 +18,20 @@ Game.prototype.randomCell = function(dFromPlayer) {
             done = true;
             return cell;
         }
+        // Avoids any accidental infinite loops
         tries--;
     }
 }
 
 var spawns = [
+    // Fast Enemy
     new Spawn(1, 0,
         function(game) {
             var cell = game.randomCell(CELLSIZE * 6);
             game.entities.push(new EnemyFast(game, cell.row, cell.col));
         }
     ),
-
+    // Gun Enemy
     new Spawn(3, 100,
         function(game) {
             var cell = game.randomCell(CELLSIZE * 6);
@@ -37,10 +40,10 @@ var spawns = [
     ),
 ]
 
-// var scoreValue = 0;
-
+// Selects an enemy to spawn
+// The harder the enemy, the more spawnPoints it uses up and the rarer it is
+// Therefore no matter what enemies the player faces, the difficulty will always be the same
 Game.prototype.spawnEnemy = function() {
-
     var possible = [];
     var highest = 0;
     for (var i = 0; i < spawns.length; i++) {
@@ -55,9 +58,7 @@ Game.prototype.spawnEnemy = function() {
     var total = 0;
 
     for (var i = 0; i < possible.length; i++) {
-
         possible[i].randScore = highest / possible[i].reqPoints;
-
         total += possible[i].randScore;
     }
 
@@ -71,5 +72,4 @@ Game.prototype.spawnEnemy = function() {
             return possible[i];
         }
     }
-
 }
