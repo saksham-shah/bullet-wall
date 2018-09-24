@@ -10,8 +10,8 @@ function DeathScreen() {
 DeathScreen.prototype.createButtons = function() {
     this.buttons = [];
 
-    this.restartButton = new Button(this, width * 0.5 - 350 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "RESTART", 50 * zoom);
-    this.menuButton = new Button(this, width * 0.5 + 50 * zoom, height * 0.75, 300 * zoom, 150 * zoom, "MENU", 50 * zoom);
+    this.restartButton = new Button(this, width * 0.5 - 375 * zoom, height * 0.75, 350 * zoom, 150 * zoom, "PLAY AGAIN", 50 * zoom);
+    this.menuButton = new Button(this, width * 0.5 + 25 * zoom, height * 0.75, 350 * zoom, 150 * zoom, "MENU", 50 * zoom);
 
     this.buttons.push(this.restartButton);
     this.buttons.push(this.menuButton);
@@ -45,7 +45,7 @@ DeathScreen.prototype.buttonClicked = function(button) {
     // Restart game
     if (button === this.restartButton) {
         nextScreen = gs;
-        gs.newGame();
+        gs.newGame(this.game.difficulty);
     } else if (button === this.menuButton) {
         nextScreen = ms;
     }
