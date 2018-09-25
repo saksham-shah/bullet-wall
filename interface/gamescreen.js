@@ -88,6 +88,9 @@ GameScreen.prototype.draw = function() {
         noStroke();
 
         rect(0, 0, width, height);
+
+        // Draw time
+        this.text2.draw(width * 0.5, yOff * 0.5, 60 * zoom, timeToText(this.game.gameTime));
     }
 
 }
@@ -223,4 +226,20 @@ GameScreen.prototype.drawCombo = function() {
 
         text(this.combo + "x", x, y + r / 3);
     }
+}
+
+function timeToText(time) {
+    var secs = time / 60;
+    var min = floor(secs / 60);
+    var sec = floor(secs % 60);
+
+    return leadingZeroes(min) + ":" + leadingZeroes(sec);
+}
+
+function leadingZeroes(num) {
+    num = String(num);
+    if (num.length < 2) {
+        num = "0" + num;
+    }
+    return num;
 }

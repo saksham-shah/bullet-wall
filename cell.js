@@ -10,6 +10,8 @@ function Cell(game_, row_, col_, grid_) {
     this.pos = createVector(this.col * this.r, this.row * this.r);
 
     this.wall = 0;
+
+    this.powerup = null;
 }
 
 // Returns a p5.Vector of the middle of the cell
@@ -17,11 +19,25 @@ Cell.prototype.middle = function() {
     return p5.Vector.add(this.pos, createVector(CELLSIZE * 0.5, CELLSIZE * 0.5));
 }
 
+// Sets PowerUp
+Cell.prototype.setPowerUp = function(powerup) {
+    this.powerup = powerup;
+    this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(this.powerup.colour), this);
+}
+
 // Creates a wall
 Cell.prototype.build = function() {
     if (this.wall == 0) {
         this.wall = 2;
-        this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(50), this);
+
+
+        if (this.powerup !== null) {
+            this.powerup.activate(this.game);
+            this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(this.powerup.colour), this);
+            this.powerup = null;
+        } else {
+            this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(50), this);
+        }
     }
 }
 
@@ -52,8 +68,8 @@ Cell.prototype.getNeighbours = function() {
     return neighbours;
 }
 
-Cell.prototype.draw = function() {
-	if (this.wall > 0) {
+Cell.prototype.draw = function(mode) {
+	if (this.wall > 0 && mode == 0) {
         var drawPos = getDrawPos(this.pos);
         push();
         translate(drawPos);
@@ -67,5 +83,20 @@ Cell.prototype.draw = function() {
         }
 
         pop();
+    }
+
+    if (this.powerup !== null && mode == 1) {
+        var drawPos = getDrawPos(this.pos);
+        push();
+        translate(drawPos);
+        stroke(100);
+        strokeWeight(2 * zoom);
+        fill(150);
+        rect(0, 0, this.r * zoom, this.r * zoom);
+
+        this.powerup.draw(0, 0, this.r * zoom);
+
+        pop();
+
     }
 }

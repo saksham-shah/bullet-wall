@@ -35,7 +35,7 @@ function draw() {
 	noStroke();
 
 	// Current version
-	text("v1.1.3a", width - 48 * zoom, height - 27 * zoom);
+	text("v1.2.0 experimental (highscores don't count)", width * 0.5, height - 15 * zoom);
 }
 
 function mouseClicked() {
@@ -43,6 +43,7 @@ function mouseClicked() {
 		for (var i = 0; i < currentScreen.buttons.length; i++) {
 			if (currentScreen.buttons[i].hovered) {
 				currentScreen.buttonClicked(currentScreen.buttons[i]);
+				currentScreen.buttons[i].hovered = false;
 			}
 		}
 	}

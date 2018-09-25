@@ -22,20 +22,22 @@ function Game(difficulty) {
 	if (difficulty == 0) {
 		// Easy
 		this.nextWave = 2;
-		this.waveStep = 0.5;
+		this.waveStep = 1;
 	} else if (difficulty == 1) {
 		// Normal
 		this.nextWave = 5;
-		this.waveStep = 1;
+		this.waveStep = 2;
 	} else if (difficulty == 2) {
 		// Hard
 		this.nextWave = 10;
-		this.waveStep = 2;
+		this.waveStep = 3;
 	} else if (difficulty == 3) {
 		// Insane
 		this.nextWave = 20;
 		this.waveStep = 4;
 	}
+
+	this.lastPowerUp = 0;
 
 	this.difficulty = difficulty;
 
@@ -73,7 +75,9 @@ Game.prototype.update = function() {
 	}
 
 	this.gameSpeed = this.playSpeed * dt;
-	this.gameTime += this.gameSpeed;
+	if (!this.gameOver) {
+		this.gameTime += this.gameSpeed;
+	}
 
 	if (this.lastKill < this.comboTime) {
 		this.lastKill += this.gameSpeed;
@@ -81,6 +85,7 @@ Game.prototype.update = function() {
 		this.combo = 0;
 	}
 
+	// Enemy spawning
 	this.timeSinceWave += this.gameSpeed;
 	this.timeSinceEnemy += this.gameSpeed;
 
@@ -100,11 +105,29 @@ Game.prototype.update = function() {
 			this.spawnEnemy();
 			this.timeSinceEnemy = 0;
 		}
+
+		// Powerup spawning
+		if (this.lastPowerUp <= 0) {
+			var powerup = this.randomPowerUp();
+			var cell = this.randomCell(0);
+			if (powerup !== null) {
+				cell.setPowerUp(powerup);
+			}
+			this.lastPowerUp = sq(random(3, 7)) * (1 - this.score * 0.00005);
+		} else {
+			this.lastPowerUp -= 1;
+		}
 	} else {
 		this.counter -= this.gameSpeed;
 	}
 
+
+
 	// Updates all game objects (e.g. entities, bullets, particles)
+
+	for (var i = 0; i < powerups.length; i++) {
+		powerups[i].update(this);
+	}
 
 	for (var i = 0; i < this.entities.length; i++) {
 		// If the entity is dead, remove it from the list
@@ -151,21 +174,6 @@ Game.prototype.enemyDeath = function(enemy) {
 
 		// Increase score
 		this.score += enemy.scoreValue * combo;
-	}
-}
-
-// Creates particles (for animation only, no impact on gameplay)
-Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleErr, acc, life, lifeErr, num, r, colour, cell) {
-	var speedErrNum = speed * speedErr * 0.01;
-
-	for (var i = 0; i < num; i++) {
-		if (cell !== undefined) {
-			pos = createVector(cell.pos.x + random(CELLSIZE), cell.pos.y + random(CELLSIZE));
-		}
-		var vel = p5.Vector.fromAngle(random(angle - angleErr, angle + angleErr)).setMag(random(speed - speedErrNum, speed + speedErrNum));
-		life += random(lifeErr);
-		var particle = new Particle(this, pos, vel, acc, r, life, colour, cell);
-		this.particles.push(particle);
 	}
 }
 

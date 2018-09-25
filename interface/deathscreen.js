@@ -21,13 +21,11 @@ DeathScreen.prototype.createButtons = function() {
 DeathScreen.prototype.newDeath = function(game) {
     this.game = game;
 
-    var secs = this.game.gameTime / 60;
-    var min = floor(secs / 60);
-    var sec = floor(secs % 60);
+    var timeText = timeToText(this.game.gameTime);
 
-    var timeText = leadingZeroes(min) + ":" + leadingZeroes(sec);
 
-    this.textLines = new TypeLines("GAME OVER", "YOU SCORED", String(this.game.score), "AND SURVIVED FOR " + timeText);
+
+    this.textLines = new TypeLines("GAME OVER", "YOU SURVIVED FOR", timeText, "AND SCORED " + String(this.game.score) + " POINTS.");
 
 }
 
@@ -66,12 +64,4 @@ DeathScreen.prototype.draw = function() {
             this.buttons[i].draw();
         }
     }
-}
-
-function leadingZeroes(num) {
-    num = String(num);
-    if (num.length < 2) {
-        num = "0" + num;
-    }
-    return num;
 }

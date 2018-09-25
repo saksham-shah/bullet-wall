@@ -38,8 +38,8 @@ Grid.prototype.draw = function() {
 	strokeWeight(1 * zoom);
 	stroke(90, 120, 240);
 
-	var top = getDrawPos(createVector(0, 0));
-	var bottom = getDrawPos(createVector(0, this.grid.length * CELLSIZE));
+	var top = getDrawPos(createVector(zoom * 0.5, zoom * 0.5));
+	var bottom = getDrawPos(createVector(zoom * 0.5, this.grid.length * CELLSIZE + zoom * 0.5));
 
 	for (var i = 0; i <= this.grid.length; i++) {
 		line(top.x, top.y, bottom.x, bottom.y);
@@ -47,8 +47,8 @@ Grid.prototype.draw = function() {
 		bottom.x += CELLSIZE * zoom;
 	}
 
-	var left = getDrawPos(createVector(0, 0));
-	var right = getDrawPos(createVector(this.grid.length * CELLSIZE, 0));
+	var left = getDrawPos(createVector(zoom * 0.5, zoom * 0.5));
+	var right = getDrawPos(createVector(this.grid.length * CELLSIZE + zoom * 0.5, zoom * 0.5));
 
 	for (var i = 0; i <= this.grid.length; i++) {
 		line(left.x, left.y, right.x, right.y);
@@ -59,7 +59,15 @@ Grid.prototype.draw = function() {
 	for (var i = 0; i < this.grid.length; i++) {
 		var row = this.grid[i];
 		for (var j = 0; j < row.length; j++) {
-            row[j].draw();
+            // Draw powerups first
+            row[j].draw(1);
+		}
+	}
+    for (var i = 0; i < this.grid.length; i++) {
+		var row = this.grid[i];
+		for (var j = 0; j < row.length; j++) {
+            // Then walls
+            row[j].draw(0);
 		}
 	}
 }
