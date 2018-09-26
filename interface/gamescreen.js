@@ -28,6 +28,11 @@ GameScreen.prototype.update = function() {
     if (this.game !== null) {
         this.game.update();
 
+        var mousePos = getMousePos();
+        if (!this.game.gameOver && mousePos.x > 0 && mousePos.x < CELLSIZE * GRIDSIZE && mousePos.y > 0 && mousePos.y < CELLSIZE * GRIDSIZE) {
+            myCursor.mode =  this.game.player.weapon + 1;
+        }
+
         var score = this.game.score;
         this.score = score;
 

@@ -1,5 +1,6 @@
-var gs, ms, ds;
+var gs, ms, ds, ps;
 var currentScreen, nextScreen;
+var myCursor;
 
 function setup() {
 	if (windowWidth > windowHeight * 16 / 9) {
@@ -19,6 +20,9 @@ function setup() {
 	ps = new PauseScreen();
 
 	nextScreen = ms;
+
+	myCursor = new GameCursor();
+	noCursor();
 }
 
 function draw() {
@@ -30,12 +34,15 @@ function draw() {
     currentScreen.update();
     currentScreen.draw();
 
+	myCursor.draw();
+	myCursor.mode = 0;
+
 	textSize(20 * zoom);
 	fill(255);
 	noStroke();
 
 	// Current version
-	text("v1.2.0 experimental (highscores don't count)", width * 0.5, height - 15 * zoom);
+	text("v1.2.0b", width * 0.5, height - 15 * zoom);
 }
 
 function mouseClicked() {

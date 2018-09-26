@@ -56,16 +56,12 @@ Gun.prototype.update = function() {
 // Shoots a bullet
 Gun.prototype.shoot = function(bursts) {
     if (this.cooldown <= 0) {
-        this.state = 1;
+
         this.cooldown = this.shootSpeed;
 
         this.game.bullets.push(new Bullet(this.game, this, 5, this.direction, color(255)));
 
-        // Particle explosion is created at the gun's position
-        var pos = this.getPos();
-        var length = createVector(this.l, 0).rotate(this.direction);
-        pos.add(length);
-        this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, color(255, 255, 0));
+        this.shootAnimation();
 
         if (bursts !== undefined) {
             this.burst = bursts;
@@ -78,6 +74,17 @@ Gun.prototype.shoot = function(bursts) {
         return true;
     }
     return false;
+}
+
+// Shoot animation
+Gun.prototype.shootAnimation = function() {
+    this.state = 1;
+
+    // Particle explosion is created at the gun's position
+    var pos = this.getPos();
+    var length = createVector(this.l, 0).rotate(this.direction);
+    pos.add(length);
+    this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, color(255, 255, 0));
 }
 
 // Returns the position of the gun, taking into account the position of the entity holding the gun

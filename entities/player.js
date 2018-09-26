@@ -15,13 +15,15 @@ function Player(game, row, col, controls) {
     this.lastShot = 2;
     this.guns = 1;
 
+    this.weapon = 0;
+    this.ammo = 0;
+
     this.mass = 50;
 
     this.health = 3;
 
     this.shield = true;
     this.shieldTimer = 0;
-
 
     this.direction = 0;
 }
@@ -56,20 +58,40 @@ Player.prototype.update = function() {
     if (this.cooldown > 0) {
         this.cooldown -= this.game.gameSpeed;
     } else if (mouseIsPressed) {
-        // If guns = 2, shots are taken with alternate guns
-        if (this.lastShot == 2 || this.guns == 1) {
-            this.gun1.shoot();
-            this.lastShot = 1;
-        } else {
-            this.gun2.shoot();
-            this.lastShot = 2;
+        switch(this.weapon) {
+            case 0: // Normal bullets
+            // If guns = 2, shots are taken with alternate guns
+            if (this.lastShot == 2 || this.guns == 1) {
+                this.gun1.shoot();
+                this.lastShot = 1;
+            } else {
+                this.gun2.shoot();
+                this.lastShot = 2;
+            }
+            this.cooldown = 15;
+            break;
+
+            case 1:
+            // Disc
+            var meToMouse = p5.Vector.sub(getMousePos(), this.pos);
+            var disc = new Disc(this.game, this.gun1.getPos(), meToMouse.heading());
+            this.game.bullets.push(disc);
+            this.ammo --;
+            this.gun1.shootAnimation();
+            this.cooldown = 30;
+            if (this.ammo <= 0) {
+                this.weapon = 0;
+            }
         }
-        this.cooldown = 15;
     }
 
     if (this.shieldTimer > 0) {
         this.shieldTimer -= this.game.gameSpeed;
     }
+
+    // if (keyIsDown(66)) {
+    //     this.weapon = 1;
+    // }
 
 
 }
@@ -79,8 +101,10 @@ Player.prototype.checkWallHit = function() {
     var futurePos = p5.Vector.add(this.pos, p5.Vector.mult(this.vel, this.game.gameSpeed));
     var wallCollision = collideWithWalls(futurePos, this.r, this.game.grid);
     if (wallCollision[0].x != futurePos.x || wallCollision[0].y != futurePos.y) {
-        if (wallCollision[1] !== null && wallCollision[1].wall == 1) {
-            wallCollision[1].break(this.vel.heading());
+        if (wallCollision[1] !== null) {
+            if (wallCollision[1].wall == 1 || this.guns == 2) {
+                wallCollision[1].break(this.vel.heading(), true);
+            }
         }
     }
 }

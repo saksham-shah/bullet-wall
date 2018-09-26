@@ -6,7 +6,7 @@ function Spawn(reqPoints_, reqScore_, doFunction_) {
     this.randScore = 0;
 }
 
-// Returns a random cell at least dFromPlayer far from the player. Used to spawn enemies randomly
+// Returns a random cell at least dFromPlayer far from the player. Used to spawn enemies/powerups randomly
 Game.prototype.randomCell = function(dFromPlayer) {
     var done = false;
     var tries = 1000;
@@ -14,7 +14,7 @@ Game.prototype.randomCell = function(dFromPlayer) {
         var row = floor(random(this.gridSize));
         var col = floor(random(this.gridSize));
         var cell = this.grid.grid[row][col];
-        if (cell.wall == 0 && p5.Vector.dist(cell.middle(), this.player.pos) > dFromPlayer) {
+        if (cell.wall == 0 && cell.powerup === null && p5.Vector.dist(cell.middle(), this.player.pos) > dFromPlayer) {
             done = true;
             return cell;
         }

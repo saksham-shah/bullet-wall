@@ -93,7 +93,7 @@ Enemy.prototype.moveTowards = function(pos) {
 Enemy.prototype.die = function(bullet) {
 	var myCell = this.game.grid.getCell(this.pos);
 	var playerCell = this.game.grid.getCell(this.game.player.pos);
-	if (myCell !== playerCell) {
+	if (myCell !== playerCell && bullet instanceof Bullet) {
 		// Create a wall if the player is not in the same cell (so the player doesn't get stuck in the wall)
 		myCell.build();
 	}

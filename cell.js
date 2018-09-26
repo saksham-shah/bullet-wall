@@ -42,9 +42,13 @@ Cell.prototype.build = function() {
 }
 
 // Breaks the wall
-Cell.prototype.break = function(direction) {
+Cell.prototype.break = function(direction, full) {
     if (this.wall > 0) {
-        this.wall--;
+        if (full !== true) {
+            this.wall--;
+        } else {
+            this.wall = 0;
+        }
         this.game.particleExplosion(this.middle(), 1, 100, direction, HALF_PI * 0.5, createVector(0, 0), 30, 0, 20, 5, color(50), this);
     }
 
@@ -76,10 +80,10 @@ Cell.prototype.draw = function(mode) {
         stroke(50);
         strokeWeight(4 * zoom);
         fill(100);
-        rect(0, 0, this.r * zoom, this.r * zoom);
+        rect(2 * zoom, 2 * zoom, (this.r - 2) * zoom, (this.r - 2) * zoom);
 
         if (this.wall > 1) {
-            line(0, this.r * zoom, this.r * zoom, 0);
+            line(2 * zoom, (this.r - 2) * zoom, (this.r - 2) * zoom, 2 * zoom);
         }
 
         pop();
@@ -92,9 +96,9 @@ Cell.prototype.draw = function(mode) {
         stroke(100);
         strokeWeight(2 * zoom);
         fill(150);
-        rect(0, 0, this.r * zoom, this.r * zoom);
+        rect(this.r * zoom * 0.1 + zoom, this.r * zoom * 0.1 + zoom, this.r * zoom * 0.8, this.r * zoom * 0.8);
 
-        this.powerup.draw(0, 0, this.r * zoom);
+        this.powerup.draw(this.r * zoom * 0.1 + zoom, this.r * zoom * 0.1 + zoom, this.r * zoom * 0.8);
 
         pop();
 

@@ -76,7 +76,7 @@ Game.prototype.update = function() {
 
 	this.gameSpeed = this.playSpeed * dt;
 	if (!this.gameOver) {
-		this.gameTime += this.gameSpeed;
+		this.gameTime += dt;
 	}
 
 	if (this.lastKill < this.comboTime) {
@@ -141,7 +141,9 @@ Game.prototype.update = function() {
     for (var i = 0; i < this.bullets.length; i++) {
         if (this.bullets[i].hit) {
         	var bullet = this.bullets[i];
-        	this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, color(255));
+			if (bullet instanceof Bullet) {
+        		this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, color(255));
+			}
             this.bullets.splice(i, 1);
         } else {
 			this.bullets[i].update(this.entities);
