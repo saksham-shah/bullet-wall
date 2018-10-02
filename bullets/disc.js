@@ -40,16 +40,23 @@ Disc.prototype.checkWallHit = function() {
     var wallCollision = collideWithWalls(this.pos, this.r, this.game.grid);
     if (wallCollision[1] !== null) {
         wallCollision[1].break(this.vel);
-        // Bounce off walls
-        if (wallCollision[0].x != this.pos.x) {
-            this.vel.x = -this.vel.x;
-        }
-        if (wallCollision[0].y != this.pos.y) {
-            this.vel.y = -this.vel.y;
-        }
-    } else if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
-        this.done = true;
     }
+    var bounced = false;
+    // Bounce off walls and edges
+    if (wallCollision[0].x != this.pos.x) {
+        this.vel.x = -this.vel.x;
+        bounced = true;
+    }
+    if (wallCollision[0].y != this.pos.y) {
+        this.vel.y = -this.vel.y;
+        bounced = true;
+    }
+    if (bounced) {
+        this.pos.add(p5.Vector.mult(this.vel, this.game.gameSpeed));
+    }
+    // } else if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
+    //     this.done = true;
+    // }
 }
 
 Disc.prototype.checkEntityHits = function(entities) {

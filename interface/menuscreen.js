@@ -24,7 +24,7 @@ MenuScreen.prototype.createButtons = function() {
 MenuScreen.prototype.update = function() {
     this.title.startTyping();
 
-    if (this.title.done) {
+    if (this.title.isFinished()) {
         for (var i = 0; i < this.buttons.length; i++) {
             this.buttons[i].update();
         }
@@ -47,7 +47,7 @@ MenuScreen.prototype.draw = function() {
 
     this.title.draw(width * 0.5, height * 0.2, 150 * zoom);
 
-    if (this.title.done) {
+    if (this.title.isFinished()) {
         for (var i = 0; i < this.buttons.length; i++) {
             this.buttons[i].draw();
         }

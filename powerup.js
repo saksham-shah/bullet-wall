@@ -12,6 +12,7 @@ function PowerUp(rarity_, reqTime_, startF_, colour_, drawF_, endF_, time_) {
 }
 
 PowerUp.prototype.activate = function(game) {
+    game.powerupsUsed++;
     this.activated = true;
     if (this.timer !== undefined) {
         this.timer = this.time;
@@ -47,7 +48,7 @@ var powerups = [
     new PowerUp(1, 1800,
         function(game) {
             game.player.weapon = 1;
-            game.player.ammo = 3;
+            game.player.ammo = 1;
         }, [75, 0, 125],
         function(r) {
             ellipse(r * 0.5, r * 0.5, r * 0.5);

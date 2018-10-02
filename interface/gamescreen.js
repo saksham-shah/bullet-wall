@@ -8,6 +8,7 @@ function GameScreen() {
 
 // Starts a new game
 GameScreen.prototype.newGame = function(difficulty) {
+    console.log("new");
     this.game = new Game(difficulty);
 
     // GS holds all of the stats of the game, to display them to the player
@@ -66,7 +67,14 @@ GameScreen.prototype.update = function() {
             this.fade += this.game.gameSpeed / this.game.playSpeed;
             if (this.fade > 300) {
                 nextScreen = ds;
-                ds.newDeath(this.game);
+                ds.newDeath({
+                    time: this.game.gameTime,
+                    score: this.game.score,
+                    difficulty: this.game.difficulty,
+                    enemies: this.game.enemiesKilled,
+                    powerups: this.game.powerupsUsed,
+                    combo: this.game.highestCombo
+                });
             }
         }
     }

@@ -49,6 +49,13 @@ TypeText.prototype.stopTyping = function() {
     this.typing = false;
 }
 
+// Display the text in full
+TypeText.prototype.display = function() {
+    this.counter = this.text.length;
+    this.done = true;
+    this.typing = true;
+}
+
 // Whether the text has been completely typed
 TypeText.prototype.isFinished = function() {
     return this.done;

@@ -1,5 +1,5 @@
 // Fast enemy with a sword-like melee weapon
-function EnemyFast(game, row, col) {
+function EnemyStab(game, row, col) {
 	Enemy.call(this, game, row, col, 60, 0, CELLSIZE);
 
 	this.maxVel = 3;
@@ -18,9 +18,9 @@ function EnemyFast(game, row, col) {
 	this.scoreValue = 10;
 }
 
-EnemyFast.prototype = Object.create(Enemy.prototype);
+EnemyStab.prototype = Object.create(Enemy.prototype);
 
-EnemyFast.prototype.specificUpdate = function() {
+EnemyStab.prototype.specificUpdate = function() {
 	this.cooldown -= this.game.gameSpeed;
 
 	// If state is 1, the weapon is being extended
@@ -60,14 +60,14 @@ EnemyFast.prototype.specificUpdate = function() {
 }
 
 // The attack is simply the weapon extending
-EnemyFast.prototype.attack = function() {
+EnemyStab.prototype.attack = function() {
 	if (this.cooldown < 0) {
 		this.state = 1;
 		this.cooldown = this.hitSpeed;
 	}
 }
 
-EnemyFast.prototype.draw = function() {
+EnemyStab.prototype.draw = function() {
 	var drawPos = getDrawPos(this.pos);
     push();
     translate(drawPos);
@@ -83,7 +83,7 @@ EnemyFast.prototype.draw = function() {
 }
 
 // Draws a triangle representing a sword-type weapon
-EnemyFast.prototype.drawWeapon = function() {
+EnemyStab.prototype.drawWeapon = function() {
 	var drawPos = getDrawPos(this.pos);
 	push();
 	translate(drawPos);

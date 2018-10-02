@@ -9,11 +9,14 @@ function Bullet(game_, gun_, speed_, direction_, colour_) {
 
     this.pos = this.gun.getPos().copy();
     this.vel = p5.Vector.fromAngle(direction_,).setMag(speed_);
+    this.previousPos = this.pos.copy();
 
     this.hit = false;
 }
 
 Bullet.prototype.update = function(entities) {
+    this.previousPos.x = this.pos.x;
+    this.previousPos.y = this.pos.y;
     this.pos.add(p5.Vector.mult(this.vel, this.game.gameSpeed));
 
     this.checkWallHit();
@@ -22,29 +25,36 @@ Bullet.prototype.update = function(entities) {
 
 // If it collides with a wall or the edge, it disappears
 Bullet.prototype.checkWallHit = function() {
+    var myCell = this.game.grid.getCell(this.pos);
+    var playerCell = this.game.grid.getCell(this.game.player.pos);
     var wallCollision = collideWithWalls(this.pos, this.r, this.game.grid);
     if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
         this.hit = true;
-            var myCell = this.game.grid.getCell(this.pos);
-            var playerCell = this.game.grid.getCell(this.game.player.pos);
-            if (wallCollision[1] !== null) {
-                if (this.gun.player) {
-                    // Player bullets create walls
-                    if (myCell !== playerCell) {
-                        myCell.build();
-                        this.game.score += 2;
-                    }
-                } else {
-                    // Enemy bullets break walls
-                    wallCollision[1].break(this.vel.heading());
+        if (wallCollision[1] !== null) {
+            if (this.gun.player) {
+                // Player bullets create walls
+                if (myCell !== playerCell) {
+                    myCell.build();
+                    this.game.score += 2;
                 }
+            } else {
+                // Enemy bullets break walls
+                wallCollision[1].break(this.vel.heading());
             }
+        }
     } else {
         // If a bullet has spawned in a wall, it disappears
-        if (this.game.grid.getCell(this.pos).wall > 0) {
+        if (myCell.wall > 0) {
             this.hit = true;
             if (!this.gun.player) {
-                this.game.grid.getCell(this.pos).break(this.vel.heading());
+                myCell.break(this.vel.heading());
+            } else {
+                // This can happen during low frame rates - ensures that a wall is spawned
+                var previousCell = this.game.grid.getCell(this.previousPos);
+                if (previousCell !== playerCell && previousCell.wall == 0) {
+                    previousCell.build();
+                    this.game.score += 2;
+                }
             }
         }
     }

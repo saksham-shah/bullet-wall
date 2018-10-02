@@ -42,7 +42,12 @@ EnemyGun.prototype.specificUpdate = function() {
 EnemyGun.prototype.attack = function(toAttack) {
     if (!this.attacked) {
         if (toAttack instanceof Player) {
-            var pos = toAttack.pos;
+            var pos = toAttack.pos.copy();
+
+			// Below unused code makes the gun enemy have super targeting skills
+			// var t = p5.Vector.dist(pos, this.pos) / 5;
+			// pos.add(p5.Vector.mult(toAttack.vel, t));
+
         } else {
             var pos = toAttack.middle();
         }

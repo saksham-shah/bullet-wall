@@ -14,6 +14,12 @@ function Game(difficulty) {
     this.entities.push(this.player);
 
 	this.score = 0;
+	this.gameTime = 0;
+
+	this.enemiesKilled = 0;
+	this.powerupsUsed = 0;
+	this.highestCombo = 0;
+
 	this.spawnPoints = 0;
 	this.counter = 0;
 	this.timeSinceWave = 0;
@@ -51,8 +57,6 @@ function Game(difficulty) {
 	this.gameSpeed = 1;
 	this.playSpeed = 1;
 	this.slowMo = 0;
-
-	this.gameTime = 0;
 
 	// Maximum time between two kills for it to count as a combo
 	this.comboTime = 90;
@@ -164,6 +168,10 @@ Game.prototype.enemyDeath = function(enemy) {
 	if (!this.gameOver) {
 		// Increase combo
 		this.combo++;
+		if (this.combo > this.highestCombo) {
+			this.highestCombo = this.combo;
+		}
+
 		this.lastKill = 0;
 
 		// Set slow motion
@@ -176,6 +184,8 @@ Game.prototype.enemyDeath = function(enemy) {
 
 		// Increase score
 		this.score += enemy.scoreValue * combo;
+
+		this.enemiesKilled++;
 	}
 }
 

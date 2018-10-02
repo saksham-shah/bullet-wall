@@ -50,7 +50,7 @@ Gun.prototype.update = function() {
         }
     }
 
-    this.direction = rotateToAngle(this.direction, this.targetDirection, 0.2, 0.05);
+    this.direction = rotateToAngle(this.direction, this.targetDirection, 0.3, 0.03);
 }
 
 // Shoots a bullet
