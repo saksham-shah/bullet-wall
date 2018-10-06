@@ -4,6 +4,12 @@ Play the game here: https://rawgit.com/saksham-shah/bullet-wall/master/index.htm
 
 Change log:
 
+6 October - v1.2.1 - Chaaaaarge!
+
+* NEW raging bull!
+* The bull charges at you at full speed, watch out!
+* All entities now leave footprints on the floor
+
 26 September - v1.2 - Power Up!
 
 * NEW Power Ups - Build a wall on the powerup to use it!
@@ -61,4 +67,4 @@ Change log:
 
 Pre 12 September:
 
-* Game in development since 8 September
+* Game in development since 3 September
