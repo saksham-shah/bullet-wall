@@ -59,14 +59,17 @@ Grid.prototype.draw = function() {
 	for (var i = 0; i < this.grid.length; i++) {
 		var row = this.grid[i];
 		for (var j = 0; j < row.length; j++) {
-            // Draw powerups first
+            // Draw powerups
             row[j].draw(1);
 		}
 	}
+}
+
+Grid.prototype.drawWalls = function() {
     for (var i = 0; i < this.grid.length; i++) {
 		var row = this.grid[i];
 		for (var j = 0; j < row.length; j++) {
-            // Then walls
+            // Draw walls
             row[j].draw(0);
 		}
 	}

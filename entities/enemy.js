@@ -1,6 +1,6 @@
 // General object for all enemies
-function Enemy(game, row, col, attackD, stayD, followD) {
-	Entity.call(this, game, row, col, 15);
+function Enemy(game, row, col, health, attackD, stayD, followD) {
+	Entity.call(this, game, row, col, 15, health);
 
 	this.target = game.player;
 	this.pathToTarget = null;

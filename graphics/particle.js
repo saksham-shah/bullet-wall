@@ -26,14 +26,16 @@ Particle.prototype.update = function() {
 	this.pos.add(p5.Vector.mult(this.vel, this.game.gameSpeed));
     this.vel.add(p5.Vector.mult(this.acc, this.game.gameSpeed));
 
-	// If it hits a wall, it disappears
-	this.canDraw = true;
-	var myCell = this.game.grid.getCell(this.pos);
-	if (this.cell !== undefined && myCell !== null) {
-		if (myCell.wall > 0 || (myCell.powerup !== null && myCell === this.cell)) {
-			this.canDraw = false;
-			if (myCell !== this.cell) {
-				this.finished = true;
+	if (this.cell !== undefined) {
+		// If it hits a wall, it disappears
+		this.canDraw = true;
+		var myCell = this.game.grid.getCell(this.pos);
+		if (myCell !== null) {
+			if (myCell.wall > 0 || (myCell.powerup !== null && myCell === this.cell)) {
+				this.canDraw = false;
+				if (myCell !== this.cell) {
+					this.finished = true;
+				}
 			}
 		}
 	}

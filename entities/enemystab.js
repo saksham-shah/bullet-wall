@@ -1,6 +1,6 @@
 // Fast enemy with a sword-like melee weapon
 function EnemyStab(game, row, col) {
-	Enemy.call(this, game, row, col, 60, 0, CELLSIZE);
+	Enemy.call(this, game, row, col, 1, 60, 0, CELLSIZE);
 
 	this.maxVel = 3;
 	this.maxForce = 0.15;
@@ -67,10 +67,10 @@ EnemyStab.prototype.attack = function() {
 	}
 }
 
-EnemyStab.prototype.draw = function() {
-	var drawPos = getDrawPos(this.pos);
+EnemyStab.prototype.specificDraw = function() {
+	// var drawPos = getDrawPos(this.pos);
     push();
-    translate(drawPos);
+    // translate(drawPos);
 	rotate(this.vel.heading());
 
 	fill(250, 75, 75);

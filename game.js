@@ -8,6 +8,7 @@ function Game(difficulty) {
     this.entities = [];
     this.bullets = [];
     this.particles = [];
+	this.markings = []; // Floor markings (e.g. footprints);
 
 	this.grid = new Grid(this, this.gridSize);
     this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
@@ -119,7 +120,7 @@ Game.prototype.update = function() {
 			}
 			this.lastPowerUp = sq(random(3, 7)) * (1 - this.score * 0.00005);
 		} else {
-			this.lastPowerUp -= 1;
+			this.lastPowerUp -= this.gameSpeed;
 		}
 	} else {
 		this.counter -= this.gameSpeed;
@@ -159,6 +160,14 @@ Game.prototype.update = function() {
             this.particles.splice(i, 1);
         } else {
 			this.particles[i].update();
+		}
+	}
+
+	for (var i = 0; i < this.markings.length; i++) {
+        if (this.markings[i].finished) {
+            this.markings.splice(i, 1);
+        } else {
+			this.markings[i].update();
 		}
 	}
 }
@@ -202,6 +211,13 @@ Game.prototype.draw = function() {
 	this.grid.draw();
 
 	// Draws all game objects
+
+	for (var i = 0; i < this.markings.length; i++) {
+		this.markings[i].draw();
+	}
+
+	// Walls are on top of floor markings
+	this.grid.drawWalls();
 
 	for (var i = 0; i < this.entities.length; i++) {
 		if (!this.entities[i].hide) {

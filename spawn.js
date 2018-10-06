@@ -24,7 +24,7 @@ Game.prototype.randomCell = function(dFromPlayer) {
 }
 
 var spawns = [
-    // Fast Enemy
+    // Stab Enemy
     new Spawn(1, 0,
         function(game) {
             var cell = game.randomCell(CELLSIZE * 6);
@@ -36,6 +36,13 @@ var spawns = [
         function(game) {
             var cell = game.randomCell(CELLSIZE * 6);
             game.entities.push(new EnemyGun(game, cell.row, cell.col));
+        }
+    ),
+    // Bull Enemy
+    new Spawn(3, 100,
+        function(game) {
+            var cell = game.randomCell(CELLSIZE * 6);
+            game.entities.push(new EnemyBull(game, cell.row, cell.col));
         }
     ),
 ]

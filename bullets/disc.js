@@ -65,9 +65,9 @@ Disc.prototype.checkEntityHits = function(entities) {
             var d = p5.Vector.dist(this.pos, entities[i].pos);
             if (d < this.r + entities[i].r) {
                 entities[i].damage(1, this);
-                if (!entities[i].dead) {
-                    this.done = true;
-                }
+                // if (!entities[i].dead) {
+                //     this.done = true;
+                // }
             }
         }
     }

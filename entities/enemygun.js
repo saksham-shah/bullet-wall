@@ -1,6 +1,6 @@
 // Gun enemy which shoots 3 bullets in a burst, every 3 seconds
 function EnemyGun(game, row, col) {
-	Enemy.call(this, game, row, col, 400, 0, CELLSIZE);
+	Enemy.call(this, game, row, col, 1, 400, 0, CELLSIZE);
 
 	this.maxVel = 1;
 	this.maxForce = 0.1;
@@ -66,10 +66,10 @@ EnemyGun.prototype.attack = function(toAttack) {
     }
 }
 
-EnemyGun.prototype.draw = function() {
-	var drawPos = getDrawPos(this.pos);
+EnemyGun.prototype.specificDraw = function() {
+	// var drawPos = getDrawPos(this.pos);
     push();
-    translate(drawPos);
+    // translate(drawPos);
 	rotate(this.vel.heading());
 
 	fill(250, 75, 75);

@@ -8,7 +8,6 @@ function GameScreen() {
 
 // Starts a new game
 GameScreen.prototype.newGame = function(difficulty) {
-    console.log("new");
     this.game = new Game(difficulty);
 
     // GS holds all of the stats of the game, to display them to the player

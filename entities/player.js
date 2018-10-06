@@ -1,6 +1,6 @@
 // Player entity, controlled by the keyboard
 function Player(game, row, col, controls) {
-    Entity.call(this, game, row, col, 15);
+    Entity.call(this, game, row, col, 15, 3);
     this.controls = {
 	        up: controls[0],
 	        down: controls[1],
@@ -20,7 +20,7 @@ function Player(game, row, col, controls) {
 
     this.mass = 50;
 
-    this.health = 3;
+    // this.health = 3;
 
     this.shield = true;
     this.shieldTimer = 0;
@@ -68,7 +68,11 @@ Player.prototype.update = function() {
                 this.gun2.shoot();
                 this.lastShot = 2;
             }
-            this.cooldown = 15;
+            if (this.guns == 1) {
+                this.cooldown = 30;
+            } else {
+                this.cooldown = 15;
+            }
             break;
 
             case 1:
@@ -122,23 +126,16 @@ Player.prototype.die = function(enemy) {
     this.game.gameOver = true;
 }
 
-Player.prototype.draw = function() {
-	var drawPos = getDrawPos(this.pos);
-
-    push();
-    translate(drawPos);
-
+Player.prototype.specificDraw = function() {
 	fill(200, 200, 250);
 	stroke(160, 160, 200);
     strokeWeight(2 * zoom);
 
 	ellipse(0, 0, this.r * zoom * 2);
 
-    fill(255, 0, 0, this.damaged * 4);
-    noStroke();
-    ellipse(0, 0, this.r * zoom * 2);
-
-    pop();
+    // fill(255, 0, 0, this.damaged * 4);
+    // noStroke();
+    // ellipse(0, 0, this.r * zoom * 2);
 }
 
 Player.prototype.drawWeapon = function() {
