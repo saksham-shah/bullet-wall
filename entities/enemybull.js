@@ -8,15 +8,17 @@ function EnemyBull(game, row, col) {
 	this.hitSpeed = 270;
 	this.wallDestroy = 180;
 
-	// this.weaponPos = createVector(0, 0);
-	// // How extended the 'sword' weapon is
-	// this.weaponExtend = 5;
-
-	this.cooldown = 0;
+	this.cooldown = 60;
 	this.state = 0;
     this.playerDamaged = false;
 
 	this.scoreValue = 30;
+
+	this.direction = 0;
+	this.targetDirection = 0;
+
+	this.lastSmoke = 0;
+
 }
 
 EnemyBull.prototype = Object.create(Enemy.prototype);
@@ -28,6 +30,7 @@ EnemyBull.prototype.specificUpdate = function() {
 	// If state is 2, it's charging
 
     if (this.state == 0) {
+		// Normal chasing the player
         this.maxVel = 2;
         this.maxForce = 0.1;
         this.mass = 10;
@@ -36,24 +39,35 @@ EnemyBull.prototype.specificUpdate = function() {
     } else {
         this.acc.mult(0);
 
+		// When charging, the bull travels much faster and cannot be pushed off its path
         this.mass = 200;
         this.maxForce = 0.2;
-        this.maxVel = 4;
+        this.maxVel = 5;
 
         this.checkWallHit();
 
-        if (random() < 0.25) {
-            var pos = this.pos.copy().add(p5.Vector.fromAngle(this.direction - HALF_PI * 0.5).setMag(1.7 * this.r));
-            this.game.particles.push(new SmokeParticle(this.game, pos, p5.Vector.fromAngle(this.direction - HALF_PI * random(0.4, 0.6)).setMag(2), createVector(0, 0), 15, 45, color(200)));
-        }
+		// Creates smoke from its horns
+		this.lastSmoke += this.game.gameSpeed;
 
-        if (random() < 0.25) {
-            var pos = this.pos.copy().add(p5.Vector.fromAngle(this.direction + HALF_PI * 0.5).setMag(1.7 * this.r));
-            this.game.particles.push(new SmokeParticle(this.game, pos, p5.Vector.fromAngle(this.direction + HALF_PI * random(0.4, 0.6)).setMag(2), createVector(0, 0), 15, 45, color(200)));
-        }
+		while (this.lastSmoke > 0.9) {
+			this.lastSmoke --;
+		    if (random() < 0.25) {
+		        var pos = this.pos.copy().add(p5.Vector.fromAngle(this.direction - HALF_PI * 0.5).setMag(1.7 * this.r));
+		        this.game.particles.push(new SmokeParticle(this.game, pos, p5.Vector.fromAngle(this.direction - HALF_PI * random(0.4, 0.6)).setMag(2), createVector(0, 0), 15, 45, color(200)));
+		    }
+
+		    if (random() < 0.25) {
+		        var pos = this.pos.copy().add(p5.Vector.fromAngle(this.direction + HALF_PI * 0.5).setMag(1.7 * this.r));
+		        this.game.particles.push(new SmokeParticle(this.game, pos, p5.Vector.fromAngle(this.direction + HALF_PI * random(0.4, 0.6)).setMag(2), createVector(0, 0), 15, 45, color(200)));
+		    }
+		}
 
         if (this.state == 1) {
-            this.direction = p5.Vector.sub(this.target.pos, this.pos).heading();
+            this.targetDirection = p5.Vector.sub(this.target.pos, this.pos).heading();
+
+			// The bull will rotate towards the player smoothly
+			this.direction = rotateToAngle(this.direction, this.targetDirection, 0.3, 0.15);
+
             if (this.cooldown < 240) {
                 this.state = 2;
                 this.playerDamaged = false;
@@ -66,6 +80,7 @@ EnemyBull.prototype.specificUpdate = function() {
             var d = p5.Vector.dist(this.pos, this.game.player.pos);
     		if (d <= this.game.player.r + this.r && this.playerDamaged !== true) {
     			this.game.player.damage(1, this);
+				// The bull can only damage the player once per charge
     			this.playerDamaged = true;
     		}
 
@@ -89,7 +104,7 @@ EnemyBull.prototype.checkWallHit = function() {
     }
 }
 
-// The attack is simply the weapon extending
+// The attack is simply the bull's state being set to 1 - i.e. preparing to charge
 EnemyBull.prototype.attack = function() {
 	if (this.cooldown < 0) {
 		this.state = 1;
@@ -98,9 +113,7 @@ EnemyBull.prototype.attack = function() {
 }
 
 EnemyBull.prototype.specificDraw = function() {
-	// var drawPos = getDrawPos(this.pos);
     push();
-    // translate(drawPos);
 	rotate(this.direction);
 
     // Bull horns
@@ -137,26 +150,3 @@ EnemyBull.prototype.specificDraw = function() {
 
     pop();
 }
-
-// Draws horns (it's a bull)
-// EnemyBull.prototype.drawWeapon = function() {
-// 	var drawPos = getDrawPos(this.pos);
-// 	push();
-// 	translate(drawPos);
-// 	rotate(this.direction);
-//
-//
-// 	fill(150, 50, 50);
-// 	stroke(0);
-// 	strokeWeight(2 * zoom);
-//
-//     line(0, 0, this.r * zoom, 0);
-// 	// beginShape();
-// 	// vertex(this.weaponExtend * this.r * zoom / 15, 0);
-// 	// vertex(0, 5 * this.r * zoom / 15);
-// 	// vertex(0, -5 * this.r * zoom / 15);
-// 	// vertex(this.weaponExtend * this.r * zoom / 15, 0);
-// 	// endShape();
-//
-// 	pop()
-// }

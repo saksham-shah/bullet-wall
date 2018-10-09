@@ -112,7 +112,7 @@ GameScreen.prototype.draw = function() {
 GameScreen.prototype.drawScore = function() {
     var x = width - xOff * 0.5;
     var y = height * 0.25;
-    var r = 40 * zoom;
+    var r = 40 * screenZoom;
 
     this.text1.draw(x, y, r);
 
@@ -124,9 +124,9 @@ GameScreen.prototype.drawScore = function() {
 GameScreen.prototype.drawLives = function() {
     // Lives
     for (var i = 0; i < 3; i++) {
-        var x = (i - 1) * 80 * zoom + xOff * 0.5;
+        var x = (i - 1) * 80 * screenZoom + xOff * 0.5;
         var y = height * 0.75;
-        var r = 30 * zoom;
+        var r = 30 * screenZoom;
 
         if (this.lives > i) {
             fill(250, 75, 75);
@@ -162,7 +162,7 @@ GameScreen.prototype.drawShield = function() {
     // Shield
     var x = xOff * 0.5;
     var y = height * 0.5;
-    var r = 50 * zoom;
+    var r = 50 * screenZoom;
 
     noStroke();
 
@@ -219,7 +219,7 @@ GameScreen.prototype.drawCombo = function() {
     if (this.combo > 0) {
         var x = xOff * 0.5;
         var y = height * 0.25;
-        var r = 60 * zoom;
+        var r = 60 * screenZoom;
 
         textSize(r);
         textAlign(CENTER);

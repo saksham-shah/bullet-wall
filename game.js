@@ -61,9 +61,18 @@ function Game(difficulty) {
 
 	// Maximum time between two kills for it to count as a combo
 	this.comboTime = 90;
+
+	this.shake = 10;
 }
 
 Game.prototype.update = function() {
+	this.updateTime();
+	this.updateSpawns();
+	this.updateObjects();
+}
+
+// Slow motion, frame rate, camera shake etc
+Game.prototype.updateTime = function() {
 	// Calculate Delta time in order to have smooth movement
     var now = Date.now();
     var dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
@@ -89,6 +98,10 @@ Game.prototype.update = function() {
 	} else {
 		this.combo = 0;
 	}
+}
+
+// Enemy spawns and power up spawns
+Game.prototype.updateSpawns = function() {
 
 	// Enemy spawning
 	this.timeSinceWave += this.gameSpeed;
@@ -125,11 +138,10 @@ Game.prototype.update = function() {
 	} else {
 		this.counter -= this.gameSpeed;
 	}
+}
 
-
-
-	// Updates all game objects (e.g. entities, bullets, particles)
-
+// Updates all game objects (e.g. entities, bullets, particles)
+Game.prototype.updateObjects = function() {
 	for (var i = 0; i < powerups.length; i++) {
 		powerups[i].update(this);
 	}
@@ -147,7 +159,8 @@ Game.prototype.update = function() {
         if (this.bullets[i].hit) {
         	var bullet = this.bullets[i];
 			if (bullet instanceof Bullet) {
-        		this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, color(255));
+				this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, color(255));
+				// this.smokeExplosion(bullet.pos, 1, 50, bullet.vel.heading(), PI * 0.05, 40, 5, 10, 5, color(255));
 			}
             this.bullets.splice(i, 1);
         } else {

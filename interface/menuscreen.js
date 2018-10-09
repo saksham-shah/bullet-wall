@@ -14,8 +14,8 @@ function MenuScreen() {
 MenuScreen.prototype.createButtons = function() {
     this.buttons = [];
 
-    this.playButton = new Button(this, width * 0.5 - 200 * zoom, height * 0.5 - 100 * zoom, 400 * zoom, 200 * zoom, "PLAY", 100 * zoom);
-    this.difficultyButton = new Button(this, width * 0.5 - 125 * zoom, height * 0.8, 250 * zoom, 100 * zoom, DIFFICULTIES[this.difficulty], 50 * zoom);
+    this.playButton = new Button(this, width * 0.5 - 200 * screenZoom, height * 0.5 - 100 * screenZoom, 400 * screenZoom, 200 * screenZoom, "PLAY", 100 * screenZoom);
+    this.difficultyButton = new Button(this, width * 0.5 - 125 * screenZoom, height * 0.8, 250 * screenZoom, 100 * screenZoom, DIFFICULTIES[this.difficulty], 50 * screenZoom);
 
     this.buttons.push(this.playButton);
     this.buttons.push(this.difficultyButton);
@@ -45,7 +45,7 @@ MenuScreen.prototype.buttonClicked = function(button) {
 MenuScreen.prototype.draw = function() {
     background(30, 40, 80);
 
-    this.title.draw(width * 0.5, height * 0.2, 150 * zoom);
+    this.title.draw(width * 0.5, height * 0.2, 150 * screenZoom);
 
     if (this.title.isFinished()) {
         for (var i = 0; i < this.buttons.length; i++) {

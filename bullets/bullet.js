@@ -1,8 +1,9 @@
 // Used by player and Gun Enemy
-function Bullet(game_, gun_, speed_, direction_, colour_) {
+function Bullet(game_, gun_, speed_, direction_, buildWalls_, colour_) {
     this.game = game_;
 
     this.gun = gun_;
+    this.buildWalls = buildWalls_;
 
     this.r = this.gun.w * 0.5;
     this.colour = colour_;
@@ -31,7 +32,7 @@ Bullet.prototype.checkWallHit = function() {
     if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
         this.hit = true;
         if (wallCollision[1] !== null) {
-            if (this.gun.player) {
+            if (this.buildWalls) {
                 // Player bullets create walls
                 if (myCell !== playerCell) {
                     myCell.build();
@@ -46,7 +47,7 @@ Bullet.prototype.checkWallHit = function() {
         // If a bullet has spawned in a wall, it disappears
         if (myCell.wall > 0) {
             this.hit = true;
-            if (!this.gun.player) {
+            if (!this.buildWalls) {
                 myCell.break(this.vel.heading());
             } else {
                 // This can happen during low frame rates - ensures that a wall is spawned
@@ -69,6 +70,14 @@ Bullet.prototype.checkEntityHits = function(entities) {
             if (d < this.r + entities[i].r) {
                 entities[i].damage(1, this);
                 this.hit = true;
+                if (this.buildWalls && entities[i].dead) {
+                    var myCell = this.game.grid.getCell(this.pos);
+                    var playerCell = this.game.grid.getCell(this.game.player.pos);
+                    if (myCell !== playerCell) {
+                        // Create a wall if the player is not in the same cell (so the player doesn't get stuck in the wall)
+                        myCell.build();
+                    }
+                }
             }
         }
     }

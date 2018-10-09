@@ -8,8 +8,8 @@ function PauseScreen() {
 PauseScreen.prototype.createButtons = function() {
     this.buttons = [];
 
-    this.resumeButton = new Button(this, width * 0.5 - 350 * zoom, height * 0.6, 300 * zoom, 150 * zoom, "RESUME", 50 * zoom);
-    this.menuButton = new Button(this, width * 0.5 + 50 * zoom, height * 0.6, 300 * zoom, 150 * zoom, "MENU", 50 * zoom);
+    this.resumeButton = new Button(this, width * 0.5 - 350 * screenZoom, height * 0.6, 300 * screenZoom, 150 * screenZoom, "RESUME", 50 * screenZoom);
+    this.menuButton = new Button(this, width * 0.5 + 50 * screenZoom, height * 0.6, 300 * screenZoom, 150 * screenZoom, "MENU", 50 * screenZoom);
 
     this.buttons.push(this.resumeButton);
     this.buttons.push(this.menuButton);
@@ -46,7 +46,7 @@ PauseScreen.prototype.draw = function() {
     //
     // text("PAUSED", width * 0.5, height * 0.5);
 
-    this.pausedText.draw(width * 0.5, height * 0.3, 175 * zoom, "PAUSED");
+    this.pausedText.draw(width * 0.5, height * 0.3, 175 * screenZoom, "PAUSED");
 
     for (var i = 0; i < this.buttons.length; i++) {
         this.buttons[i].draw();

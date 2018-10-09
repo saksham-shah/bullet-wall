@@ -91,15 +91,7 @@ Enemy.prototype.moveTowards = function(pos) {
 
 // When the enemy dies
 Enemy.prototype.die = function(bullet) {
-	var myCell = this.game.grid.getCell(this.pos);
-	var playerCell = this.game.grid.getCell(this.game.player.pos);
-	if (myCell !== playerCell && bullet instanceof Bullet) {
-		// Create a wall if the player is not in the same cell (so the player doesn't get stuck in the wall)
-		myCell.build();
-	}
-
 	this.dead = true;
 	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 1, 45, 3, color(200, 60, 60));
-
 	this.game.enemyDeath(this);
 }

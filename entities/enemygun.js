@@ -59,7 +59,7 @@ EnemyGun.prototype.attack = function(toAttack) {
         var d = abs(this.gun.direction - direction);
         if (this.cooldown < 0) {
 			// Shoots in bursts of 3
-            this.gun.shoot(3);
+            this.gun.shoot(3, false);
             this.cooldown = this.hitSpeed;
         }
         this.attacked = true;
@@ -67,9 +67,7 @@ EnemyGun.prototype.attack = function(toAttack) {
 }
 
 EnemyGun.prototype.specificDraw = function() {
-	// var drawPos = getDrawPos(this.pos);
     push();
-    // translate(drawPos);
 	rotate(this.vel.heading());
 
 	fill(250, 75, 75);

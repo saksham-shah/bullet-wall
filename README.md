@@ -9,6 +9,9 @@ Change log:
 * NEW raging bull!
 * The bull charges at you at full speed, watch out!
 * All entities now leave footprints on the floor
+* Disc now bounces off the edges of the map
+* Death screen now displays game stats - enemies killed, highest combo, and more
+* FIX: Walls not spawning at low frame rates
 
 26 September - v1.2 - Power Up!
 

@@ -54,12 +54,15 @@ Gun.prototype.update = function() {
 }
 
 // Shoots a bullet
-Gun.prototype.shoot = function(bursts) {
+Gun.prototype.shoot = function(bursts, buildWalls) {
+    if (buildWalls !== undefined) {
+        this.buildWalls = buildWalls;
+    }
     if (this.cooldown <= 0) {
 
         this.cooldown = this.shootSpeed;
 
-        this.game.bullets.push(new Bullet(this.game, this, 5, this.direction, color(255)));
+        this.game.bullets.push(new Bullet(this.game, this, 5, this.direction, buildWalls, color(255)));
 
         this.shootAnimation();
 

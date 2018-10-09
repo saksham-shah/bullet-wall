@@ -68,9 +68,7 @@ EnemyStab.prototype.attack = function() {
 }
 
 EnemyStab.prototype.specificDraw = function() {
-	// var drawPos = getDrawPos(this.pos);
     push();
-    // translate(drawPos);
 	rotate(this.vel.heading());
 
 	fill(250, 75, 75);

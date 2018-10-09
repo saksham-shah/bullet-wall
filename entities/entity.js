@@ -42,6 +42,7 @@ Entity.prototype.move = function(entities) {
     this.vel.limit(this.maxVel);
     this.checkCollisions(entities);
 
+    // Leaves behind footprints
     if (this.lastPrint > 20 / this.maxVel && this.vel.mag() > 0) {
         this.lastPrint = 0;
 
@@ -50,6 +51,7 @@ Entity.prototype.move = function(entities) {
 
         this.game.markings.push(new Footprint(this.game, printPos, this.vel.heading()));
 
+        // Alternating feet
         this.foot *= -1
     } else {
         this.lastPrint += this.game.gameSpeed;
@@ -105,14 +107,12 @@ Entity.prototype.draw = function() {
         if (this.health > 1) {
             rotate(- HALF_PI * 0.5);
             stroke(200, 60, 60);
-            strokeWeight(2 * zoom);
-            line(- this.r * zoom, 0, this.r * zoom, 0);
+            strokeWeight(3 * zoom);
+            line((- this.r + 1) * zoom, 0, (this.r - 1) * zoom, 0);
 
             if (this.health > 2) {
                 rotate(HALF_PI);
-                stroke(200, 60, 60);
-                strokeWeight(2 * zoom);
-                line(- this.r * zoom, 0, this.r * zoom, 0);
+                line((- this.r + 1) * zoom, 0, (this.r - 1) * zoom, 0);
             }
         }
     }

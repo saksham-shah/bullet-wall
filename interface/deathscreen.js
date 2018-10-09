@@ -11,8 +11,8 @@ function DeathScreen() {
 DeathScreen.prototype.createButtons = function() {
     this.buttons = [];
 
-    this.restartButton = new Button(this, width * 0.5 - 375 * zoom, height * 0.75, 350 * zoom, 150 * zoom, "PLAY AGAIN", 50 * zoom);
-    this.menuButton = new Button(this, width * 0.5 + 25 * zoom, height * 0.75, 350 * zoom, 150 * zoom, "MENU", 50 * zoom);
+    this.restartButton = new Button(this, width * 0.5 - 375 * screenZoom, height * 0.75, 350 * screenZoom, 150 * screenZoom, "PLAY AGAIN", 50 * screenZoom);
+    this.menuButton = new Button(this, width * 0.5 + 25 * screenZoom, height * 0.75, 350 * screenZoom, 150 * screenZoom, "MENU", 50 * screenZoom);
 
     this.buttons.push(this.restartButton);
     this.buttons.push(this.menuButton);
@@ -70,11 +70,11 @@ DeathScreen.prototype.draw = function() {
     noStroke();
     rect(0, 0, width, height * 0.1);
 
-    this.modeText.draw(width * 0.5, height * 0.05, 30 * zoom, "CLASSIC");
-    this.gameOverText.draw(width * 0.5, height * 0.2, 100 * zoom);
+    this.modeText.draw(width * 0.5, height * 0.05, 30 * screenZoom, "CLASSIC");
+    this.gameOverText.draw(width * 0.5, height * 0.2, 100 * screenZoom);
 
     if (this.gameOverText.isFinished()) {
-        this.statsText.draw(width * 0.5, height * 0.32, height * 0.07, 40 * zoom);//, 50 * zoom, 150 * zoom, 50 * zoom);
+        this.statsText.draw(width * 0.5, height * 0.32, height * 0.07, 40 * screenZoom);//, 50 * zoom, 150 * zoom, 50 * zoom);
 
         if (this.statsText.isFinished()) {
             for (var i = 0; i < this.buttons.length; i++) {

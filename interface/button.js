@@ -31,7 +31,7 @@ Button.prototype.update = function() {
 Button.prototype.draw = function() {
     fill(60, 80, 160);
     stroke(45, 60, 120);
-    strokeWeight(7 * zoom);
+    strokeWeight(7 * screenZoom);
 
     // Lighter blue if hovered
     if (this.hovered) {

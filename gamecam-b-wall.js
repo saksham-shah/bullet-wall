@@ -4,9 +4,11 @@ var zoom;
 
 // Recalculates the position of the game grid when the window is resized
 function calcOffsets() {
-    zoom = width / 1200;
+    screenZoom = width / 1200;
+    zoom = 15 * 40 * width / 1200 / (GRIDSIZE * CELLSIZE);
 	if (height / 800 < zoom) {
-		zoom = height / 800;
+        screenZoom = height / 800;
+        zoom = 15 * 40 * height / 800 / (GRIDSIZE * CELLSIZE);
 	}
 
     xOff = (width - GRIDSIZE * CELLSIZE * zoom) * 0.5;

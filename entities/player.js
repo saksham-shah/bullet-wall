@@ -31,6 +31,18 @@ function Player(game, row, col, controls) {
 Player.prototype = Object.create(Entity.prototype);
 
 Player.prototype.update = function() {
+    this.control();
+    this.checkWallHit();
+    this.updateGuns();
+    this.checkShoot();
+
+    if (this.shieldTimer > 0) {
+        this.shieldTimer -= this.game.gameSpeed;
+    }
+}
+
+// Control the player using the arrow keys
+Player.prototype.control = function() {
     this.vel.mult(0, 0);
     // Controlled by arrow keys or WASD
     if (keyIsDown(this.controls.left) || keyIsDown(65)) this.vel.x -= 1;
@@ -41,9 +53,9 @@ Player.prototype.update = function() {
     // Moves at the same speed no matter which direction it is in
     this.vel.normalize();
     this.vel.mult(this.maxVel);
+}
 
-    this.checkWallHit();
-
+Player.prototype.updateGuns = function() {
     this.gun1.update();
     if (this.guns == 2) {
         this.gun2.update();
@@ -54,19 +66,27 @@ Player.prototype.update = function() {
     this.direction = p5.Vector.sub(mousePos, this.pos).heading();
     this.gun1.direction = p5.Vector.sub(mousePos, this.gun1.getPos()).heading();
     this.gun2.direction = p5.Vector.sub(mousePos, this.gun2.getPos()).heading();
+}
 
+// Control shooting different bullets and from different guns
+Player.prototype.checkShoot = function() {
     if (this.cooldown > 0) {
         this.cooldown -= this.game.gameSpeed;
     } else if (mouseIsPressed) {
         switch(this.weapon) {
             case 0: // Normal bullets
             // If guns = 2, shots are taken with alternate guns
-            if (this.lastShot == 2 || this.guns == 1) {
-                this.gun1.shoot();
+            if (this.guns == 1) {
+                this.gun1.shoot(1, true);
                 this.lastShot = 1;
             } else {
-                this.gun2.shoot();
-                this.lastShot = 2;
+                if (this.lastShot == 1) {
+                    this.gun2.shoot(1, false);
+                    this.lastShot = 2;
+                } else {
+                    this.gun1.shoot(1, false);
+                    this.lastShot = 1;
+                }
             }
             if (this.guns == 1) {
                 this.cooldown = 30;
@@ -88,16 +108,6 @@ Player.prototype.update = function() {
             }
         }
     }
-
-    if (this.shieldTimer > 0) {
-        this.shieldTimer -= this.game.gameSpeed;
-    }
-
-    // if (keyIsDown(66)) {
-    //     this.weapon = 1;
-    // }
-
-
 }
 
 // If you collide with a 'soft wall' (wall which has already been attacked once), you break it
@@ -106,8 +116,8 @@ Player.prototype.checkWallHit = function() {
     var wallCollision = collideWithWalls(futurePos, this.r, this.game.grid);
     if (wallCollision[0].x != futurePos.x || wallCollision[0].y != futurePos.y) {
         if (wallCollision[1] !== null) {
-            if (wallCollision[1].wall == 1 || this.guns == 2) {
-                wallCollision[1].break(this.vel.heading(), true);
+            if (wallCollision[1].wall == 1) {
+                wallCollision[1].break(this.vel.heading());
             }
         }
     }
@@ -132,10 +142,6 @@ Player.prototype.specificDraw = function() {
     strokeWeight(2 * zoom);
 
 	ellipse(0, 0, this.r * zoom * 2);
-
-    // fill(255, 0, 0, this.damaged * 4);
-    // noStroke();
-    // ellipse(0, 0, this.r * zoom * 2);
 }
 
 Player.prototype.drawWeapon = function() {
