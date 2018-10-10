@@ -62,7 +62,8 @@ function Game(difficulty) {
 	// Maximum time between two kills for it to count as a combo
 	this.comboTime = 90;
 
-	this.shake = 10;
+	this.shakeOffset = 0;
+	this.shakeTimer = 0;
 }
 
 Game.prototype.update = function() {
@@ -97,6 +98,14 @@ Game.prototype.updateTime = function() {
 		this.lastKill += this.gameSpeed;
 	} else {
 		this.combo = 0;
+	}
+
+	this.shakeOffset += this.gameSpeed;
+
+	if (this.shakeTimer > 0) {
+		this.shakeTimer -= this.gameSpeed;
+	} else {
+		this.shakeTimer = 0;
 	}
 }
 
@@ -221,6 +230,15 @@ Game.prototype.slowMotion = function(time, speed) {
 
 Game.prototype.draw = function() {
 	background(30, 40, 80);
+
+	push();
+	var shakeMag = this.shakeTimer * 0.25;
+	if (shakeMag > 3) {
+		shakeMag = 3;
+	}
+	var shakeV = createVector(noise(this.shakeOffset + 1000000) - 0.5, noise(this.shakeOffset) - 0.5).setMag(shakeMag);
+	translate(shakeV);
+
 	this.grid.draw();
 
 	// Draws all game objects
@@ -251,4 +269,6 @@ Game.prototype.draw = function() {
 	for (var i = 0; i < this.particles.length; i++) {
 		this.particles[i].draw();
 	}
+
+	pop();
 }

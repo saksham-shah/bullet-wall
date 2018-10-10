@@ -4,6 +4,13 @@ Play the game here: https://rawgit.com/saksham-shah/bullet-wall/master/index.htm
 
 Change log:
 
+10 October - v1.2.2 - Rumble of the Bulls
+
+* Shoot through walls with the reworked Double Gun powerup!
+* Bulls now charge 25% faster - to compensate, they spawn less frequently, later on in the game, and they give you more points
+* Bulls now shake the screen when charging
+* FIX: Sometimes the Disc didn't one-shot bulls; now it does
+
 6 October - v1.2.1 - Chaaaaarge!
 
 * NEW raging bull!

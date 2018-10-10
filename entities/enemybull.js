@@ -12,7 +12,7 @@ function EnemyBull(game, row, col) {
 	this.state = 0;
     this.playerDamaged = false;
 
-	this.scoreValue = 30;
+	this.scoreValue = 40;
 
 	this.direction = 0;
 	this.targetDirection = 0;
@@ -86,7 +86,12 @@ EnemyBull.prototype.specificUpdate = function() {
 
             if (this.cooldown < 180) {
                 this.state = 0;
+				if (this.game.shakeTimer > 20) {
+					this.game.shakeTimer = 20;
+				}
             }
+
+			this.game.shakeTimer += 2;
         }
     }
 }

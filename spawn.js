@@ -39,7 +39,7 @@ var spawns = [
         }
     ),
     // Bull Enemy
-    new Spawn(4, 100,
+    new Spawn(4, 250,
         function(game) {
             var cell = game.randomCell(CELLSIZE * 6);
             game.entities.push(new EnemyBull(game, cell.row, cell.col));
