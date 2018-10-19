@@ -29,7 +29,7 @@ function reconstructPath(cameFrom, current) {
 }
 
 //  Uses the A* algorithm to find a path from the start to the goal
-function findPath(grid, goal, start, enemy) {
+function findPath(grid, goal, start, entity) {
     var closedSet = [];
 
     var openSet = [start];
@@ -40,7 +40,7 @@ function findPath(grid, goal, start, enemy) {
     gScore.set(start, 0);
 
     var fScore = new Map(grid.length, Infinity);
-    fScore.set(start, costEstimate(start, goal, enemy));
+    fScore.set(start, costEstimate(start, goal, entity));
 
     while (openSet.length > 0) {
         openSet.sort(function(a, b) {
@@ -58,7 +58,7 @@ function findPath(grid, goal, start, enemy) {
         var neighbours = current.getNeighbours();
         for (var i = 0; i < neighbours.length; i++) {
             if (!closedSet.includes(neighbours[i])) {
-                tentativeGScore = gScore.get(current) + costEstimate(current, neighbours[i], enemy);
+                tentativeGScore = gScore.get(current) + costEstimate(current, neighbours[i], entity);
 
                 var better = true;
                 if (!openSet.includes(neighbours[i])) {
@@ -70,18 +70,20 @@ function findPath(grid, goal, start, enemy) {
                 if (better) {
                     cameFrom.set(neighbours[i], current);
                     gScore.set(neighbours[i], tentativeGScore);
-                    fScore.set(neighbours[i], tentativeGScore + costEstimate(neighbours[i], goal, enemy));
+                    fScore.set(neighbours[i], tentativeGScore + costEstimate(neighbours[i], goal, entity));
                 }
             }
         }
     }
 }
 
-function costEstimate(a, b, enemy) {
+function costEstimate(a, b, entity) {
+    if (entity.customPathfinding !== undefined) {
+        return entity.customPathfinding(a, b);
+    }
     var av = createVector(a.row, a.col);
     var bv = createVector(b.row, b.col);
     var d = p5.Vector.dist(a.pos, b.pos);
-    d = d / enemy.maxVel + b.wall * enemy.wallDestroy;
+    d = d / entity.maxVel + b.wall * entity.wallDestroy;
     return d;
-
 }

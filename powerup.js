@@ -76,24 +76,24 @@ var powerups = [
             game.player.guns = 1;
             game.player.maxVel = 2;
         }, 300
-    ),
-    // Shield
-    new PowerUp(3, 3600,
-        function(game) {
-            game.player.shield = true;
-            game.player.shieldTimer = 0;
-        }, [75],
-        function(r) {
-            beginShape();
-            vertex(r * 0.25, r * 0.125);
-            vertex(r * 0.25, r * 0.625);
-            vertex(r * 0.5, r * 0.875);
-            vertex(r * 0.75, r * 0.625);
-            vertex(r * 0.75, r * 0.125);
-            vertex(r * 0.25, r * 0.125);
-            endShape();
-        }
     )
+    // Shield
+    // new PowerUp(3, 3600,
+    //     function(game) {
+    //         game.player.shield = true;
+    //         game.player.shieldTimer = 0;
+    //     }, [75],
+    //     function(r) {
+    //         beginShape();
+    //         vertex(r * 0.25, r * 0.125);
+    //         vertex(r * 0.25, r * 0.625);
+    //         vertex(r * 0.5, r * 0.875);
+    //         vertex(r * 0.75, r * 0.625);
+    //         vertex(r * 0.75, r * 0.125);
+    //         vertex(r * 0.25, r * 0.125);
+    //         endShape();
+    //     }
+    // )
 ]
 
 Game.prototype.randomPowerUp = function() {

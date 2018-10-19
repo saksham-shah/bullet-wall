@@ -73,11 +73,59 @@ Entity.prototype.checkCollisions = function(all) {
     this.pos.y = newPos.y;
 }
 
+// Calculates a path
+Entity.prototype.calculatePath = function() {
+	this.pathToTarget = findPath(this.game.grid.grid, this.game.grid.getCell(this.pos), this.game.grid.getCell(this.target.pos), this);
+	this.timeSinceLastPath = 0;
+}
+
+// Uses steering to move towards a p5.Vector position
+Entity.prototype.moveTowards = function(pos) {
+	var vectorToTarget = p5.Vector.sub(pos, this.pos);
+	vectorToTarget.normalize();
+	vectorToTarget.mult(this.maxVel);
+	vectorToTarget.sub(this.vel);
+	vectorToTarget.limit(this.maxForce);
+	this.acc.add(vectorToTarget);
+}
+
+// Follows a path
+Entity.prototype.followPath = function() {
+    if (this.pathToTarget !== null) {
+        this.timeSinceLastPath += this.game.gameSpeed;
+        // Refreshes the path every second
+        if (this.timeSinceLastPath > 60 || this.pathToTarget.length == 0) {
+            this.calculatePath();
+        }
+
+        // If it is blocked by a wall, attack the wall (to break it)
+        if (this.pathToTarget[0].wall > 0) {
+            this.attack(this.pathToTarget[0]);
+        }
+
+        // If the enemy has reached the current cell of the path
+        if (p5.Vector.dist(this.pos, this.pathToTarget[0].middle()) < this.r + CELLSIZE * 0.4) {
+            this.pathToTarget.splice(0, 1);
+            // If the next cell in the path is not a wall, it can travel straight to the next cell after that without being blocked
+            // Therefore the cell is removed from the path
+            if (this.pathToTarget.length > 1 && this.pathToTarget[0].wall == 0) {
+                this.pathToTarget.splice(0, 1);
+            }
+        }
+
+        if (this.pathToTarget.length > 0) {
+            // Follow the path
+            this.moveTowards(this.pathToTarget[0].middle());
+        }
+    }
+}
+
 // Takes damage
 Entity.prototype.damage = function(num, cause) {
     if (this.shield === true) {
         this.shield = false;
         this.shieldTimer = 180;
+        this.shieldRecharge = 3600;
     } else if (this.shieldTimer === undefined || this.shieldTimer <= 0) {
         this.health -= num;
         if (this.damaged !== undefined) {

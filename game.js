@@ -14,6 +14,10 @@ function Game(difficulty) {
     this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     this.entities.push(this.player);
 
+	// this.entities.push(new Hammerman(this, 1, 1));
+
+	this.enemies = 0;
+
 	this.score = 0;
 	this.gameTime = 0;
 
@@ -117,7 +121,7 @@ Game.prototype.updateSpawns = function() {
 	this.timeSinceEnemy += this.gameSpeed;
 
 	// If it has been 20 seconds since the last wave or all enemies of this wave have been killed
-	if (this.timeSinceWave > 1200 || (this.spawnPoints < 1 && this.entities.length == 1)) {
+	if (this.timeSinceWave > 1200 || (this.spawnPoints < 1 && this.enemies == 0)) {
 		this.spawnPoints += this.nextWave;
 		// Each wave gets slightly harder
 		this.nextWave += this.waveStep;

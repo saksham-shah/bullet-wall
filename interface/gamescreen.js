@@ -15,6 +15,7 @@ GameScreen.prototype.newGame = function(difficulty) {
     this.lives = 3;
     this.shield = true;
     this.shieldTimer = 0;
+    this.shieldRecharge = 0;
     this.combo = 0;
     this.lastKill = 55;
     this.comboPercentage = 0;
@@ -43,6 +44,8 @@ GameScreen.prototype.update = function() {
         this.shield = shield;
         var shieldTimer = this.game.player.shieldTimer;
         this.shieldTimer = shieldTimer;
+        var shieldRecharge = this.game.player.shieldRecharge;
+        this.shieldRecharge = shieldRecharge;
 
         var combo = this.game.combo;
         this.combo = combo;
@@ -212,6 +215,11 @@ GameScreen.prototype.drawShield = function() {
         noStroke();
 
         rect(x - r, y, r * 2, 3 * r * (180 - this.shieldTimer) / 180);
+    } else if (this.shieldRecharge > 0) {
+        fill(30, 40, 80, 150);
+        noStroke();
+
+        rect(x - r, y, r * 2, 3 * r * (this.shieldRecharge) / 3600);
     }
 }
 

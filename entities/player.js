@@ -24,6 +24,7 @@ function Player(game, row, col, controls) {
 
     this.shield = true;
     this.shieldTimer = 0;
+    this.shieldRecharge = 0;
 
     this.direction = 0;
 }
@@ -38,6 +39,11 @@ Player.prototype.update = function() {
 
     if (this.shieldTimer > 0) {
         this.shieldTimer -= this.game.gameSpeed;
+    } else if (this.shieldRecharge > 0) {
+        this.shieldRecharge -= this.game.gameSpeed / this.game.playSpeed;
+    } else {
+        this.shield = true;
+        this.shieldTimer = 0;
     }
 }
 
