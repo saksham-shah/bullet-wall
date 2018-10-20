@@ -1,5 +1,5 @@
-function Footprint(game_, pos_, direction_) {
-    Particle.call(this, game_, pos_, createVector(0, 0), createVector(0, 0), 4, 90, color(30, 40, 80));
+function Footprint(game_, pos_, direction_, r_) {
+    Particle.call(this, game_, pos_, createVector(0, 0), createVector(0, 0), r_, 90, color(30, 40, 80));
 
     this.direction = direction_;
 }

@@ -49,7 +49,7 @@ Entity.prototype.move = function(entities) {
         var relativePos = createVector(0, this.foot * this.r * 0.5).rotate(this.vel.heading());
         var printPos = this.pos.copy().add(relativePos);
 
-        this.game.markings.push(new Footprint(this.game, printPos, this.vel.heading()));
+        this.game.markings.push(new Footprint(this.game, printPos, this.vel.heading(), this.r / 15 * 4));
 
         // Alternating feet
         this.foot *= -1

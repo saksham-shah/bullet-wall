@@ -1,11 +1,11 @@
-function Hammerman(game, row, col) {
+function Minion(game, row, col) {
     Entity.call(this, game, row, col, 10, 1);
 
     this.target = game.player;
 	this.pathToTarget = null;
 
     this.maxVel = 3;
-	this.maxForce = 0.15;
+	this.maxForce = 0.3;
 
 	this.hitSpeed = 30;
 	this.wallDestroy = 100000;
@@ -16,31 +16,35 @@ function Hammerman(game, row, col) {
     this.hammerRotation = HALF_PI;
     this.relativePos = createVector(this.r * 1.5, 0).rotate(this.vel.heading() + this.hammerRotation);
     this.hammerPos = this.pos.copy().add(this.relativePos);
+    this.damageDealt = false;
 
     // this.life = 0;
     this.pathNoise = random(100);
 }
 
-Hammerman.prototype = Object.create(Entity.prototype);
+Minion.prototype = Object.create(Entity.prototype);
 
-Hammerman.prototype.update = function() {
+Minion.prototype.update = function() {
     this.cooldown -= this.game.gameSpeed;
 
-    // this.life += this.game.gameSpeed;
-    //
-    // if (this.life > 1200) {
-    //     this.die();
-    // }
-
-    // this.shield = true;
-
     var d = p5.Vector.dist(this.pos, this.target.pos);
-    // if (d < CELLSIZE * 2) {
-    //     this.moveTowards(this.pos);
     if (this.pathToTarget !== null) {
         this.followPath();
     } else {
         this.calculatePath();
+    }
+
+    if (!(this.target instanceof Player)) {
+        var d = p5.Vector.dist(this.pos, this.target.pos);
+        if (d < this.r * 2 + this.target.r) {
+            this.attack();
+        }
+
+        if (this.target.dead) {
+            this.target = this.retarget();
+        }
+    } else {
+        this.target = this.retarget();
     }
 
     // If state is 1, the hammer is being swung
@@ -64,23 +68,48 @@ Hammerman.prototype.update = function() {
     this.hammerPos = this.pos.copy().add(this.relativePos);
 
     // Only hurts walls if state is 1 - this prevents them from being damaged every frame
-	if (this.state == 1 && !this.hitWall) {
+	if (this.state == 1 && !this.damageDealt) {
 		var weaponCell = this.game.grid.getCell(this.hammerPos);
 		if (weaponCell !== null && weaponCell.wall > 0) {
 			weaponCell.break(this.vel.heading());
 			// Retract weapon once the damage has been dealt
-			this.hitWall = true;
+			this.damageDealt = true;
 		}
 
+        this.checkWeaponHits();
+    }
+}
+
+Minion.prototype.checkWeaponHits = function() {
+    for (var i = 0; i < this.game.entities.length; i++) {
+        // Only damages enemies
+        if (this.game.entities[i] instanceof Enemy) {
+            var d = p5.Vector.dist(this.hammerPos, this.game.entities[i].pos);
+            if (d < this.game.entities[i].r) {
+                this.game.entities[i].damage(1, this);
+                this.damageDealt = true;
+            }
+        }
+    }
+}
+
+Minion.prototype.retarget = function() {
+    for (var i = 0; i < this.game.entities.length; i++) {
+        if (this.game.entities[i] instanceof Enemy) {
+            return this.game.entities[i];
+        }
+    }
+    return this.game.player;
+}
 		// var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
 		// if (d < this.game.player.r) {
 		// 	this.game.player.damage(1, this);
 		// 	this.state = 2;
 		// }
-	}
+
 
     // this.weaponPos = this.pos.copy().add(createVector(this.weaponExtend, 0).rotate(this.vel.heading()));
-}
+
 
 // Hammerman.prototype.calculatePath = function() {
 //     // var targetPos = createVector((this.pos.x + this.game.gridSize * CELLSIZE * 0.5) % (this.game.gridSize * CELLSIZE), (this.pos.y + this.game.gridSize * CELLSIZE * 0.5) % (this.game.gridSize * CELLSIZE));
@@ -99,15 +128,15 @@ Hammerman.prototype.update = function() {
 // }
 
 // The attack is simply the hammer swinging
-Hammerman.prototype.attack = function() {
+Minion.prototype.attack = function() {
 	if (this.cooldown < 0) {
 		this.state = 1;
 		this.cooldown = this.hitSpeed;
-        this.hitWall = false;
+        this.damageDealt = false;
 	}
 }
 
-Hammerman.prototype.customPathfinding = function(a, b) {
+Minion.prototype.customPathfinding = function(a, b) {
     var av = createVector(a.row, a.col);
     var bv = createVector(b.row, b.col);
     var d = p5.Vector.dist(a.pos, b.pos);
@@ -118,31 +147,22 @@ Hammerman.prototype.customPathfinding = function(a, b) {
     return d;
 }
 
-Hammerman.prototype.die = function() {
+Minion.prototype.die = function() {
     this.dead = true;
     // this.game.smokeExplosion(this.pos, 1, 50, PI * 0.25, 7, 2, 50, 10, color(160, 160, 200));
     this.game.particleExplosion(this.pos, 2, 50, 0, PI, createVector(0, 0.1), 20, 1, 45, 3, color(160, 160, 200));
 }
 
-Hammerman.prototype.specificDraw = function() {
+Minion.prototype.specificDraw = function() {
 	fill(200, 200, 250);
 	stroke(160, 160, 200);
     strokeWeight(2 * zoom);
 
 	ellipse(0, 0, this.r * zoom * 2);
-
-    // stroke(255, 0, 0);
-    // strokeWeight(4);
-    // var drawPos = this.hammerPos.copy().sub(this.pos);
-    // point(drawPos.x, drawPos.y);
-    //
-    // stroke(0, 255, 0);
-    // var p = createVector(this.r, 0).rotate(this.vel.heading());
-    // point(p.x, p.y);
 }
 
 // Draws a hammer
-Hammerman.prototype.drawWeapon = function() {
+Minion.prototype.drawWeapon = function() {
 	var drawPos = getDrawPos(this.pos);
 	push();
 	translate(drawPos);

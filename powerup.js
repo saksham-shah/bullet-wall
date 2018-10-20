@@ -77,10 +77,12 @@ var powerups = [
             game.player.maxVel = 2;
         }, 300
     ),
-    // Hammerman
+    // Minions
     new PowerUp(3, 3600,
         function(game, cell) {
-            game.entities.push(new Hammerman(game, cell.row, cell.col));
+            for (var i = 0; i < 2; i++) {
+                game.entities.push(new Minion(game, cell.row, cell.col));
+            }
         }, [75],
         function(r) {
             beginShape();

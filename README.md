@@ -4,6 +4,15 @@ Play the game here: https://rawgit.com/saksham-shah/bullet-wall/master/index.htm
 
 Change log:
 
+20 October - v1.2.3 - Minion Mob
+
+* NEW Minions!
+* They follow you around and destroy anything in their path!
+* Minions will stay with you until they are killed by the enemies
+* Spawn a pack of 3 Minions with the new Minion powerup!
+* Removed Shield powerup
+* Your shield now passively recharges
+
 10 October - v1.2.2 - Rumble of the Bulls
 
 * Shoot through walls with the reworked Double Gun powerup!

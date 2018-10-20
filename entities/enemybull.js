@@ -77,12 +77,13 @@ EnemyBull.prototype.specificUpdate = function() {
         } else {
             this.acc.add(p5.Vector.fromAngle(this.direction).setMag(this.maxForce));
 
-            var d = p5.Vector.dist(this.pos, this.game.player.pos);
-    		if (d <= this.game.player.r + this.r && this.playerDamaged !== true) {
-    			this.game.player.damage(1, this);
-				// The bull can only damage the player once per charge
-    			this.playerDamaged = true;
-    		}
+			this.checkChargeHits();
+            // var d = p5.Vector.dist(this.pos, this.game.player.pos);
+    		// if (d <= this.game.player.r + this.r && this.playerDamaged !== true) {
+    		// 	this.game.player.damage(1, this);
+			// 	// The bull can only damage the player once per charge
+    		// 	this.playerDamaged = true;
+    		// }
 
             if (this.cooldown < 180) {
                 this.state = 0;
@@ -104,6 +105,26 @@ EnemyBull.prototype.checkWallHit = function() {
         if (wallCollision[1] !== null) {
             if (wallCollision[1].wall > 0) {
                 wallCollision[1].break(this.vel.heading(), true);
+            }
+        }
+    }
+}
+
+// Damages entities while charging
+EnemyBull.prototype.checkChargeHits = function() {
+    for (var i = 0; i < this.game.entities.length; i++) {
+        // Doesn't damage other enemies
+        if (!(this.game.entities[i] instanceof Enemy)) {
+            var d = p5.Vector.dist(this.pos, this.game.entities[i].pos);
+            if (d < this.game.entities[i].r + this.r) {
+				if (this.game.entities[i] instanceof Player) {
+					if (!this.playerDamaged) {
+                		this.playerDamaged = true;
+						this.game.entities[i].damage(1, this);
+					}
+				} else {
+					this.game.entities[i].damage(1, this);
+				}
             }
         }
     }

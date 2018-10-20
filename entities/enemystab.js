@@ -51,11 +51,13 @@ EnemyStab.prototype.specificUpdate = function() {
 			this.state = 2;
 		}
 
-		var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
-		if (d < this.game.player.r) {
-			this.game.player.damage(1, this);
-			this.state = 2;
-		}
+		this.checkWeaponHits();
+
+		// var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
+		// if (d < this.game.player.r) {
+		// 	this.game.player.damage(1, this);
+		// 	this.state = 2;
+		// }
 	}
 }
 
@@ -65,6 +67,19 @@ EnemyStab.prototype.attack = function() {
 		this.state = 1;
 		this.cooldown = this.hitSpeed;
 	}
+}
+
+EnemyStab.prototype.checkWeaponHits = function() {
+    for (var i = 0; i < this.game.entities.length; i++) {
+        // Doesn't damage other enemies
+        if (!(this.game.entities[i] instanceof Enemy)) {
+            var d = p5.Vector.dist(this.weaponPos, this.game.entities[i].pos);
+            if (d < this.game.entities[i].r) {
+                this.game.entities[i].damage(1, this);
+				this.state = 2;
+            }
+        }
+    }
 }
 
 EnemyStab.prototype.specificDraw = function() {
