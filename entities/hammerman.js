@@ -7,15 +7,17 @@ function Hammerman(game, row, col) {
     this.maxVel = 3;
 	this.maxForce = 0.15;
 
-	this.hitSpeed = 60;
+	this.hitSpeed = 30;
 	this.wallDestroy = 100000;
 
     this.cooldown = 0;
     this.state = 0;
 
     this.hammerRotation = HALF_PI;
+    this.relativePos = createVector(this.r * 1.5, 0).rotate(this.vel.heading() + this.hammerRotation);
+    this.hammerPos = this.pos.copy().add(this.relativePos);
 
-    this.life = 0;
+    // this.life = 0;
     this.pathNoise = random(100);
 }
 
@@ -24,9 +26,13 @@ Hammerman.prototype = Object.create(Entity.prototype);
 Hammerman.prototype.update = function() {
     this.cooldown -= this.game.gameSpeed;
 
-    this.life += this.game.gameSpeed;
+    // this.life += this.game.gameSpeed;
+    //
+    // if (this.life > 1200) {
+    //     this.die();
+    // }
 
-    this.shield = true;
+    // this.shield = true;
 
     var d = p5.Vector.dist(this.pos, this.target.pos);
     // if (d < CELLSIZE * 2) {
@@ -54,16 +60,16 @@ Hammerman.prototype.update = function() {
         }
     }
 
-    this.relativePos = createVector(this.r + 10, 0).rotate(this.vel.heading() + this.hammerRotation);
+    this.relativePos = createVector(this.r * 1.5, 0).rotate(this.vel.heading() + this.hammerRotation);
     this.hammerPos = this.pos.copy().add(this.relativePos);
 
-    // Only hurts the player or walls if state is 1 - this prevents these objects from being damaged every frame
-	if (this.state == 1) {
+    // Only hurts walls if state is 1 - this prevents them from being damaged every frame
+	if (this.state == 1 && !this.hitWall) {
 		var weaponCell = this.game.grid.getCell(this.hammerPos);
 		if (weaponCell !== null && weaponCell.wall > 0) {
 			weaponCell.break(this.vel.heading());
 			// Retract weapon once the damage has been dealt
-			this.state = 2;
+			this.hitWall = true;
 		}
 
 		// var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
@@ -86,11 +92,18 @@ Hammerman.prototype.update = function() {
 // 	this.timeSinceLastPath = 0;
 // }
 
-// The attack is simply the hammer
+// Calculates a path
+// Hammerman.prototype.calculatePath = function() {
+// 	this.pathToTarget = findPath(this.game.grid.grid, this.game.grid.getCell(this.pos), this.game.grid.getCell(this.target.pos), this);
+// 	this.timeSinceLastPath = 0;
+// }
+
+// The attack is simply the hammer swinging
 Hammerman.prototype.attack = function() {
 	if (this.cooldown < 0) {
 		this.state = 1;
 		this.cooldown = this.hitSpeed;
+        this.hitWall = false;
 	}
 }
 
@@ -105,6 +118,12 @@ Hammerman.prototype.customPathfinding = function(a, b) {
     return d;
 }
 
+Hammerman.prototype.die = function() {
+    this.dead = true;
+    // this.game.smokeExplosion(this.pos, 1, 50, PI * 0.25, 7, 2, 50, 10, color(160, 160, 200));
+    this.game.particleExplosion(this.pos, 2, 50, 0, PI, createVector(0, 0.1), 20, 1, 45, 3, color(160, 160, 200));
+}
+
 Hammerman.prototype.specificDraw = function() {
 	fill(200, 200, 250);
 	stroke(160, 160, 200);
@@ -112,14 +131,14 @@ Hammerman.prototype.specificDraw = function() {
 
 	ellipse(0, 0, this.r * zoom * 2);
 
-    stroke(255, 0, 0);
-    strokeWeight(4);
-    var drawPos = this.hammerPos.copy().sub(this.pos);
-    point(drawPos.x, drawPos.y);
-
-    stroke(0, 255, 0);
-    var p = createVector(this.r, 0).rotate(this.vel.heading());
-    point(p.x, p.y);
+    // stroke(255, 0, 0);
+    // strokeWeight(4);
+    // var drawPos = this.hammerPos.copy().sub(this.pos);
+    // point(drawPos.x, drawPos.y);
+    //
+    // stroke(0, 255, 0);
+    // var p = createVector(this.r, 0).rotate(this.vel.heading());
+    // point(p.x, p.y);
 }
 
 // Draws a hammer
@@ -127,17 +146,31 @@ Hammerman.prototype.drawWeapon = function() {
 	var drawPos = getDrawPos(this.pos);
 	push();
 	translate(drawPos);
-	rotate(this.vel.heading() + this.hammerRotation);
+	rotate(this.vel.heading() + this.hammerRotation + HALF_PI);
 
-	fill(50, 50, 1.25 * (100 + this.hammerRotation * 50));
-	stroke(50, 50, 100 + this.hammerRotation * 50);
+	// fill(50, 50,  * (100 + this.hammerRotation * 50));
+	// stroke(50, 50, 100 + this.hammerRotation * 50);
+    fill(50, 50, 125);
+    stroke(40, 40, 100);
 	strokeWeight(2 * zoom);
 
 	beginShape();
-	vertex(20 * this.r * zoom / 15, 0);
-	vertex(0, 5 * this.r * zoom / 15);
-	vertex(0, -5 * this.r * zoom / 15);
-	vertex(20 * this.r * zoom / 15, 0);
+
+    vertex(- this.r * 0.3 * zoom, 0);
+    vertex(- this.r * 0.3 * zoom, - this.r * 1.25 * zoom);
+    vertex(- this.r * 1 * zoom, - this.r * 1.25 * zoom);
+    vertex(- this.r * 1 * zoom, - this.r * 2 * zoom);
+    vertex(this.r * 1 * zoom, - this.r * 2 * zoom);
+    vertex(this.r * 1 * zoom, - this.r * 1.25 * zoom);
+    vertex(this.r * 0.3 * zoom, - this.r * 1.25 * zoom);
+    vertex(this.r * 0.3 * zoom, 0);
+    vertex(- this.r * 0.3 * zoom, 0);
+
+
+	// vertex(20 * this.r * zoom / 15, 0);
+	// vertex(0, 5 * this.r * zoom / 15);
+	// vertex(0, -5 * this.r * zoom / 15);
+	// vertex(20 * this.r * zoom / 15, 0);
 	endShape();
 
 	pop()

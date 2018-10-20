@@ -65,7 +65,7 @@ Bullet.prototype.checkWallHit = function() {
 Bullet.prototype.checkEntityHits = function(entities) {
     for (var i = 0; i < entities.length; i++) {
         // Player bullets only damage enemies, and enemy bullets only damage the player
-        if ((this.gun.player && !(entities[i] instanceof Player)) || (!this.gun.player && (entities[i] instanceof Player))) {
+        if ((this.gun.player && (entities[i] instanceof Enemy)) || (!this.gun.player && !(entities[i] instanceof Enemy))) {
             var d = p5.Vector.dist(this.pos, entities[i].pos);
             if (d < this.r + entities[i].r) {
                 entities[i].damage(1, this);

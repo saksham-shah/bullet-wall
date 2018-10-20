@@ -11,13 +11,13 @@ function PowerUp(rarity_, reqTime_, startF_, colour_, drawF_, endF_, time_) {
     this.activated = false;
 }
 
-PowerUp.prototype.activate = function(game) {
+PowerUp.prototype.activate = function(game, cell) {
     game.powerupsUsed++;
     this.activated = true;
     if (this.timer !== undefined) {
         this.timer = this.time;
     }
-    this.startF(game);
+    this.startF(game, cell);
 }
 
 PowerUp.prototype.update =  function(game) {
@@ -76,7 +76,25 @@ var powerups = [
             game.player.guns = 1;
             game.player.maxVel = 2;
         }, 300
-    )
+    ),
+    // Hammerman
+    new PowerUp(3, 3600,
+        function(game, cell) {
+            game.entities.push(new Hammerman(game, cell.row, cell.col));
+        }, [75],
+        function(r) {
+            beginShape();
+            vertex(r * 0.2, r * 0.2);
+            vertex(r * 0.2, r * 0.4);
+            vertex(r * 0.4, r * 0.4);
+            vertex(r * 0.4, r * 0.8);
+            vertex(r * 0.6, r * 0.8);
+            vertex(r * 0.6, r * 0.4);
+            vertex(r * 0.8, r * 0.4);
+            vertex(r * 0.8, r * 0.2);
+            vertex(r * 0.2, r * 0.2);
+            endShape();
+        })
     // Shield
     // new PowerUp(3, 3600,
     //     function(game) {

@@ -19,17 +19,17 @@ SmokeParticle.prototype.draw = function() {
 }
 
 // Unused smoke effect
-// Game.prototype.smokeExplosion = function(pos, speed, speedErr, angle, angleErr, life, lifeErr, num, r, colour) {
-// 	var speedErrNum = speed * speedErr * 0.01;
-//
-// 	for (var i = 0; i < num; i++) {
-// 		// if (cell !== undefined) {
-// 		// 	pos = createVector(cell.pos.x + random(CELLSIZE), cell.pos.y + random(CELLSIZE));
-// 		// }
-//         // var vel = p5.Vector.fromAngle(random(angle - angleErr, angle + angleErr)).setMag(random(speed - speedErrNum, speed + speedErrNum));
-//         var vel = p5.Vector.fromAngle(random(-HALF_PI - angleErr, -HALF_PI + angleErr)).setMag(random(speed - speedErrNum, speed + speedErrNum));
-// 		life += random(lifeErr);
-// 		var particle = new SmokeParticle(this, pos, vel, createVector(0, 0), r, life, colour);
-// 		this.particles.push(particle);
-// 	}
-// }
+Game.prototype.smokeExplosion = function(pos, speed, speedErr, angleErr, life, lifeErr, num, r, colour) {
+	var speedErrNum = speed * speedErr * 0.01;
+
+	for (var i = 0; i < num; i++) {
+		// if (cell !== undefined) {
+		// 	pos = createVector(cell.pos.x + random(CELLSIZE), cell.pos.y + random(CELLSIZE));
+		// }
+        // var vel = p5.Vector.fromAngle(random(angle - angleErr, angle + angleErr)).setMag(random(speed - speedErrNum, speed + speedErrNum));
+        var vel = p5.Vector.fromAngle(random(-HALF_PI - angleErr, -HALF_PI + angleErr)).setMag(random(speed - speedErrNum, speed + speedErrNum));
+		life += random(lifeErr);
+		var particle = new SmokeParticle(this, pos, vel, createVector(0, 0), r, life, colour);
+		this.particles.push(particle);
+	}
+}

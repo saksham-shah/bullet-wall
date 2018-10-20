@@ -48,9 +48,15 @@ function findPath(grid, goal, start, entity) {
         })
         var current = openSet[0];
 
+        // if (!(goal instanceof Function)) {
         if (current === goal) {
             return reconstructPath(cameFrom, current);
         }
+        // } else {
+        //     if (goal(current)) {
+        //         return reconstructPath(cameFrom, current);
+        //     }
+        // }
 
         openSet.splice(0, 1);
         closedSet.push(current);

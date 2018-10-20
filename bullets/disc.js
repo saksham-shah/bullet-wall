@@ -61,7 +61,7 @@ Disc.prototype.checkWallHit = function() {
 
 Disc.prototype.checkEntityHits = function(entities) {
     for (var i = 0; i < entities.length; i++) {
-        if (!(entities[i] instanceof Player)) {
+        if (entities[i] instanceof Enemy) {
             var d = p5.Vector.dist(this.pos, entities[i].pos);
             if (d < this.r + entities[i].r) {
                 entities[i].damage(entities[i].health, this);

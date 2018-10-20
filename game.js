@@ -14,8 +14,6 @@ function Game(difficulty) {
     this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     this.entities.push(this.player);
 
-	// this.entities.push(new Hammerman(this, 1, 1));
-
 	this.enemies = 0;
 
 	this.score = 0;
