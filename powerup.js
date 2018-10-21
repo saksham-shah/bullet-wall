@@ -45,7 +45,7 @@ PowerUp.prototype.draw = function(x, y, r) {
 
 var powerups = [
     // Disc
-    new PowerUp(1, 1800,
+    new PowerUp(3, 1800,
         function(game) {
             game.player.weapon = 1;
             game.player.ammo = 1;
@@ -78,9 +78,9 @@ var powerups = [
         }, 300
     ),
     // Minions
-    new PowerUp(3, 3600,
+    new PowerUp(1, 3600,
         function(game, cell) {
-            for (var i = 0; i < 2; i++) {
+            for (var i = 0; i < 3; i++) {
                 game.entities.push(new Minion(game, cell.row, cell.col));
             }
         }, [75],
@@ -115,6 +115,33 @@ var powerups = [
     //     }
     // )
 ]
+
+var powerupSequence = [];
+
+for (var i = 0; i < powerups.length; i++) {
+    var num = powerups[i].rarity;
+    for (var j = 0; j < num * 2; j++) {
+        powerupSequence.push(powerups[i]);
+    }
+}
+
+// console.log(powerupSequence);
+
+Game.prototype.randomPowerUps = function() {
+    if (this.powerupsToUse.length == 0) {
+        this.powerupsToUse = powerupSequence.slice();
+    }
+
+    var num = floor(random(this.powerupsToUse.length));
+    // console.log(num);
+    var powerup = this.powerupsToUse.splice(num, 1);
+    // console.log(powerup);
+    if (this.gameTime > powerup[0].reqTime) {
+        return powerup[0];
+    }
+
+    return null;
+}
 
 Game.prototype.randomPowerUp = function() {
     var possible = [];

@@ -4,11 +4,11 @@ function Minion(game, row, col) {
     this.target = game.player;
 	this.pathToTarget = null;
 
-    this.maxVel = 3;
-	this.maxForce = 0.3;
+    this.maxVel = 3.5;
+	this.maxForce = 0.5;
 
 	this.hitSpeed = 30;
-	this.wallDestroy = 100000;
+	this.wallDestroy = 20;
 
     this.cooldown = 0;
     this.state = 0;
@@ -36,7 +36,7 @@ Minion.prototype.update = function() {
 
     if (!(this.target instanceof Player)) {
         var d = p5.Vector.dist(this.pos, this.target.pos);
-        if (d < this.r * 2 + this.target.r) {
+        if (d < this.r * 2 + this.target.r || this.checkForEnemies()) {
             this.attack();
         }
 
@@ -94,12 +94,34 @@ Minion.prototype.checkWeaponHits = function() {
 }
 
 Minion.prototype.retarget = function() {
-    for (var i = 0; i < this.game.entities.length; i++) {
+    var closestD = 10000000;
+    var closest = this.game.player;
+    for (var i = 1; i < this.game.entities.length; i++) {
         if (this.game.entities[i] instanceof Enemy) {
-            return this.game.entities[i];
+            var d = p5.Vector.dist(this.pos, this.game.entities[i].pos);
+            if (d < closestD) {
+                closestD = d;
+                closest = this.game.entities[i];
+            }
+            // return this.game.entities[i];
         }
     }
-    return this.game.player;
+    return closest;
+}
+
+Minion.prototype.checkForEnemies = function() {
+    var pos = this.pos.copy().add(createVector(this.r * 1.5, 0).rotate(this.vel.heading() + this.hammerRotation * 0.5));
+    for (var i = 1; i < this.game.entities.length; i++) {
+        if (this.game.entities[i] instanceof Enemy) {
+            var d = p5.Vector.dist(pos, this.game.entities[i].pos);
+            if (d < this.game.entities[i].r) {
+                console.log("hi");
+                return true;
+            }
+        }
+    }
+    return false;
+
 }
 		// var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
 		// if (d < this.game.player.r) {
@@ -143,7 +165,7 @@ Minion.prototype.customPathfinding = function(a, b) {
     if (b.wall == 0) {
         return d * 0.1;
     }
-    d = d * 0.1 - (3 - b.wall) * this.wallDestroy;
+    d = d / this.maxVel - (3 - b.wall) * this.wallDestroy;
     return d;
 }
 

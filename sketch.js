@@ -42,7 +42,7 @@ function draw() {
 	noStroke();
 
 	// Current version
-	text("v1.2.3a", width * 0.5, height - 15 * zoom);
+	text("v1.2.3b", width * 0.5, height - 15 * zoom);
 }
 
 function mouseClicked() {

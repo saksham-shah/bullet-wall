@@ -48,7 +48,8 @@ function Game(difficulty) {
 		this.waveStep = 4;
 	}
 
-	this.lastPowerUp = 0;
+	this.nextPowerUp = 0;
+	this.powerupsToUse = [];
 
 	this.difficulty = difficulty;
 
@@ -136,21 +137,26 @@ Game.prototype.updateSpawns = function() {
 			this.spawnEnemy();
 			this.timeSinceEnemy = 0;
 		}
-
-		// Powerup spawning
-		if (this.lastPowerUp <= 0) {
-			var powerup = this.randomPowerUp();
-			var cell = this.randomCell(0);
-			if (powerup !== null) {
-				cell.setPowerUp(powerup);
-			}
-			this.lastPowerUp = sq(random(3, 7)) * (1 - this.score * 0.00005);
-		} else {
-			this.lastPowerUp -= this.gameSpeed;
-		}
 	} else {
 		this.counter -= this.gameSpeed;
 	}
+
+	// Powerup spawning
+	if (this.nextPowerUp <= 0) {
+		var powerup = this.randomPowerUps();
+		// console.log(this.powerupsToUse);
+		// console.log(this.randomPowerUps());
+		var cell = this.randomCell(0);
+		if (powerup !== null) {
+			cell.setPowerUp(powerup);
+			this.nextPowerUp = sq(random(3, 7)) * (60 - this.score * 0.0003);
+			// this.nextPowerUp = 60;
+		}
+		// this.nextPowerUp = sq(random(3, 7)) * (1 - this.score * 0.00005);
+	} else {
+		this.nextPowerUp -= this.gameSpeed;
+	}
+
 }
 
 // Updates all game objects (e.g. entities, bullets, particles)
