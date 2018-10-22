@@ -176,3 +176,54 @@ EnemyBull.prototype.specificDraw = function() {
 
     pop();
 }
+
+function drawEnemyBull(x, y, z, params) {
+	push();
+	rotate(params.direction);
+
+    // Bull horns
+    fill(115 * 1.25, 50, 50);
+	stroke(115, 50, 50);
+	strokeWeight(2 * z);
+
+    push();
+    rotate(HALF_PI * 0.5);
+
+    beginShape();
+    vertex(params.r * z * 0.9, params.r * z * 0.4);
+    vertex(params.r * z * 0.9, params.r * z * -0.4);
+    vertex(params.r * z * 1.8, 0);
+    vertex(params.r * z * 0.9, params.r * z * 0.4);
+    endShape();
+
+    rotate(- HALF_PI);
+
+    beginShape();
+    vertex(params.r * z * 0.9, params.r * z * 0.4);
+    vertex(params.r * z * 0.9, params.r * z * -0.4);
+    vertex(params.r * z * 1.8, 0);
+    vertex(params.r * z * 0.9, params.r * z * 0.4);
+    endShape();
+
+    pop();
+
+    fill(250, 75, 75);
+	stroke(200, 60, 60);
+    strokeWeight(2 * z);
+
+	ellipse(0, 0, params.r * z * 2);
+
+    pop();
+}
+
+EnemyBull.prototype.convertToSnap = function() {
+	return {
+        type: 4,
+		x: this.pos.x,
+		y: this.pos.y,
+		r: this.r,
+        health: this.health,
+        damaged: this.damaged,
+		direction: this.direction
+	}
+}

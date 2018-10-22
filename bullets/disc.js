@@ -90,3 +90,34 @@ Disc.prototype.draw = function() {
 
     pop();
 }
+
+function drawDisc(x, y, z, params) {
+    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+
+    push();
+    translate(drawPos);
+    rotate(params.rotation)
+
+    strokeWeight(2 * z);
+    stroke(75, 0, 125);
+
+    fill(150, 0, 250);
+    arc(0, 0, params.r * 2 * z, params.r * 2 * z, 0, PI, CHORD);
+
+    fill(120, 0, 200);
+    arc(0, 0, params.r * 2 * z, params.r * 2 * z, -PI, 0, CHORD);
+
+    line(params.r * z, 0, - params.r * z, 0);
+
+    pop();
+}
+
+Disc.prototype.convertToSnap = function() {
+    return {
+        type: 1,
+        x: this.pos.x,
+        y: this.pos.y,
+        r: this.r,
+        rotation: this.rotation
+    }
+}

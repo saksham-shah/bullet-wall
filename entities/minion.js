@@ -7,6 +7,8 @@ function Minion(game, row, col) {
     this.maxVel = 3.5;
 	this.maxForce = 0.5;
 
+    this.direction = 0;
+
 	this.hitSpeed = 30;
 	this.wallDestroy = 20;
 
@@ -26,6 +28,8 @@ Minion.prototype = Object.create(Entity.prototype);
 
 Minion.prototype.update = function() {
     this.cooldown -= this.game.gameSpeed;
+
+    this.direction = this.vel.heading();
 
     var d = p5.Vector.dist(this.pos, this.target.pos);
     if (this.pathToTarget !== null) {
@@ -183,12 +187,20 @@ Minion.prototype.specificDraw = function() {
 	ellipse(0, 0, this.r * zoom * 2);
 }
 
+function drawMinion(x, y, z, params) {
+	fill(200, 200, 250);
+	stroke(160, 160, 200);
+    strokeWeight(2 * z);
+
+	ellipse(0, 0, params.r * z * 2);
+}
+
 // Draws a hammer
 Minion.prototype.drawWeapon = function() {
 	var drawPos = getDrawPos(this.pos);
 	push();
 	translate(drawPos);
-	rotate(this.vel.heading() + this.hammerRotation + HALF_PI);
+	rotate(this.direction + this.hammerRotation + HALF_PI);
 
 	// fill(50, 50,  * (100 + this.hammerRotation * 50));
 	// stroke(50, 50, 100 + this.hammerRotation * 50);
@@ -216,4 +228,44 @@ Minion.prototype.drawWeapon = function() {
 	endShape();
 
 	pop()
+}
+
+function drawMinionWeapon(x, y, z, params) {
+    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+	push();
+	translate(drawPos);
+	rotate(params.direction + params.hammerRotation + HALF_PI);
+
+    fill(50, 50, 125);
+    stroke(40, 40, 100);
+	strokeWeight(2 * z);
+
+	beginShape();
+
+    vertex(- params.r * 0.3 * z, 0);
+    vertex(- params.r * 0.3 * z, - params.r * 1.25 * z);
+    vertex(- params.r * 1 * z, - params.r * 1.25 * z);
+    vertex(- params.r * 1 * z, - params.r * 2 * z);
+    vertex(params.r * 1 * z, - params.r * 2 * z);
+    vertex(params.r * 1 * z, - params.r * 1.25 * z);
+    vertex(params.r * 0.3 * z, - params.r * 1.25 * z);
+    vertex(params.r * 0.3 * z, 0);
+    vertex(- params.r * 0.3 * z, 0);
+
+	endShape();
+
+	pop()
+}
+
+Minion.prototype.convertToSnap = function() {
+	return {
+        type: 1,
+		x: this.pos.x,
+		y: this.pos.y,
+		r: this.r,
+        health: this.health,
+        damaged: this.damaged,
+		direction: this.direction,
+        hammerRotation: this.hammerRotation
+	}
 }

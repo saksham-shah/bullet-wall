@@ -18,6 +18,31 @@ SmokeParticle.prototype.draw = function() {
 	pop();
 }
 
+function drawSmokeParticle(x, y, z, params) {
+    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+
+	push();
+	translate(drawPos);
+    params.colour.setAlpha(255 * params.lifePercent);
+	fill(params.colour);
+	noStroke();
+	// Gets larger over time
+	ellipse(0, 0, params.r * (1 - params.lifePercent) * z * 2);
+
+	pop();
+}
+
+SmokeParticle.prototype.convertToSnap = function() {
+    return {
+        type: 1,
+        x: this.pos.x,
+        y: this.pos.y,
+        r: this.r,
+        lifePercent: this.life / this.maxLife,
+        colour: this.colour
+    }
+}
+
 // Unused smoke effect
 Game.prototype.smokeExplosion = function(pos, speed, speedErr, angleErr, life, lifeErr, num, r, colour) {
 	var speedErrNum = speed * speedErr * 0.01;

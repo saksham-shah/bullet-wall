@@ -104,3 +104,46 @@ Cell.prototype.draw = function(mode) {
 
     }
 }
+
+function drawCell(x, y, z, params, mode) {
+    if (params.wall > 0 && mode == 0) {
+        var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+        push();
+        translate(drawPos);
+        stroke(50);
+        strokeWeight(4 * z);
+        fill(100);
+        rect(2 * z, 2 * z, (params.r - 2) * z, (params.r - 2) * z);
+
+        if (params.wall > 1) {
+            line(2 * z, (params.r - 2) * z, (params.r - 2) * z, 2 * z);
+        }
+
+        pop();
+    }
+
+    if (params.powerup !== null && mode == 1) {
+        var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+        push();
+        translate(drawPos);
+        stroke(100);
+        strokeWeight(2 * z);
+        fill(150);
+        rect(params.r * z * 0.1 + z, params.r * z * 0.1 + z, params.r * z * 0.8, params.r * z * 0.8);
+
+        params.powerup.draw(params.r * z * 0.1 + z, params.r * z * 0.1 + z, params.r * z * 0.8);
+
+        pop();
+
+    }
+}
+
+Cell.prototype.convertToSnap = function() {
+    return {
+        x: this.pos.x,
+        y: this.pos.y,
+        r: this.r,
+        wall: this.wall,
+        powerup: this.powerup
+    }
+}

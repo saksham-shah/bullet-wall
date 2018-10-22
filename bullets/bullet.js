@@ -101,3 +101,32 @@ Bullet.prototype.draw = function() {
     ellipse(0, 0, this.r * zoom * 2);
     pop();
 }
+
+function drawBullet(x, y, z, params) {
+    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+
+    push();
+    translate(drawPos);
+
+    if (params.player) {
+        fill(200, 200, 250);
+    } else {
+        fill(250, 200, 200);
+    }
+
+    stroke(255);
+    strokeWeight(2 * z);
+
+    ellipse(0, 0, params.r * z * 2);
+    pop();
+}
+
+Bullet.prototype.convertToSnap = function() {
+    return {
+        type: 0,
+        x: this.pos.x,
+        y: this.pos.y,
+        r: this.r,
+        player: this.gun.player
+    }
+}

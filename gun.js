@@ -118,6 +118,41 @@ Gun.prototype.draw = function() {
     pop();
 }
 
+function drawGun(x, y, z, params) {
+    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+    push();
+    translate(drawPos);
+    rotate(params.direction);
+    translate(-params.recoil * z, 0);
+
+    // Blue if held by the player, red if held by the enemy
+    if (params.player) {
+	   fill(50, 50, 150);
+    } else {
+       fill(150, 50, 50);
+    }
+
+    stroke(25, 25, 50);
+    strokeWeight(2 * z);
+
+    rect(- params.l2 * z, - params.w * z * 0.5, params.l * z + params.l2 * z, params.w * z);
+    pop();
+}
+
+Gun.prototype.convertToSnap = function() {
+    var pos = this.getPos();
+	return {
+		x: pos.x,
+		y: pos.y,
+		direction: this.direction,
+        recoil: this.recoil,
+        w: this.w,
+        l: this.l,
+        l2: this.l2,
+        player: this.player
+	}
+}
+
 // Rotates the gun towards the target direction
 function rotateToAngle(current, target, buffer, speed) {
     if (current > target) {

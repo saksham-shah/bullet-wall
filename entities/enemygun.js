@@ -68,7 +68,7 @@ EnemyGun.prototype.attack = function(toAttack) {
 
 EnemyGun.prototype.specificDraw = function() {
     push();
-	rotate(this.vel.heading());
+	rotate(this.direction);
 
 	fill(250, 75, 75);
 	stroke(200, 60, 60);
@@ -79,6 +79,36 @@ EnemyGun.prototype.specificDraw = function() {
     pop();
 }
 
+function drawEnemyGun(x, y, z, params) {
+	push();
+	rotate(params.direction);
+
+	fill(250, 75, 75);
+	stroke(200, 60, 60);
+    strokeWeight(2 * z);
+
+	ellipse(0, 0, params.r * z * 2);
+
+    pop();
+}
+
 EnemyGun.prototype.drawWeapon = function() {
     this.gun.draw();
+}
+
+function drawEnemyGunWeapon(x, y, z, params) {
+	drawGun(x, y, z, params.gun);
+}
+
+EnemyGun.prototype.convertToSnap = function() {
+	return {
+        type: 3,
+		x: this.pos.x,
+		y: this.pos.y,
+		r: this.r,
+        health: this.health,
+        damaged: this.damaged,
+		direction: this.direction,
+		gun: this.gun.convertToSnap()
+	}
 }

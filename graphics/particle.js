@@ -57,6 +57,34 @@ Particle.prototype.draw = function() {
 	}
 }
 
+function drawParticle(x, y, z, params) {
+	if (params.canDraw) {
+		var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+
+		push();
+		translate(drawPos);
+
+		fill(params.colour);
+		noStroke();
+		// Gets smaller over time
+		ellipse(0, 0, params.r * params.lifePercent * z * 2);
+
+		pop();
+	}
+}
+
+Particle.prototype.convertToSnap = function() {
+    return {
+        type: 0,
+        x: this.pos.x,
+        y: this.pos.y,
+        r: this.r,
+        lifePercent: this.life / this.maxLife,
+        colour: this.colour,
+		canDraw: this.canDraw
+    }
+}
+
 // Creates particles (for animation only, no impact on gameplay)
 Game.prototype.particleExplosion = function(pos, speed, speedErr, angle, angleErr, acc, life, lifeErr, num, r, colour, cell) {
 	var speedErrNum = speed * speedErr * 0.01;

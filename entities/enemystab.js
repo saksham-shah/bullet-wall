@@ -15,6 +15,8 @@ function EnemyStab(game, row, col) {
 	this.cooldown = 0;
 	this.state = 0;
 
+	this.direction = 0;
+
 	this.scoreValue = 10;
 }
 
@@ -22,6 +24,8 @@ EnemyStab.prototype = Object.create(Enemy.prototype);
 
 EnemyStab.prototype.specificUpdate = function() {
 	this.cooldown -= this.game.gameSpeed;
+
+	this.direction = this.vel.heading();
 
 	// If state is 1, the weapon is being extended
 	// If state is 2, the weapon is being retracted
@@ -84,13 +88,26 @@ EnemyStab.prototype.checkWeaponHits = function() {
 
 EnemyStab.prototype.specificDraw = function() {
     push();
-	rotate(this.vel.heading());
+	rotate(this.direction);
 
 	fill(250, 75, 75);
 	stroke(200, 60, 60);
     strokeWeight(2 * zoom);
 
 	ellipse(0, 0, this.r * zoom * 2);
+
+    pop();
+}
+
+function drawEnemyStab(x, y, z, params) {
+	push();
+	rotate(params.direction);
+
+	fill(250, 75, 75);
+	stroke(200, 60, 60);
+    strokeWeight(2 * z);
+
+	ellipse(0, 0, params.r * z * 2);
 
     pop();
 }
@@ -114,4 +131,37 @@ EnemyStab.prototype.drawWeapon = function() {
 	endShape();
 
 	pop()
+}
+
+function drawEnemyStabWeapon(x, y, z, params) {
+	var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+	push();
+	translate(drawPos);
+	rotate(params.direction);
+
+	fill(1.25 * (100 + params.weaponExtend * 3), 50, 50);
+	stroke(100 + params.weaponExtend * 3, 50, 50);
+	strokeWeight(2 * z);
+
+	beginShape();
+	vertex(params.weaponExtend * params.r * z / 15, 0);
+	vertex(0, 5 * params.r * z / 15);
+	vertex(0, -5 * params.r * z / 15);
+	vertex(params.weaponExtend * params.r * z / 15, 0);
+	endShape();
+
+	pop()
+}
+
+EnemyStab.prototype.convertToSnap = function() {
+	return {
+        type: 2,
+		x: this.pos.x,
+		y: this.pos.y,
+		r: this.r,
+        health: this.health,
+        damaged: this.damaged,
+		direction: this.direction,
+		weaponExtend: this.weaponExtend
+	}
 }

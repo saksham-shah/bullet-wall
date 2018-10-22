@@ -150,9 +150,38 @@ Player.prototype.specificDraw = function() {
 	ellipse(0, 0, this.r * zoom * 2);
 }
 
+function drawPlayer(x, y, z, params) {
+    fill(200, 200, 250);
+	stroke(160, 160, 200);
+    strokeWeight(2 * z);
+
+	ellipse(0, 0, params.r * z * 2);
+}
+
 Player.prototype.drawWeapon = function() {
     this.gun1.draw();
     if (this.guns == 2) {
         this.gun2.draw();
     }
+}
+
+function drawPlayerWeapon(x, y, z, params) {
+    drawGun(x, y, z, params.gun1);
+    if (params.guns == 2) {
+        drawGun(x, y, z, params.gun2);
+    }
+}
+
+Player.prototype.convertToSnap = function() {
+	return {
+        type: 0,
+		x: this.pos.x,
+		y: this.pos.y,
+		r: this.r,
+        health: this.health,
+        damaged: this.damaged,
+		gun1: this.gun1.convertToSnap(),
+		gun1: this.gun1.convertToSnap(),
+        guns: this.guns
+	}
 }

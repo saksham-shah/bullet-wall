@@ -138,7 +138,6 @@ Entity.prototype.damage = function(num, cause) {
     }
 }
 
-// Unused
 Entity.prototype.draw = function() {
     var drawPos = getDrawPos(this.pos);
 
@@ -166,12 +165,69 @@ Entity.prototype.draw = function() {
     }
 
     pop();
-    // var drawPos = cam.getDrawPos(this.pos.x, this.pos.y);
-	// var drawR = cam.getDrawSize(this.r);
-    // scr.push();
-    // scr.translate(drawPos)
-	// scr.fill(255);
-	// scr.noStroke();
-	// scr.ellipse(0, 0, drawR * 2);
-    // scr.pop();
+}
+
+function drawEntity(x, y, z, params) {
+    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+
+    push();
+    translate(drawPos);
+
+    switch(params.type) {
+        case 0:
+        drawPlayer(x, y, z, params);
+        break;
+        case 1:
+        drawMinion(x, y, z, params);
+        break;
+        case 2:
+        drawEnemyStab(x, y, z, params);
+        break;
+        case 3:
+        drawEnemyGun(x, y, z, params);
+        break;
+        case 4:
+        drawEnemyBull(x, y, z, params);
+        break;
+    }
+
+    fill(255, 0, 0, params.damaged * 4);
+    noStroke();
+    ellipse(0, 0, params.r * zoom * 2);
+
+    if (params.type >= 2) {
+        if (params.health > 1) {
+            rotate(- HALF_PI * 0.5);
+            stroke(200, 60, 60);
+            strokeWeight(3 * zoom);
+            line((- params.r + 1) * zoom, 0, (params.r - 1) * zoom, 0);
+
+            if (params.health > 2) {
+                rotate(HALF_PI);
+                line((- params.r + 1) * zoom, 0, (params.r - 1) * zoom, 0);
+            }
+        }
+    }
+
+    pop();
+}
+
+function drawEntityWeapon(x, y, z, params) {
+    switch(params.type) {
+        case 0:
+        drawPlayerWeapon(x, y, z, params);
+        break;
+        case 1:
+        drawMinionWeapon(x, y, z, params);
+        break;
+        case 2:
+        drawEnemyStabWeapon(x, y, z, params);
+        break;
+        case 3:
+        drawEnemyGunWeapon(x, y, z, params);
+        break;
+        // case 4:
+        // drawEnemyBull(x, y, z, params);
+        // break;
+    }
 }

@@ -45,7 +45,7 @@ PowerUp.prototype.draw = function(x, y, r) {
 
 var powerups = [
     // Disc
-    new PowerUp(3, 1800,
+    new PowerUp(3, 0,
         function(game) {
             game.player.weapon = 1;
             game.player.ammo = 1;

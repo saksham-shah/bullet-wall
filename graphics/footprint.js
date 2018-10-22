@@ -20,3 +20,31 @@ Footprint.prototype.draw = function() {
 
 	pop();
 }
+
+function drawFootprint(x, y, z, params) {
+	var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+
+	push();
+	translate(drawPos);
+
+    rotate(params.direction);
+    params.colour.setAlpha(255 * params.lifePercent);
+	fill(params.colour);
+	noStroke();
+	// Gets larger over time
+	ellipse(0, 0, params.r * z * 3, params.r * z * 2);
+
+	pop();
+}
+
+Footprint.prototype.convertToSnap = function() {
+    return {
+        type: 2,
+        x: this.pos.x,
+        y: this.pos.y,
+        r: this.r,
+        lifePercent: this.life / this.maxLife,
+        colour: this.colour,
+        direction: this.direction
+    }
+}

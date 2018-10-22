@@ -69,12 +69,15 @@ function Game(difficulty) {
 
 	this.shakeOffset = 0;
 	this.shakeTimer = 0;
+
+	this.snaps = [];
 }
 
 Game.prototype.update = function() {
 	this.updateTime();
 	this.updateSpawns();
 	this.updateObjects();
+	this.snapshot();
 }
 
 // Slow motion, frame rate, camera shake etc
@@ -249,25 +252,42 @@ Game.prototype.draw = function() {
 	var shakeV = createVector(noise(this.shakeOffset + 1000000) - 0.5, noise(this.shakeOffset) - 0.5).setMag(shakeMag);
 	translate(shakeV);
 
-	this.grid.draw();
+	// this.grid.draw();
+	var gridParams = this.grid.convertToSnap();
+	drawGrid(xOff, yOff, zoom, gridParams);
 
 	// Draws all game objects
 
 	for (var i = 0; i < this.markings.length; i++) {
-		this.markings[i].draw();
+		var params = this.markings[i].convertToSnap();
+		drawFootprint(xOff, yOff, zoom, params);
+		// this.markings[i].draw();
+
 	}
 
 	// Walls are on top of floor markings
-	this.grid.drawWalls();
+	// this.grid.drawWalls();
+	drawGridWalls(xOff, yOff, zoom, gridParams);
 
 	for (var i = 0; i < this.entities.length; i++) {
 		if (!this.entities[i].hide) {
-			this.entities[i].draw();
+			// this.entities[i].draw();
+			var params = this.entities[i].convertToSnap();
+			drawEntity(xOff, yOff, zoom, params);
 		}
 	}
 
 	for (var i = 0; i < this.bullets.length; i++) {
-		this.bullets[i].draw();
+		var params = this.bullets[i].convertToSnap();
+		switch(params.type) {
+			case 0:
+			drawBullet(xOff, yOff, zoom, params);
+			break;
+			case 1:
+			drawDisc(xOff, yOff, zoom, params);
+			break;
+		}
+		// this.bullets[i].draw();
 	}
 
     for (var i = 0; i < this.entities.length; i++) {
@@ -277,7 +297,16 @@ Game.prototype.draw = function() {
 	}
 
 	for (var i = 0; i < this.particles.length; i++) {
-		this.particles[i].draw();
+		var params = this.particles[i].convertToSnap();
+		switch(params.type) {
+			case 0:
+			drawParticle(xOff, yOff, zoom, params);
+			break;
+			case 1:
+			drawSmokeParticle(xOff, yOff, zoom, params);
+			break;
+		}
+		// this.particles[i].draw();
 	}
 
 	pop();
