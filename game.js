@@ -119,8 +119,6 @@ Game.prototype.updateTime = function() {
 
 	if (this.coolness > 0) {
 		this.coolness = this.coolness * 0.99;
-	} else {
-		this.coolness = 0;
 	}
 }
 

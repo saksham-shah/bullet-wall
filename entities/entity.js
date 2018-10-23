@@ -70,7 +70,9 @@ Entity.prototype.checkCollisions = function(all) {
                 var d = p5.Vector.dist(this.pos, all[i].pos);
                 if (d < this.r + all[i].r + 10) {
                     // console.log("near");
-                    this.game.coolness += 0.05 * this.scoreValue;
+                    this.game.coolness += 0.5 * this.game.playSpeed;
+                    // this.game.coolness += 500 / (d - this.r - entities[i].r);
+                    // console.log("near entity");
                 }
             }
 		}
@@ -145,6 +147,10 @@ Entity.prototype.damage = function(num, cause) {
         }
         if (this instanceof Player) {
             this.game.coolness -= 300;
+        }
+    } else {
+        if (this instanceof Player) {
+            this.game.coolness -= 50;
         }
     }
     if (this.health == 0) {

@@ -81,14 +81,19 @@ Bullet.prototype.checkEntityHits = function(entities) {
                         // Create a wall if the player is not in the same cell (so the player doesn't get stuck in the wall)
                         myCell.build();
                     }
-                    this.game.coolness += this.time;
+                    this.game.coolness += this.time * 0.5;
                 }
                 return;
-            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 15) {
-                var futurePos = this.pos.copy().add(this.vel.copy().setMag(3 * this.r));
+            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 25) {
+                var futurePos = this.pos.copy().add(this.vel.copy().setMag(25));
                 var d = p5.Vector.dist(futurePos, entities[i].pos);
                 if (d >= this.r + entities[i].r) {
-                    this.game.coolness += 75;
+                    var cool = 250 / (d - this.r - entities[i].r);
+                    if (cool > 100) {
+                        cool = 100;
+                    }
+                    this.game.coolness += cool * this.game.playSpeed;
+                    // console.log("near miss " + String(cool));
                 }
             }
         }
