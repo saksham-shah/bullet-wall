@@ -81,7 +81,13 @@ EnemyStab.prototype.checkWeaponHits = function() {
             if (d < this.game.entities[i].r) {
                 this.game.entities[i].damage(1, this);
 				this.state = 2;
-            }
+            } //else if (this.game.entities[i] instanceof Player && d < this.game.entities[i].r + 10) {
+            //     var futurePos = this.weaponPos.copy().add(this.vel.copy().setMag(10));
+            //     var d = p5.Vector.dist(futurePos, this.game.entities[i].pos);
+            //     if (d >= this.game.entities[i].r) {
+            //         console.log("near miss");
+            //     }
+            // }
         }
     }
 }
@@ -99,7 +105,7 @@ EnemyStab.prototype.specificDraw = function() {
     pop();
 }
 
-function drawEnemyStab(x, y, z, params) {
+function drawEnemyStab(z, params) {
 	push();
 	rotate(params.direction);
 
@@ -133,8 +139,8 @@ EnemyStab.prototype.drawWeapon = function() {
 	pop()
 }
 
-function drawEnemyStabWeapon(x, y, z, params) {
-	var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+function drawEnemyStabWeapon(z, params) {
+	var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
 	push();
 	translate(drawPos);
 	rotate(params.direction);

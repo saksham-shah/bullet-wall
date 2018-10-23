@@ -42,11 +42,16 @@ function draw() {
 	noStroke();
 
 	// Current version
-	text("v1.2.3b EXPERIMENTAL - Please report all glitches or low frame rates", width * 0.5, height - 15 * zoom);
+	text("v1.2.4a EXPERIMENTAL - Please report all glitches or low frame rates", width * 0.5, height - 15 * zoom);
 }
 
 function mouseClicked() {
-	if (currentScreen.buttons !== undefined) {
+	var click = false;
+	if (currentScreen.mouseClicked !== undefined) {
+		click = currentScreen.mouseClicked();
+	}
+
+	if (!click && currentScreen.buttons !== undefined) {
 		for (var i = 0; i < currentScreen.buttons.length; i++) {
 			if (currentScreen.buttons[i].hovered) {
 				currentScreen.buttonClicked(currentScreen.buttons[i]);

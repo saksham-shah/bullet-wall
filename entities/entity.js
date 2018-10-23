@@ -65,6 +65,14 @@ Entity.prototype.checkCollisions = function(all) {
             var newPos = collideWithPoint(this.pos, all[i].pos, this.r + all[i].r, all[i].mass / (this.mass + all[i].mass));
             this.pos.x = newPos.x;
             this.pos.y = newPos.y;
+
+            if (all[i] instanceof Player) {
+                var d = p5.Vector.dist(this.pos, all[i].pos);
+                if (d < this.r + all[i].r + 10) {
+                    // console.log("near");
+                    this.game.coolness += 0.05 * this.scoreValue;
+                }
+            }
 		}
 	}
 
@@ -126,11 +134,17 @@ Entity.prototype.damage = function(num, cause) {
         this.shield = false;
         this.shieldTimer = 180;
         this.shieldRecharge = 3600;
+        if (this instanceof Player) {
+            this.game.coolness -= 150;
+        }
     } else if (this.shieldTimer === undefined || this.shieldTimer <= 0) {
         this.health -= num;
         if (this.damaged !== undefined) {
             // Entity flashes red when damaged
             this.damaged = 25;
+        }
+        if (this instanceof Player) {
+            this.game.coolness -= 300;
         }
     }
     if (this.health == 0) {
@@ -167,44 +181,46 @@ Entity.prototype.draw = function() {
     pop();
 }
 
-function drawEntity(x, y, z, params) {
-    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+function drawEntity(z, params) {
+    var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
 
     push();
     translate(drawPos);
 
     switch(params.type) {
         case 0:
-        drawPlayer(x, y, z, params);
+        drawPlayer(z, params);
         break;
         case 1:
-        drawMinion(x, y, z, params);
+        drawMinion(z, params);
         break;
         case 2:
-        drawEnemyStab(x, y, z, params);
+        drawEnemyStab(z, params);
         break;
         case 3:
-        drawEnemyGun(x, y, z, params);
+        drawEnemyGun(z, params);
         break;
         case 4:
-        drawEnemyBull(x, y, z, params);
+        drawEnemyBull(z, params);
         break;
     }
 
-    fill(255, 0, 0, params.damaged * 4);
-    noStroke();
-    ellipse(0, 0, params.r * zoom * 2);
+    if (params.hide !== true) {
+        fill(255, 0, 0, params.damaged * 4);
+        noStroke();
+        ellipse(0, 0, params.r * z * 2);
+    }
 
     if (params.type >= 2) {
         if (params.health > 1) {
             rotate(- HALF_PI * 0.5);
             stroke(200, 60, 60);
-            strokeWeight(3 * zoom);
-            line((- params.r + 1) * zoom, 0, (params.r - 1) * zoom, 0);
+            strokeWeight(3 * z);
+            line((- params.r + 1) * z, 0, (params.r - 1) * z, 0);
 
             if (params.health > 2) {
                 rotate(HALF_PI);
-                line((- params.r + 1) * zoom, 0, (params.r - 1) * zoom, 0);
+                line((- params.r + 1) * z, 0, (params.r - 1) * z, 0);
             }
         }
     }
@@ -212,22 +228,24 @@ function drawEntity(x, y, z, params) {
     pop();
 }
 
-function drawEntityWeapon(x, y, z, params) {
+function drawEntityWeapon(z, params) {
     switch(params.type) {
         case 0:
-        drawPlayerWeapon(x, y, z, params);
+        if (!params.hide) {
+            drawPlayerWeapon(z, params);
+        }
         break;
         case 1:
-        drawMinionWeapon(x, y, z, params);
+        drawMinionWeapon(z, params);
         break;
         case 2:
-        drawEnemyStabWeapon(x, y, z, params);
+        drawEnemyStabWeapon(z, params);
         break;
         case 3:
-        drawEnemyGunWeapon(x, y, z, params);
+        drawEnemyGunWeapon(z, params);
         break;
         // case 4:
-        // drawEnemyBull(x, y, z, params);
+        // drawEnemyBull(z, params);
         // break;
     }
 }

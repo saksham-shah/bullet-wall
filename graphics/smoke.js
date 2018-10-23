@@ -18,8 +18,8 @@ SmokeParticle.prototype.draw = function() {
 	pop();
 }
 
-function drawSmokeParticle(x, y, z, params) {
-    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+function drawSmokeParticle(z, params) {
+    var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
 
 	push();
 	translate(drawPos);

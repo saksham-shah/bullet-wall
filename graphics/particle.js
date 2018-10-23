@@ -57,9 +57,9 @@ Particle.prototype.draw = function() {
 	}
 }
 
-function drawParticle(x, y, z, params) {
+function drawParticle(z, params) {
 	if (params.canDraw) {
-		var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+		var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
 
 		push();
 		translate(drawPos);

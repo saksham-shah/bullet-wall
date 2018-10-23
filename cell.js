@@ -105,9 +105,9 @@ Cell.prototype.draw = function(mode) {
     }
 }
 
-function drawCell(x, y, z, params, mode) {
+function drawCell(z, params, mode) {
     if (params.wall > 0 && mode == 0) {
-        var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+        var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
         push();
         translate(drawPos);
         stroke(50);
@@ -123,7 +123,7 @@ function drawCell(x, y, z, params, mode) {
     }
 
     if (params.powerup !== null && mode == 1) {
-        var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+        var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
         push();
         translate(drawPos);
         stroke(100);

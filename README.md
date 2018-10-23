@@ -4,12 +4,22 @@ Play the game here: https://rawgit.com/saksham-shah/bullet-wall/master/index.htm
 
 Change log:
 
+23 October - v1.2.4 - Super Cool Moment!
+
+* Watch your best plays without the slow motion after you die!
+* Minions speed increased by 15% (from 3 to 3.5)
+* Minions targeting improved - now they will kill even more enemies!
+* Minions powerup now spawns 3 Minions (from 2)
+* Powerups are no longer completely random - you are guaranteed to get a certain number of each powerup
+* Disc and Dual Gun powerups are now equally common and spawn from 15 seconds (Minions is rarer and appears later)
+* FIX: Bullets killing two enemies at once
+
 20 October - v1.2.3 - Minion Mob
 
 * NEW Minions!
 * They follow you around and destroy anything in their path!
 * Minions will stay with you until they are killed by the enemies
-* Spawn a pack of 3 Minions with the new Minion powerup!
+* Spawn a pair of Minions with the new Minion powerup!
 * Removed Shield powerup
 * Your shield now passively recharges
 

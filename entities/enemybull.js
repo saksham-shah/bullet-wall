@@ -177,7 +177,7 @@ EnemyBull.prototype.specificDraw = function() {
     pop();
 }
 
-function drawEnemyBull(x, y, z, params) {
+function drawEnemyBull(z, params) {
 	push();
 	rotate(params.direction);
 

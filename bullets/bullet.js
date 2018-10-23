@@ -13,6 +13,8 @@ function Bullet(game_, gun_, speed_, direction_, buildWalls_, colour_) {
     this.previousPos = this.pos.copy();
 
     this.hit = false;
+
+    this.time = 0;
 }
 
 Bullet.prototype.update = function(entities) {
@@ -22,6 +24,8 @@ Bullet.prototype.update = function(entities) {
 
     this.checkWallHit();
     this.checkEntityHits(entities);
+
+    this.time += this.game.gameSpeed;
 }
 
 // If it collides with a wall or the edge, it disappears
@@ -77,6 +81,14 @@ Bullet.prototype.checkEntityHits = function(entities) {
                         // Create a wall if the player is not in the same cell (so the player doesn't get stuck in the wall)
                         myCell.build();
                     }
+                    this.game.coolness += this.time;
+                }
+                return;
+            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 15) {
+                var futurePos = this.pos.copy().add(this.vel.copy().setMag(3 * this.r));
+                var d = p5.Vector.dist(futurePos, entities[i].pos);
+                if (d >= this.r + entities[i].r) {
+                    this.game.coolness += 75;
                 }
             }
         }
@@ -102,8 +114,8 @@ Bullet.prototype.draw = function() {
     pop();
 }
 
-function drawBullet(x, y, z, params) {
-    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+function drawBullet(z, params) {
+    var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
 
     push();
     translate(drawPos);

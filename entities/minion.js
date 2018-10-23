@@ -68,7 +68,7 @@ Minion.prototype.update = function() {
         }
     }
 
-    this.relativePos = createVector(this.r * 1.5, 0).rotate(this.vel.heading() + this.hammerRotation);
+    this.relativePos = createVector(this.r * 1.5, - this.r * 0.75).rotate(this.vel.heading() + this.hammerRotation);
     this.hammerPos = this.pos.copy().add(this.relativePos);
 
     // Only hurts walls if state is 1 - this prevents them from being damaged every frame
@@ -119,7 +119,6 @@ Minion.prototype.checkForEnemies = function() {
         if (this.game.entities[i] instanceof Enemy) {
             var d = p5.Vector.dist(pos, this.game.entities[i].pos);
             if (d < this.game.entities[i].r) {
-                console.log("hi");
                 return true;
             }
         }
@@ -187,7 +186,7 @@ Minion.prototype.specificDraw = function() {
 	ellipse(0, 0, this.r * zoom * 2);
 }
 
-function drawMinion(x, y, z, params) {
+function drawMinion(z, params) {
 	fill(200, 200, 250);
 	stroke(160, 160, 200);
     strokeWeight(2 * z);
@@ -230,8 +229,8 @@ Minion.prototype.drawWeapon = function() {
 	pop()
 }
 
-function drawMinionWeapon(x, y, z, params) {
-    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+function drawMinionWeapon(z, params) {
+    var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
 	push();
 	translate(drawPos);
 	rotate(params.direction + params.hammerRotation + HALF_PI);

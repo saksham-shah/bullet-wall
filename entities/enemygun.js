@@ -79,7 +79,7 @@ EnemyGun.prototype.specificDraw = function() {
     pop();
 }
 
-function drawEnemyGun(x, y, z, params) {
+function drawEnemyGun(z, params) {
 	push();
 	rotate(params.direction);
 
@@ -96,8 +96,8 @@ EnemyGun.prototype.drawWeapon = function() {
     this.gun.draw();
 }
 
-function drawEnemyGunWeapon(x, y, z, params) {
-	drawGun(x, y, z, params.gun);
+function drawEnemyGunWeapon(z, params) {
+	drawGun(z, params.gun);
 }
 
 EnemyGun.prototype.convertToSnap = function() {

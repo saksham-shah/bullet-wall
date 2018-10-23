@@ -65,9 +65,9 @@ Grid.prototype.draw = function() {
 	}
 }
 
-function drawGrid(x, y, z, params) {
+function drawGrid(z, params) {
     // var drawPos = getDrawPos(createVector(0, 0));
-    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(0, 0), z), createVector(x, y));
+    var drawPos = createVector(0,0);//p5.Vector.add(p5.Vector.mult(createVector(0, 0), z), createVector(x, y));
 
 
     fill(45, 60, 120);
@@ -79,8 +79,8 @@ function drawGrid(x, y, z, params) {
 
 	// var top = getDrawPos(createVector(zoom * 0.5, zoom * 0.5));
 	// var bottom = getDrawPos(createVector(zoom * 0.5, params.grid.length * CELLSIZE + zoom * 0.5));
-    var top = p5.Vector.add(p5.Vector.mult(createVector(z * 0.5, z * 0.5), z), createVector(x, y));
-    var bottom = p5.Vector.add(p5.Vector.mult(createVector(z * 0.5, params.grid.length * CELLSIZE + z * 0.5), z), createVector(x, y));
+    var top = p5.Vector.mult(createVector(z * 0.5, z * 0.5), z);
+    var bottom = p5.Vector.mult(createVector(z * 0.5, params.grid.length * CELLSIZE + z * 0.5), z);
 
 	for (var i = 0; i <= params.grid.length; i++) {
 		line(top.x, top.y, bottom.x, bottom.y);
@@ -90,8 +90,8 @@ function drawGrid(x, y, z, params) {
 
 	// var left = getDrawPos(createVector(zoom * 0.5, zoom * 0.5));
 	// var right = getDrawPos(createVector(params.grid.length * CELLSIZE + zoom * 0.5, zoom * 0.5));
-    var left = p5.Vector.add(p5.Vector.mult(createVector(zoom * 0.5, zoom * 0.5), z), createVector(x, y));
-    var right = p5.Vector.add(p5.Vector.mult(createVector(params.grid.length * CELLSIZE + z * 0.5, z * 0.5), z), createVector(x, y));
+    var left = p5.Vector.mult(createVector(zoom * 0.5, zoom * 0.5), z);
+    var right = p5.Vector.mult(createVector(params.grid.length * CELLSIZE + z * 0.5, z * 0.5), z);
 
 	for (var i = 0; i <= params.grid.length; i++) {
 		line(left.x, left.y, right.x, right.y);
@@ -104,7 +104,7 @@ function drawGrid(x, y, z, params) {
 		for (var j = 0; j < row.length; j++) {
             // Draw powerups
             // row[j].draw(1);
-            drawCell(x, y, z, row[j], 1);
+            drawCell(z, row[j], 1);
 		}
 	}
 }
@@ -120,12 +120,12 @@ Grid.prototype.drawWalls = function() {
 	}
 }
 
-function drawGridWalls(x, y, z, params) {
+function drawGridWalls(z, params) {
     for (var i = 0; i < params.grid.length; i++) {
 		var row = params.grid[i];
 		for (var j = 0; j < row.length; j++) {
             // Draw walls
-            drawCell(x, y, z, row[j], 0);
+            drawCell(z, row[j], 0);
 		}
 	}
 }

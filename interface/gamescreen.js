@@ -9,6 +9,7 @@ function GameScreen() {
 // Starts a new game
 GameScreen.prototype.newGame = function(difficulty) {
     this.game = new Game(difficulty);
+    this.gameRec = new GameRecord(300);
 
     // GS holds all of the stats of the game, to display them to the player
     this.score = 0;
@@ -19,6 +20,11 @@ GameScreen.prototype.newGame = function(difficulty) {
     this.combo = 0;
     this.lastKill = 55;
     this.comboPercentage = 0;
+    this.coolness = 0;
+    this.maxCoolness = 0;
+    this.coolClip = null;
+    this.coolTimer = 0;
+    this.clipNeeded = false;
 
     this.fade = 0;
 
@@ -29,6 +35,8 @@ GameScreen.prototype.update = function() {
     if (this.game !== null) {
         this.game.update();
 
+        this.gameRec.addFrame(this.game.convertToSnap());
+
         var mousePos = getMousePos();
         if (!this.game.gameOver && mousePos.x > 0 && mousePos.x < CELLSIZE * GRIDSIZE && mousePos.y > 0 && mousePos.y < CELLSIZE * GRIDSIZE) {
             myCursor.mode =  this.game.player.weapon + 1;
@@ -36,6 +44,21 @@ GameScreen.prototype.update = function() {
 
         var score = this.game.score;
         this.score = score;
+
+        var coolness = this.game.coolness;
+        this.coolness = coolness;
+        if (this.coolness > this.maxCoolness) {
+            this.maxCoolness = this.coolness;
+            this.coolTimer = 30;
+            this.clipNeeded = true;
+            // this.coolClip = this.gameRec.createGameClip();
+            // console.log(this.coolness);
+        }
+        this.coolTimer -= this.game.gameSpeed;
+        if (this.coolTimer < 0 && this.clipNeeded) {
+            this.coolClip = this.gameRec.createGameClip();
+            this.clipNeeded = false;
+        }
 
         var lives = this.game.player.health;
         this.lives = lives;
@@ -68,8 +91,12 @@ GameScreen.prototype.update = function() {
         if (this.game.gameOver) {
             this.fade += this.game.gameSpeed / this.game.playSpeed;
             if (this.fade > 300) {
+                if (this.coolClip === null) {
+                    this.coolClip = this.gameRec.createGameClip();
+                }
                 nextScreen = ds;
                 ds.newDeath({
+                    clip: this.coolClip,
                     time: this.game.gameTime,
                     score: this.game.score,
                     difficulty: this.game.difficulty,
@@ -87,10 +114,13 @@ GameScreen.prototype.update = function() {
 }
 
 GameScreen.prototype.draw = function() {
+    background(30, 40, 80);
     if (this.game !== null) {
         this.text1.startTyping();
 
-        this.game.draw();
+        // this.game.draw();
+        var params = this.game.convertToSnap();
+        drawGame(xOff, yOff, zoom, params);
 
         // Draw all of the stats
         this.drawScore();
@@ -106,6 +136,8 @@ GameScreen.prototype.draw = function() {
 
         // Draw time
         this.text2.draw(width * 0.5, yOff * 0.5, 60 * zoom, timeToText(this.game.gameTime));
+
+        // drawGame(width * 0.75, height * 0.75, zoom * 0.3, params);
     }
 
 }

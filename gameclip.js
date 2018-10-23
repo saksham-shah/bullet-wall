@@ -1,26 +1,39 @@
-Game.prototype.snapshot = function() {
-    var e = this.entities.slice();
-    var b = this.bullets.slice();
-    var p = this.particles.slice();
-    var m = this.markings.slice();
-    this.snaps.push(new GameSnap(e, b, p, m));
+function GameRecord(duration) {
+    this.frames = [];
+    this.time = 0;
+    this.duration = duration;
+    this.lastFrame = 0;
 }
 
-function GameSnap(e, b, p, m) {
-    this.entities = [];
-    for (var i = 0; i < e.length; i++) {
-        this.entities.push(e[i].convertToSnap());
+GameRecord.prototype.addFrame = function(snap) {
+    // this.time += 1;
+    this.lastFrame += snap.dt;
+    if (this.lastFrame > 1) {
+        this.frames.push(snap);
+        this.lastFrame--;
     }
-    this.bullets = [];
-    for (var i = 0; i < b.length; i++) {
-        this.bullets.push(b[i].convertToSnap());
+    while(this.frames.length > this.duration) {
+        var f = this.frames.splice(0, 1)[0];
+        // this.time -= 1;
     }
-    this.particles = [];
-    for (var i = 0; i < p.length; i++) {
-        this.particles.push(p[i].convertToSnap());
-    }
-    this.markings = [];
-    for (var i = 0; i < m.length; i++) {
-        this.markings.push(m[i].convertToSnap());
-    }
+}
+
+GameRecord.prototype.createGameClip = function() {
+    return new GameClip(this.frames.slice());
+}
+
+function GameClip(frames) {
+    this.frames = frames;
+    // this.counter = this.frames.length - 30;
+    // this.nextFrame();
+    this.counter = 0;
+}
+
+GameClip.prototype.nextFrame = function() {
+    this.counter = (this.counter + 1) % this.frames.length;
+    // console.log(this.counter);
+}
+
+GameClip.prototype.draw = function(x, y, z) {
+    drawGame(x, y, z, this.frames[this.counter]);
 }

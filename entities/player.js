@@ -79,6 +79,7 @@ Player.prototype.checkShoot = function() {
     if (this.cooldown > 0) {
         this.cooldown -= this.game.gameSpeed;
     } else if (mouseIsPressed) {
+        this.game.coolness -= 100;
         switch(this.weapon) {
             case 0: // Normal bullets
             // If guns = 2, shots are taken with alternate guns
@@ -150,12 +151,14 @@ Player.prototype.specificDraw = function() {
 	ellipse(0, 0, this.r * zoom * 2);
 }
 
-function drawPlayer(x, y, z, params) {
-    fill(200, 200, 250);
-	stroke(160, 160, 200);
-    strokeWeight(2 * z);
+function drawPlayer(z, params) {
+    if (!params.hide) {
+        fill(200, 200, 250);
+    	stroke(160, 160, 200);
+        strokeWeight(2 * z);
 
-	ellipse(0, 0, params.r * z * 2);
+    	ellipse(0, 0, params.r * z * 2);
+    }
 }
 
 Player.prototype.drawWeapon = function() {
@@ -165,10 +168,10 @@ Player.prototype.drawWeapon = function() {
     }
 }
 
-function drawPlayerWeapon(x, y, z, params) {
-    drawGun(x, y, z, params.gun1);
+function drawPlayerWeapon(z, params) {
+    drawGun(z, params.gun1);
     if (params.guns == 2) {
-        drawGun(x, y, z, params.gun2);
+        drawGun(z, params.gun2);
     }
 }
 
@@ -181,7 +184,8 @@ Player.prototype.convertToSnap = function() {
         health: this.health,
         damaged: this.damaged,
 		gun1: this.gun1.convertToSnap(),
-		gun1: this.gun1.convertToSnap(),
-        guns: this.guns
+		gun2: this.gun2.convertToSnap(),
+        guns: this.guns,
+        hide: this.hide
 	}
 }

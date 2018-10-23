@@ -91,8 +91,8 @@ Disc.prototype.draw = function() {
     pop();
 }
 
-function drawDisc(x, y, z, params) {
-    var drawPos = p5.Vector.add(p5.Vector.mult(createVector(params.x, params.y), z), createVector(x, y));
+function drawDisc(z, params) {
+    var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
 
     push();
     translate(drawPos);
