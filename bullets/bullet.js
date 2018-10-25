@@ -35,6 +35,9 @@ Bullet.prototype.checkWallHit = function() {
     var wallCollision = collideWithWalls(this.pos, this.r, this.game.grid);
     if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
         this.hit = true;
+        if (this.gun.player && this.buildWalls) {
+            this.game.addCoolness("buildWall");
+        }
         if (wallCollision[1] !== null) {
             if (this.buildWalls) {
                 // Player bullets create walls
@@ -42,6 +45,9 @@ Bullet.prototype.checkWallHit = function() {
                     myCell.build();
                     this.game.score += 2;
                 }
+                // if (this.gun.player) {
+                //     this.game.addCoolness("missEnemy");
+                // }
             } else {
                 // Enemy bullets break walls
                 wallCollision[1].break(this.vel.heading());
@@ -80,19 +86,26 @@ Bullet.prototype.checkEntityHits = function(entities) {
                     if (myCell !== playerCell) {
                         // Create a wall if the player is not in the same cell (so the player doesn't get stuck in the wall)
                         myCell.build();
+                        if (this.gun.player) {
+                            this.game.addCoolness("buildWall");
+                        }
                     }
-                    this.game.coolness += this.time * 0.5;
+                    // this.game.coolness += this.time * 0.5;
+                }
+                if (entities[i] instanceof Enemy) {
+                    this.game.addCoolness("bulletHit", {time: this.time, health: entities[i].health, scoreValue: entities[i].scoreValue});
                 }
                 return;
-            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 25) {
-                var futurePos = this.pos.copy().add(this.vel.copy().setMag(25));
-                var d = p5.Vector.dist(futurePos, entities[i].pos);
-                if (d >= this.r + entities[i].r) {
-                    var cool = 250 / (d - this.r - entities[i].r);
-                    if (cool > 100) {
-                        cool = 100;
-                    }
-                    this.game.coolness += cool * this.game.playSpeed;
+            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 30) {
+                var futurePos = this.pos.copy().add(this.vel.copy().setMag(40));
+                var futureD = p5.Vector.dist(futurePos, entities[i].pos);
+                if (futureD >= this.r + entities[i].r) {
+                    // var cool = 250 / (d - this.r - entities[i].r);
+                    // if (cool > 100) {
+                    //     cool = 100;
+                    // }
+                    // this.game.coolness += cool * this.game.playSpeed;
+                    this.game.addCoolness("bulletDodge", {distance: d - this.r - entities[i].r});
                     // console.log("near miss " + String(cool));
                 }
             }

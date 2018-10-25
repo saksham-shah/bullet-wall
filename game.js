@@ -63,6 +63,8 @@ function Game(difficulty) {
 	this.gameSpeed = 1;
 	this.playSpeed = 1;
 	this.slowMo = 0;
+	this.modTime = 0;
+	this.timeTick = false;
 
 	// Maximum time between two kills for it to count as a combo
 	this.comboTime = 90;
@@ -103,6 +105,13 @@ Game.prototype.updateTime = function() {
 		this.gameTime += dt;
 	}
 
+	this.timeTick = false;
+	this.modTime += 1;
+	while (this.modTime > 1) {
+		this.modTime--;
+		this.timeTick = true;
+	}
+
 	if (this.lastKill < this.comboTime) {
 		this.lastKill += this.gameSpeed;
 	} else {
@@ -117,14 +126,13 @@ Game.prototype.updateTime = function() {
 		this.shakeTimer = 0;
 	}
 
-	if (this.coolness > 0) {
+	for (var i = 0; i < this.timeTick; i++) {
 		this.coolness = this.coolness * 0.99;
 	}
 }
 
 // Enemy spawns and power up spawns
 Game.prototype.updateSpawns = function() {
-
 	// Enemy spawning
 	this.timeSinceWave += this.gameSpeed;
 	this.timeSinceEnemy += this.gameSpeed;
@@ -234,7 +242,7 @@ Game.prototype.enemyDeath = function(enemy) {
 		// Increase score
 		this.score += enemy.scoreValue * combo;
 
-		this.coolness += 200;
+		// this.coolness += 200;
 
 		this.enemiesKilled++;
 	}
