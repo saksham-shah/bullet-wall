@@ -25,7 +25,7 @@ DeathScreen.prototype.createButtons = function() {
 DeathScreen.prototype.newDeath = function(stats) {
     // this.game = game;
     this.stats = stats;
-
+    this.clips = [];
     this.clips.push(this.stats.clip);
 
     // if (this.clips.length > 1) {

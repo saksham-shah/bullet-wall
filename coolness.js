@@ -9,13 +9,13 @@ Game.prototype.addCoolness = function(eventType, data) {
         break;
         case "bulletDodge":
         var cool = 250 / (data.distance);
-        if (cool > 30) {
-            cool = 30;
+        if (cool > 25) {
+            cool = 25;
         }
         cool *= this.gameSpeed;
         break;
         case "enemyDodge":
-        cool = 0.5 * this.gameSpeed;
+        cool = 0.7 * this.gameSpeed;
         break;
         case "loseLife":
         cool = -300;
