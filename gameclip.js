@@ -18,22 +18,87 @@ GameRecord.prototype.addFrame = function(snap) {
     }
 }
 
-GameRecord.prototype.createGameClip = function() {
-    return new GameClip(this.frames.slice());
+GameRecord.prototype.createGameClip = function(x, y, r, coolness) {
+    return new GameClip(this.frames.slice(), x, y, r, coolness);
 }
 
-function GameClip(frames) {
+function GameClip(frames, x, y, r, coolness) {
     this.frames = frames;
+
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    this.z = this.r / GRIDSIZE / CELLSIZE;
+
+    this.coolness = coolness;
     // this.counter = this.frames.length - 30;
     // this.nextFrame();
     this.counter = 0;
+
+    this.thumbnail = random(this.frames);
+
+    this.fullscreen = false;
+    this.playing = false;
+    // this.hovered = false;
+}
+
+GameClip.prototype.setPos = function(x, y, r) {
+    // this.hovered = this.mouseHovered();
+    // this.nextFrame();
+    if (r !== undefined) {
+        this.r = r;
+        this.z = this.r / GRIDSIZE / CELLSIZE;
+    }
+
+    this.x = x;
+    this.y = y;
+}
+
+GameClip.prototype.mouseHovered = function() {
+    if (!this.fullscreen) {
+        if (mouseX > this.x && mouseX < this.x + this.r && mouseY > this.y && mouseY < this.y + this.r) {
+            return true;
+        }
+    } else {
+        if (mouseX > width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 && 
+            mouseX < width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 + GRIDSIZE * CELLSIZE * zoom && 
+            mouseY > height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 && 
+            mouseY < height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 + GRIDSIZE * CELLSIZE * zoom) {
+            return true;
+        }
+    }
+    return false;
+}
+
+GameClip.prototype.clicked = function() {
+    this.fullScreen();
+    return this.fullscreen;
+}
+
+GameClip.prototype.fullScreen = function() {
+    this.fullscreen = !this.fullscreen;
+    if (this.fullscreen) {
+        this.counter = 0;
+        this.playing = true;
+    } else {
+        this.playing = false;
+    }
 }
 
 GameClip.prototype.nextFrame = function() {
-    this.counter = (this.counter + 1) % this.frames.length;
-    // console.log(this.counter);
+    if (this.playing) {
+        this.counter = (this.counter + 1) % this.frames.length;
+    }
 }
 
-GameClip.prototype.draw = function(x, y, z) {
-    drawGame(x, y, z, this.frames[this.counter]);
+GameClip.prototype.pause = function() {
+    this.playing = !this.playing;
+}
+
+GameClip.prototype.draw = function(x, y, z, forced) {
+    if (!this.fullscreen || forced) {
+        drawGame(this.x, this.y, this.z, this.thumbnail);
+    } else {
+        drawGame(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom, this.frames[this.counter]);
+    }
 }

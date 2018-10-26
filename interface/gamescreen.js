@@ -23,12 +23,15 @@ GameScreen.prototype.newGame = function(difficulty) {
     this.coolness = 0;
     this.maxCoolness = 0;
     this.coolClip = null;
+    // this.coolClips = [];
     this.coolTimer = 0;
     this.clipNeeded = false;
 
     this.fade = 0;
 
     this.text1.stopTyping();
+
+    // this.coolClips.push(this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness));
 }
 
 GameScreen.prototype.update = function() {
@@ -47,17 +50,38 @@ GameScreen.prototype.update = function() {
 
         var coolness = this.game.coolness;
         this.coolness = coolness;
+        // this.coolClips.sort(function(a, b) {
+        //     return a.coolness - b.coolness;
+        // });
+        // if (this.coolClips.length > 0) {
+        // if (this.coolness > this.coolClips[0].coolness && !this.clipNeeded) {
         if (this.coolness > this.maxCoolness) {
             this.maxCoolness = this.coolness;
+            // console.log(this.coolness);
             this.coolTimer = 30;
             this.clipNeeded = true;
+            // console.log(this.coolness);
             // this.coolClip = this.gameRec.createGameClip();
             // console.log(this.coolness);
         }
+        // }
         this.coolTimer -= this.game.gameSpeed;
         if (this.coolTimer < 0 && this.clipNeeded) {
-            this.coolClip = this.gameRec.createGameClip();
+            this.coolClip = this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness);
+            // this.coolClips.push(this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness));
+            // if (this.coolClips.length > 4) {
+
+            // }
             this.clipNeeded = false;
+            // if (this.coolClips.length > 4) {
+            //     this.coolClips.sort(function(a, b) {
+            //         return a.coolness - b.coolness;
+            //     });
+            //     console.log(this.coolClips[0].coolness);
+            //     this.coolClips.splice(0, 1);
+            //     console.log("splice");
+            // }
+            // // this.clipLimitTimer = 300;
         }
 
         var lives = this.game.player.health;
@@ -91,9 +115,13 @@ GameScreen.prototype.update = function() {
         if (this.game.gameOver) {
             this.fade += this.game.gameSpeed / this.game.playSpeed;
             if (this.fade > 300) {
+                // if (this.coolClips.length > 4) {
+                //     this.coolClips = this.coolClips.slice(this.coolClips.length - 4, this.coolClips.length);
                 if (this.coolClip === null) {
-                    this.coolClip = this.gameRec.createGameClip();
+                    this.coolClip = this.gameRec.createGameClip(width * 0.55, height * 0.5 - width * 0.15, width * 0.3, this.coolness);
+                    // this.coolClips.push(this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness));
                 }
+                // console.log(this.coolClip.coolness);
                 nextScreen = ds;
                 ds.newDeath({
                     clip: this.coolClip,

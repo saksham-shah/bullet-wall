@@ -297,7 +297,7 @@ function drawGame(x, y, z, params) {
 	if (shakeMag > 3) {
 		shakeMag = 3;
 	}
-	var shakeV = createVector(noise(params.shakeOffset + 1000000) - 0.5, noise(params.shakeOffset) - 0.5).setMag(shakeMag);
+	var shakeV = createVector(noise(params.shakeOffset + 1000000) - 0.5, noise(params.shakeOffset) - 0.5).setMag(shakeMag * z);
 	translate(shakeV);
 
 	// this.grid.draw();

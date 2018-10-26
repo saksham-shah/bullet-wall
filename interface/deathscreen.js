@@ -7,7 +7,8 @@ function DeathScreen() {
     this.modeText = new TypeText();
     this.gameOverText = new TypeText("GAME OVER");
 
-    this.clipPlaying = false;
+    this.clips = [];
+    this.clipPlaying = null;
 }
 
 DeathScreen.prototype.createButtons = function() {
@@ -25,9 +26,27 @@ DeathScreen.prototype.newDeath = function(stats) {
     // this.game = game;
     this.stats = stats;
 
-    this.clip = this.stats.clip;
-    this.clip.counter = this.clip.frames.length - 10;
-    this.clip.nextFrame();
+    this.clips.push(this.stats.clip);
+
+    // if (this.clips.length > 1) {
+    //     for (var i = 0; i < this.clips.length; i++) {
+    //         var x = width * 0.575;
+    //         var y = height * 0.5 - width * 0.125;
+    //         var r = width * 0.125;
+    //
+    //         if (i % 2 == 1) {
+    //             x += width * 0.125;
+    //         }
+    //         if (i > 1) {
+    //             y += width * 0.125;
+    //         }
+    //
+    //         this.clips[i].setPos(x, y, r);
+    //     }
+    // }
+    // this.clips.push(this.stats.clip);
+    // this.clip.counter = this.clip.frames.length - 10;
+    // this.clip.nextFrame();
 
     var timeText = timeToText(this.stats.time);
 
@@ -39,17 +58,20 @@ DeathScreen.prototype.newDeath = function(stats) {
 }
 
 DeathScreen.prototype.update = function() {
-        this.gameOverText.startTyping();
+    this.gameOverText.startTyping();
 
     if (this.gameOverText.isFinished()) {
         this.statsText.update();
 
         if (this.statsText.isFinished()) {
-            if (this.clipPlaying) {
-                this.clip.nextFrame();
+            if (this.clipPlaying !== null) {
+                this.clipPlaying.nextFrame();
             } else {
                 for (var i = 0; i < this.buttons.length; i++) {
                     this.buttons[i].update();
+                }
+                for (var i = 0; i < this.clips.length; i++) {
+                    this.clips[i].nextFrame();
                 }
             }
         }
@@ -63,14 +85,29 @@ DeathScreen.prototype.update = function() {
 
 DeathScreen.prototype.mouseClicked = function() {
     if (this.statsText.isFinished()) {
-        var bounds = this.getClipBounds();
-        if (this.clipPlaying) {
-            this.clipPlaying = false;
-            this.clip.counter = this.clip.frames.length - 10;
+        // var bounds = this.getClipBounds();
+        // if (this.clipPlaying) {
+        //     this.clipPlaying = false;
+        //     this.clip.counter = this.clip.frames.length - 10;
+        // } else {
+        //     if (!(mouseX < bounds[0] || mouseX > bounds[1] || mouseY < bounds[2] || mouseY > bounds[3])) {
+        //         this.clipPlaying = true;
+        //         this.clip.counter = 0;
+        //     }
+        // }
+        if (this.clipPlaying !== null && this.clipPlaying.mouseHovered()) {
+            var play = this.clipPlaying.clicked();
+            if (!play) {
+                this.clipPlaying = null;
+            }
         } else {
-            if (!(mouseX < bounds[0] || mouseX > bounds[1] || mouseY < bounds[2] || mouseY > bounds[3])) {
-                this.clipPlaying = true;
-                this.clip.counter = 0;
+            for (var i = 0; i < this.clips.length; i++) {
+                if (this.clips[i].mouseHovered()) {
+                    var play = this.clips[i].clicked();
+                    if (play) {
+                        this.clipPlaying = this.clips[i]
+                    }
+                }
             }
         }
     }
@@ -122,16 +159,28 @@ DeathScreen.prototype.draw = function() {
                 this.buttons[i].draw();
             }
 
-            if (this.clip !== null) {
-                if (this.clipPlaying) {
-                    fill(30, 40, 80, 150);
-                    noStroke();
-                    rect(0, 0, width, height);
-                    this.clip.draw(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom);
-                } else {
-                    this.clip.draw(width * 0.7 - GRIDSIZE * CELLSIZE * zoom * 0.25, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.25, zoom * 0.5);
-                }
+            for (var i = 0; i < this.clips.length; i++) {
+
+                this.clips[i].draw(true);
             }
+
+            if (this.clipPlaying !== null) {
+                fill(30, 40, 80, 150);
+                noStroke();
+                rect(0, 0, width, height);
+                this.clipPlaying.draw(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom);
+            }
+
+            // if (this.clip !== null) {
+            //     if (this.clipPlaying) {
+            //         fill(30, 40, 80, 150);
+            //         noStroke();
+            //         rect(0, 0, width, height);
+            //         this.clip.draw(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom);
+            //     } else {
+            //         this.clip.draw(width * 0.7 - GRIDSIZE * CELLSIZE * zoom * 0.25, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.25, zoom * 0.5);
+            //     }
+            // }
         }
     }
 
