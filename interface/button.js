@@ -29,13 +29,13 @@ Button.prototype.update = function() {
 }
 
 Button.prototype.draw = function() {
-    fill(60, 80, 160);
-    stroke(45, 60, 120);
+    fill(theme.button.fill);
+    stroke(theme.button.stroke);
     strokeWeight(7 * screenZoom);
 
     // Lighter blue if hovered
     if (this.hovered) {
-        fill(75, 100, 200);
+        fill(theme.button.hover);
     }
 
     rect(this.x, this.y, this.w, this.h);

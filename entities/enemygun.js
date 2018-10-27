@@ -83,8 +83,8 @@ function drawEnemyGun(z, params) {
 	push();
 	rotate(params.direction);
 
-	fill(250, 75, 75);
-	stroke(200, 60, 60);
+	fill(theme.entity.enemy[0] * theme.mult, theme.entity.enemy[1] * theme.mult, theme.entity.enemy[2] * theme.mult);
+	stroke(theme.entity.enemy);
     strokeWeight(2 * z);
 
 	ellipse(0, 0, params.r * z * 2);

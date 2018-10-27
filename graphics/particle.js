@@ -11,6 +11,9 @@ function Particle(game_, pos_, vel_, acc_, r_, life_, colour_, cell_) {
 	this.maxLife = life_;
 
 	this.colour = colour_;
+	if (!(this.colour instanceof p5.Color)) {
+		this.colour = color(colour_);
+	}
 
 	this.cell = cell_;
 	this.canDraw = true;

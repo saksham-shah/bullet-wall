@@ -26,15 +26,20 @@ GameCursor.prototype.draw = function() {
 
     switch (this.mode) {
         case 0: // Cross
-        stroke(60, 80, 160);
+        stroke(theme.cursor);
         strokeWeight(r * 0.5);
         line(0, -r, 0, r);
         line(-r, 0, r, 0);
         break;
 
         case 1: // Bullet
-        fill(200, 200, 250, 150);
-        stroke(255, 150);
+        var c = theme.bullet.player.slice();
+        c.push(150);
+        fill(c);
+        // fill(theme. 150);
+        var c = theme.bullet.stroke.slice();
+        c.push(150);
+        stroke(c);
         strokeWeight(r * 0.25);
         ellipse(0, 0, r * 2);
         break;
@@ -42,10 +47,16 @@ GameCursor.prototype.draw = function() {
         case 2: // Disc
         rotate(HALF_PI);
         strokeWeight(r * 0.25);
-        stroke(75, 0, 125, 150);
-        fill(150, 0, 250, 150);
+        var c = theme.bullet.discStroke.slice();
+        c.push(150);
+        stroke(c);
+        var c = theme.bullet.discLeft.slice();
+        c.push(150);
+        fill(c);
         arc(0, 0, r * 2.5, r * 2.5, 0, PI, CHORD);
-        fill(120, 0, 200, 150);
+        var c = theme.bullet.discRight.slice();
+        c.push(150);
+        fill(c);
         arc(0, 0, r * 2.5, r * 2.5, -PI, 0, CHORD);
         line(r * 1.25, 0, - r * 1.25, 0);
         break;

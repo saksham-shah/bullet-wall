@@ -99,12 +99,12 @@ function drawDisc(z, params) {
     rotate(params.rotation)
 
     strokeWeight(2 * z);
-    stroke(75, 0, 125);
+    stroke(theme.bullet.discStroke);
 
-    fill(150, 0, 250);
+    fill(theme.bullet.discLeft);
     arc(0, 0, params.r * 2 * z, params.r * 2 * z, 0, PI, CHORD);
 
-    fill(120, 0, 200);
+    fill(theme.bullet.discRight);
     arc(0, 0, params.r * 2 * z, params.r * 2 * z, -PI, 0, CHORD);
 
     line(params.r * z, 0, - params.r * z, 0);

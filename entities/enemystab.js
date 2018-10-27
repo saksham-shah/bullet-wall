@@ -109,8 +109,8 @@ function drawEnemyStab(z, params) {
 	push();
 	rotate(params.direction);
 
-	fill(250, 75, 75);
-	stroke(200, 60, 60);
+	fill(theme.entity.enemy[0] * theme.mult, theme.entity.enemy[1] * theme.mult, theme.entity.enemy[2] * theme.mult);
+	stroke(theme.entity.enemy);
     strokeWeight(2 * z);
 
 	ellipse(0, 0, params.r * z * 2);
@@ -145,8 +145,8 @@ function drawEnemyStabWeapon(z, params) {
 	translate(drawPos);
 	rotate(params.direction);
 
-	fill(1.25 * (100 + params.weaponExtend * 3), 50, 50);
-	stroke(100 + params.weaponExtend * 3, 50, 50);
+	fill(1.25 * (theme.weapon.stab[0] + params.weaponExtend * 3), theme.weapon.stab[2], theme.weapon.stab[2]);
+	stroke(theme.weapon.stab[0] + params.weaponExtend * 3, theme.weapon.stab[1], theme.weapon.stab[2]);
 	strokeWeight(2 * z);
 
 	beginShape();

@@ -79,10 +79,10 @@ TypeText.prototype.draw = function(x, y, r, textToType) {
     }
 
     // 3D effect
-    fill(250, 75, 75);
+    fill(theme.text[0]);
     text(t, x - r / 35 * 2, y + r / 3 - r / 35 * 2);
-    fill(50);
+    fill(theme.text[1]);
     text(t, x - r / 35, y + r / 3 - r / 35);
-    fill(255);
+    fill(theme.text[2]);
     text(t, x, y + r / 3);
 }

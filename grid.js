@@ -70,12 +70,12 @@ function drawGrid(z, params) {
     var drawPos = createVector(0,0);//p5.Vector.add(p5.Vector.mult(createVector(0, 0), z), createVector(x, y));
 
 
-    fill(45, 60, 120);
+    fill(theme.grid.floor);
     noStroke();
     rect(drawPos.x, drawPos.y, params.grid.length * CELLSIZE * z, params.grid.length * CELLSIZE * z);
 
 	strokeWeight(1 * z);
-	stroke(90, 120, 240);
+	stroke(theme.grid.lines);
 
 	// var top = getDrawPos(createVector(zoom * 0.5, zoom * 0.5));
 	// var bottom = getDrawPos(createVector(zoom * 0.5, params.grid.length * CELLSIZE + zoom * 0.5));

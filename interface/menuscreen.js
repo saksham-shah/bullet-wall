@@ -43,7 +43,7 @@ MenuScreen.prototype.buttonClicked = function(button) {
 }
 
 MenuScreen.prototype.draw = function() {
-    background(30, 40, 80);
+    background(theme.background);
 
     this.title.draw(width * 0.5, height * 0.2, 150 * screenZoom);
 

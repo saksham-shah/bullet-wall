@@ -66,7 +66,7 @@ Entity.prototype.checkCollisions = function(all) {
             this.pos.x = newPos.x;
             this.pos.y = newPos.y;
 
-            if (all[i] instanceof Player) {
+            if (this instanceof Enemy && all[i] instanceof Player) {
                 var d = p5.Vector.dist(this.pos, all[i].pos);
                 if (d < this.r + all[i].r + 10) {
                     // console.log("near");
@@ -217,7 +217,10 @@ function drawEntity(z, params) {
     }
 
     if (params.hide !== true) {
-        fill(255, 0, 0, params.damaged * 4);
+        var c = theme.entity.damage.slice();
+        c.push(params.damaged * 4);
+        fill(c);
+        // fill(255, 0, 0, params.damaged * 4);
         noStroke();
         ellipse(0, 0, params.r * z * 2);
     }
@@ -225,7 +228,7 @@ function drawEntity(z, params) {
     if (params.type >= 2) {
         if (params.health > 1) {
             rotate(- HALF_PI * 0.5);
-            stroke(200, 60, 60);
+            stroke(theme.entity.enemy);
             strokeWeight(3 * z);
             line((- params.r + 1) * z, 0, (params.r - 1) * z, 0);
 

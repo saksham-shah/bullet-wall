@@ -139,7 +139,7 @@ Player.prototype.die = function(enemy) {
     // Mega slow motion
     this.game.slowMotion(360, 0.1);
 
-    this.game.particleExplosion(this.pos, 2, 100, PI, PI, createVector(0, 0.1), 50, 5, 50, 3, color(160, 160, 200));
+    this.game.particleExplosion(this.pos, 2, 100, PI, PI, createVector(0, 0.1), 50, 5, 50, 3, theme.particle.playerDeath);
 
     this.game.gameOver = true;
 }
@@ -154,8 +154,8 @@ Player.prototype.specificDraw = function() {
 
 function drawPlayer(z, params) {
     if (!params.hide) {
-        fill(200, 200, 250);
-    	stroke(160, 160, 200);
+        fill(theme.entity.player[0] * theme.mult, theme.entity.player[1] * theme.mult, theme.entity.player[2] * theme.mult);
+    	stroke(theme.entity.player);
         strokeWeight(2 * z);
 
     	ellipse(0, 0, params.r * z * 2);

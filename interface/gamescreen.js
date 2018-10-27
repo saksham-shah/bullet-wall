@@ -118,7 +118,7 @@ GameScreen.prototype.update = function() {
                 // if (this.coolClips.length > 4) {
                 //     this.coolClips = this.coolClips.slice(this.coolClips.length - 4, this.coolClips.length);
                 if (this.coolClip === null) {
-                    this.coolClip = this.gameRec.createGameClip(width * 0.55, height * 0.5 - width * 0.15, width * 0.3, this.coolness);
+                    this.coolClip = this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness);
                     // this.coolClips.push(this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness));
                 }
                 // console.log(this.coolClip.coolness);
@@ -142,7 +142,7 @@ GameScreen.prototype.update = function() {
 }
 
 GameScreen.prototype.draw = function() {
-    background(30, 40, 80);
+    background(theme.background);
     if (this.game !== null) {
         this.text1.startTyping();
 
@@ -157,7 +157,9 @@ GameScreen.prototype.draw = function() {
         this.drawCombo();
 
         // Game over fade
-        fill(30, 40, 80, this.fade);
+        var c = theme.background.slice();
+        c.push(this.fade);
+        fill(c);
         noStroke();
 
         rect(0, 0, width, height);
@@ -192,9 +194,9 @@ GameScreen.prototype.drawLives = function() {
         var r = 30 * screenZoom;
 
         if (this.lives > i) {
-            fill(250, 75, 75);
+            fill(theme.gs.heartLive[0] * theme.mult, theme.gs.heartLive[1] * theme.mult, theme.gs.heartLive[2] * theme.mult);
         } else {
-            fill(150);
+            fill(theme.gs.heartDead * theme.mult);
         }
 
         noStroke()
@@ -206,9 +208,9 @@ GameScreen.prototype.drawLives = function() {
         endShape();
 
         if (this.lives > i) {
-            stroke(200, 60, 60);
+            stroke(theme.gs.heartLive);
         } else {
-            stroke(120);
+            stroke(theme.gs.heartDead);
         }
 
         strokeWeight(r / 10);
@@ -239,7 +241,7 @@ GameScreen.prototype.drawShield = function() {
         }
     }
 
-    fill(150 * colourMult);
+    fill(theme.gs.shieldLeft * colourMult);
     beginShape();
     vertex(x, y);
     vertex(x, y + r * 3);
@@ -248,7 +250,7 @@ GameScreen.prototype.drawShield = function() {
     vertex(x, y);
     endShape()
 
-    fill(175 * colourMult);
+    fill(theme.gs.shieldRight * colourMult);
     beginShape();
     vertex(x, y);
     vertex(x + r, y);
@@ -258,7 +260,7 @@ GameScreen.prototype.drawShield = function() {
     endShape()
 
     noFill();
-    stroke(100 * colourMult);
+    stroke(theme.gs.shieldStroke * colourMult);
     strokeWeight(r / 12.5);
     beginShape();
     vertex(x, y);
@@ -271,12 +273,16 @@ GameScreen.prototype.drawShield = function() {
     endShape()
 
     if (this.shieldTimer > 0) {
-        fill(30, 40, 80, 150);
+        var c = theme.background.slice();
+        c.push(150);
+        fill(c);
         noStroke();
 
         rect(x - r, y, r * 2, 3 * r * (180 - this.shieldTimer) / 180);
     } else if (this.shieldRecharge > 0) {
-        fill(30, 40, 80, 150);
+        var c = theme.background.slice();
+        c.push(150);
+        fill(c);
         noStroke();
 
         rect(x - r, y, r * 2, 3 * r * (this.shieldRecharge) / 3600);
@@ -293,12 +299,12 @@ GameScreen.prototype.drawCombo = function() {
         textAlign(CENTER);
         noStroke();
 
-        fill(0, 150, 0);
+        fill(theme.gs.combo);
 
         if (this.lastKill < this.game.comboTime) {
             arc(x, y, r * 2, r * 2, - HALF_PI, this.comboPercentage * TWO_PI - HALF_PI);
 
-            fill(30, 40, 80);
+            fill(theme.background);
             ellipse(x, y, r * 1.5);
         }
 

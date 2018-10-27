@@ -52,7 +52,7 @@ Enemy.prototype.update = function() {
 // When the enemy dies
 Enemy.prototype.die = function(bullet) {
 	this.dead = true;
-	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 1, 45, 3, color(200, 60, 60));
+	this.game.particleExplosion(this.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), HALF_PI * 0.75, createVector(0, 0.1), 20, 1, 45, 3, theme.entity.enemy);
 	this.game.enemyDeath(this);
 	this.game.enemies--;
 }

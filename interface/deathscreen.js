@@ -142,9 +142,9 @@ DeathScreen.prototype.getClipBounds = function() {
 }
 
 DeathScreen.prototype.draw = function() {
-    background(30, 40, 80);
+    background(theme.background);
 
-    fill(45, 60, 120);
+    fill(theme.deathHeader);
     noStroke();
     rect(0, 0, width, height * 0.1);
 
@@ -165,7 +165,10 @@ DeathScreen.prototype.draw = function() {
             }
 
             if (this.clipPlaying !== null) {
-                fill(30, 40, 80, 150);
+                var c = theme.background.slice();
+                c.push(150);
+                fill(c);
+                // fill(30, 40, 80, 150);
                 noStroke();
                 rect(0, 0, width, height);
                 this.clipPlaying.draw(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom);

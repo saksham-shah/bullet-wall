@@ -36,7 +36,7 @@ Cell.prototype.build = function() {
             this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(this.powerup.colour), this);
             this.powerup = null;
         } else {
-            this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(50), this);
+            this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, theme.grid.cellStroke, this);
         }
     }
 }
@@ -49,7 +49,7 @@ Cell.prototype.break = function(direction, full) {
         } else {
             this.wall = 0;
         }
-        this.game.particleExplosion(this.middle(), 1, 100, direction, HALF_PI * 0.5, createVector(0, 0), 30, 0, 20, 5, color(50), this);
+        this.game.particleExplosion(this.middle(), 1, 100, direction, HALF_PI * 0.5, createVector(0, 0), 30, 0, 20, 5, theme.grid.cellStroke, this);
     }
 
 }
@@ -110,9 +110,9 @@ function drawCell(z, params, mode) {
         var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
         push();
         translate(drawPos);
-        stroke(50);
+        stroke(theme.grid.cellStroke);
         strokeWeight(4 * z);
-        fill(100);
+        fill(theme.grid.cellFill);
         rect(2 * z, 2 * z, (params.r - 2) * z, (params.r - 2) * z);
 
         if (params.wall > 1) {
@@ -126,9 +126,9 @@ function drawCell(z, params, mode) {
         var drawPos = p5.Vector.mult(createVector(params.x, params.y), z);
         push();
         translate(drawPos);
-        stroke(100);
+        stroke(theme.grid.powerupStroke);
         strokeWeight(2 * z);
-        fill(150);
+        fill(theme.grid.powerupFill);
         rect(params.r * z * 0.1 + z, params.r * z * 0.1 + z, params.r * z * 0.8, params.r * z * 0.8);
 
         params.powerup.draw(params.r * z * 0.1 + z, params.r * z * 0.1 + z, params.r * z * 0.8);

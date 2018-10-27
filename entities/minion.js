@@ -175,7 +175,7 @@ Minion.prototype.customPathfinding = function(a, b) {
 Minion.prototype.die = function() {
     this.dead = true;
     // this.game.smokeExplosion(this.pos, 1, 50, PI * 0.25, 7, 2, 50, 10, color(160, 160, 200));
-    this.game.particleExplosion(this.pos, 2, 50, 0, PI, createVector(0, 0.1), 20, 1, 45, 3, color(160, 160, 200));
+    this.game.particleExplosion(this.pos, 2, 50, 0, PI, createVector(0, 0.1), 20, 1, 45, 3, theme.entity.minion);
 }
 
 Minion.prototype.specificDraw = function() {
@@ -187,8 +187,8 @@ Minion.prototype.specificDraw = function() {
 }
 
 function drawMinion(z, params) {
-	fill(200, 200, 250);
-	stroke(160, 160, 200);
+    fill(theme.entity.minion[0] * theme.mult, theme.entity.minion[1] * theme.mult, theme.entity.minion[2] * theme.mult);
+    stroke(theme.entity.minion);
     strokeWeight(2 * z);
 
 	ellipse(0, 0, params.r * z * 2);
@@ -235,8 +235,8 @@ function drawMinionWeapon(z, params) {
 	translate(drawPos);
 	rotate(params.direction + params.hammerRotation + HALF_PI);
 
-    fill(50, 50, 125);
-    stroke(40, 40, 100);
+    fill(theme.weapon.hammer[0] * 1.25, theme.weapon.hammer[1] * 1.25, theme.weapon.hammer[2] * 1.25);
+	stroke(theme.weapon.hammer);
 	strokeWeight(2 * z);
 
 	beginShape();

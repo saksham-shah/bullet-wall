@@ -15,6 +15,8 @@ function Bullet(game_, gun_, speed_, direction_, buildWalls_, colour_) {
     this.hit = false;
 
     this.time = 0;
+
+    this.dodged = false;
 }
 
 Bullet.prototype.update = function(entities) {
@@ -96,8 +98,8 @@ Bullet.prototype.checkEntityHits = function(entities) {
                     this.game.addCoolness("bulletHit", {time: this.time, health: entities[i].health, scoreValue: entities[i].scoreValue});
                 }
                 return;
-            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 30) {
-                var futurePos = this.pos.copy().add(this.vel.copy().setMag(40));
+            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 25 && !this.dodged) {
+                var futurePos = this.pos.copy().add(this.vel.copy().setMag(30));
                 var futureD = p5.Vector.dist(futurePos, entities[i].pos);
                 if (futureD >= this.r + entities[i].r) {
                     // var cool = 250 / (d - this.r - entities[i].r);
@@ -105,7 +107,8 @@ Bullet.prototype.checkEntityHits = function(entities) {
                     //     cool = 100;
                     // }
                     // this.game.coolness += cool * this.game.playSpeed;
-                    this.game.addCoolness("bulletDodge", {distance: d - this.r - entities[i].r});
+                    this.game.addCoolness("bulletDodge");
+                    this.dodged = true;
                     // console.log("near miss " + String(cool));
                 }
             }
@@ -139,12 +142,12 @@ function drawBullet(z, params) {
     translate(drawPos);
 
     if (params.player) {
-        fill(200, 200, 250);
+        fill(theme.bullet.player);
     } else {
-        fill(250, 200, 200);
+        fill(theme.bullet.enemy);
     }
 
-    stroke(255);
+    stroke(theme.bullet.stroke);
     strokeWeight(2 * z);
 
     ellipse(0, 0, params.r * z * 2);

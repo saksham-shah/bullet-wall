@@ -1,5 +1,5 @@
 function Footprint(game_, pos_, direction_, r_) {
-    Particle.call(this, game_, pos_, createVector(0, 0), createVector(0, 0), r_, 90, color(30, 40, 80));
+    Particle.call(this, game_, pos_, createVector(0, 0), createVector(0, 0), r_, 90, theme.particle.footprint);
 
     this.direction = direction_;
 }
@@ -28,6 +28,7 @@ function drawFootprint(z, params) {
 	translate(drawPos);
 
     rotate(params.direction);
+    // var c = color(params.colour)
     params.colour.setAlpha(255 * params.lifePercent);
 	fill(params.colour);
 	noStroke();

@@ -182,8 +182,8 @@ function drawEnemyBull(z, params) {
 	rotate(params.direction);
 
     // Bull horns
-    fill(115 * 1.25, 50, 50);
-	stroke(115, 50, 50);
+    fill(theme.weapon.bull[0] * 1.25, theme.weapon.bull[1], theme.weapon.bull[2]);
+	stroke(theme.weapon.bull);
 	strokeWeight(2 * z);
 
     push();
@@ -207,8 +207,8 @@ function drawEnemyBull(z, params) {
 
     pop();
 
-    fill(250, 75, 75);
-	stroke(200, 60, 60);
+    fill(theme.entity.enemy[0] * theme.mult, theme.entity.enemy[1] * theme.mult, theme.entity.enemy[2] * theme.mult);
+	stroke(theme.entity.enemy);
     strokeWeight(2 * z);
 
 	ellipse(0, 0, params.r * z * 2);

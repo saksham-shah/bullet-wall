@@ -87,7 +87,7 @@ Gun.prototype.shootAnimation = function() {
     var pos = this.getPos();
     var length = createVector(this.l, 0).rotate(this.direction);
     pos.add(length);
-    this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, color(255, 255, 0));
+    this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, theme.particle.bulletShoot);
 }
 
 // Returns the position of the gun, taking into account the position of the entity holding the gun
@@ -127,12 +127,12 @@ function drawGun(z, params) {
 
     // Blue if held by the player, red if held by the enemy
     if (params.player) {
-	   fill(50, 50, 150);
+	   fill(theme.gun.player);
     } else {
-       fill(150, 50, 50);
+       fill(theme.gun.enemy);
     }
 
-    stroke(25, 25, 50);
+    stroke(theme.gun.stroke);
     strokeWeight(2 * z);
 
     rect(- params.l2 * z, - params.w * z * 0.5, params.l * z + params.l2 * z, params.w * z);
