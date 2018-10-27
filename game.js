@@ -168,7 +168,8 @@ Game.prototype.updateSpawns = function() {
 			// this.nextPowerUp = sq(random(3, 7)) * (60 - this.score * 0.0003);
 			// this.nextPowerUp = 60;
 		}
-		this.nextPowerUp = sq(random(3, 7)) * (60 - this.score * 0.0003);
+		this.nextPowerUp = (sq(random(3, 7)) - this.score * 0.001) * 60;
+		// this.nextPowerUp = 120;
 	} else {
 		this.nextPowerUp -= this.gameSpeed;
 	}

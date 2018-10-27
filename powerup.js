@@ -45,7 +45,7 @@ PowerUp.prototype.draw = function(x, y, r) {
 
 var powerups = [
     // Disc
-    new PowerUp(4, 00,
+    new PowerUp(2, 900,
         function(game) {
             game.player.weapon = 1;
             game.player.ammo = 1;
@@ -55,7 +55,7 @@ var powerups = [
         }
     ),
     // Dual guns
-    new PowerUp(4, 00,
+    new PowerUp(2, 900,
         function(game) {
             game.player.guns = 2;
             game.player.maxVel = 3;
@@ -78,7 +78,7 @@ var powerups = [
         }, 300
     ),
     // Minions
-    new PowerUp(2, 00,
+    new PowerUp(1, 900,
         function(game, cell) {
             for (var i = 0; i < 3; i++) {
                 game.entities.push(new Minion(game, cell.row, cell.col));
