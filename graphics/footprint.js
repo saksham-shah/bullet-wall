@@ -28,9 +28,9 @@ function drawFootprint(z, params) {
 	translate(drawPos);
 
     rotate(params.direction);
-    // var c = color(params.colour)
-    params.colour.setAlpha(255 * params.lifePercent);
-	fill(params.colour);
+    var c = color(theme.particle.footprint)
+    c.setAlpha(255 * params.lifePercent);
+	fill(c);
 	noStroke();
 	// Gets larger over time
 	ellipse(0, 0, params.r * z * 3, params.r * z * 2);
@@ -45,7 +45,6 @@ Footprint.prototype.convertToSnap = function() {
         y: this.pos.y,
         r: this.r,
         lifePercent: this.life / this.maxLife,
-        colour: this.colour,
         direction: this.direction
     }
 }

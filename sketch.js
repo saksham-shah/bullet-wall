@@ -1,6 +1,13 @@
-var gs, ms, ds, ps;
+var gs, ms, ds, ps, ss;
 var currentScreen, nextScreen;
 var myCursor;
+var selfRecord = false;
+var coverimg;
+
+function preload() {
+	coverimg = loadImage("media/bwcoverimghd.png");
+	console.log(coverimg);
+}
 
 function setup() {
 	if (windowWidth > windowHeight * 16 / 9) {
@@ -11,6 +18,8 @@ function setup() {
 
 	calcOffsets();
 
+	ss = new StartScreen();
+
 	ms = new MenuScreen();
 
 	gs = new GameScreen();
@@ -19,7 +28,7 @@ function setup() {
 
 	ps = new PauseScreen();
 
-	nextScreen = ms;
+	nextScreen = ss;
 
 	myCursor = new GameCursor();
 	noCursor();
@@ -37,12 +46,13 @@ function draw() {
 	myCursor.draw();
 	myCursor.mode = 0;
 
-	textSize(20 * zoom);
+	// Current version
+	textSize(20 * screenZoom);
 	fill(255);
 	noStroke();
-
-	// Current version
-	text("v1.2.4a", width * 0.5, height - 15 * zoom);
+	if (currentScreen !== ss) {
+		text("v1.3 - Halloween", width * 0.5, height - 15 * screenZoom);
+	}
 }
 
 function mouseClicked() {

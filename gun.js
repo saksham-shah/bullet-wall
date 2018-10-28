@@ -87,7 +87,7 @@ Gun.prototype.shootAnimation = function() {
     var pos = this.getPos();
     var length = createVector(this.l, 0).rotate(this.direction);
     pos.add(length);
-    this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, theme.particle.bulletShoot);
+    this.game.particleExplosion(pos, 2.5, 50, this.direction, PI * 0.25, createVector(0, 0), 15, 3, 10, 3, ["particle", "bulletShoot"]);
 }
 
 // Returns the position of the gun, taking into account the position of the entity holding the gun

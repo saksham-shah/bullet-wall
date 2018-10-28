@@ -2,13 +2,13 @@
 function DeathScreen() {
     this.game = null;
 
-    this.createButtons();
-
     this.modeText = new TypeText();
     this.gameOverText = new TypeText("GAME OVER");
 
     this.clips = [];
     this.clipPlaying = null;
+
+    this.createButtons();
 }
 
 DeathScreen.prototype.createButtons = function() {
@@ -19,6 +19,10 @@ DeathScreen.prototype.createButtons = function() {
 
     this.buttons.push(this.restartButton);
     this.buttons.push(this.menuButton);
+
+    for (var i = 0; i < this.clips.length; i++) {
+        this.clips[i].setPos(width * 0.575, height * 0.5 - width * 0.125, width * 0.25);
+    }
 }
 
 // When the player dies, the game is sent to DS
@@ -171,7 +175,8 @@ DeathScreen.prototype.draw = function() {
                 // fill(30, 40, 80, 150);
                 noStroke();
                 rect(0, 0, width, height);
-                this.clipPlaying.draw(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom);
+                // this.clipPlaying.draw(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom);
+                this.clipPlaying.draw(false);
             }
 
             // if (this.clip !== null) {

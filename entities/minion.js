@@ -175,7 +175,7 @@ Minion.prototype.customPathfinding = function(a, b) {
 Minion.prototype.die = function() {
     this.dead = true;
     // this.game.smokeExplosion(this.pos, 1, 50, PI * 0.25, 7, 2, 50, 10, color(160, 160, 200));
-    this.game.particleExplosion(this.pos, 2, 50, 0, PI, createVector(0, 0.1), 20, 1, 45, 3, theme.entity.minion);
+    this.game.particleExplosion(this.pos, 2, 50, 0, PI, createVector(0, 0.1), 20, 1, 45, 3, ["entity", "minion"]);
 }
 
 Minion.prototype.specificDraw = function() {

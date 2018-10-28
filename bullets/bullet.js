@@ -84,8 +84,10 @@ Bullet.prototype.checkEntityHits = function(entities) {
                 this.hit = true;
                 if (this.buildWalls && entities[i].dead) {
                     var myCell = this.game.grid.getCell(this.pos);
-                    var playerCell = this.game.grid.getCell(this.game.player.pos);
-                    if (myCell !== playerCell) {
+                    // var playerCell = this.game.grid.getCell(this.game.player.pos);
+                    // A wall only spawns if they enemy is far from the player
+                    var d = p5.Vector.dist(this.pos, this.game.player.pos);
+                    if (d >= CELLSIZE) {
                         // Create a wall if the player is not in the same cell (so the player doesn't get stuck in the wall)
                         myCell.build();
                         if (this.gun.player) {

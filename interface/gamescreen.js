@@ -55,7 +55,7 @@ GameScreen.prototype.update = function() {
         // });
         // if (this.coolClips.length > 0) {
         // if (this.coolness > this.coolClips[0].coolness && !this.clipNeeded) {
-        if (this.coolness > this.maxCoolness) {
+        if (this.coolness > this.maxCoolness && !selfRecord) {
             this.maxCoolness = this.coolness;
             // console.log(this.coolness);
             this.coolTimer = 30;
@@ -66,7 +66,12 @@ GameScreen.prototype.update = function() {
         }
         // }
         this.coolTimer -= this.game.gameSpeed;
-        if (this.coolTimer < 0 && this.clipNeeded) {
+        if ((this.coolTimer < 0 && this.clipNeeded) || (selfRecord && keyIsDown(82))) {
+
+            if (selfRecord) {
+                console.log(this.coolness);
+            }
+
             this.coolClip = this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness);
             // this.coolClips.push(this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness));
             // if (this.coolClips.length > 4) {

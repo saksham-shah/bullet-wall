@@ -95,9 +95,23 @@ GameClip.prototype.pause = function() {
     this.playing = !this.playing;
 }
 
-GameClip.prototype.draw = function(x, y, z, forced) {
+GameClip.prototype.draw = function(forced) {
     if (!this.fullscreen || forced) {
+        // push();
+        // translate(this.x, this.y);
         drawGame(this.x, this.y, this.z, this.thumbnail);
+        if (!this.playing && !this.mouseHovered()) {
+            fill(255, 100);
+            stroke(200, 100);
+            strokeWeight(this.r * 0.01);
+            beginShape();
+            vertex(this.x + this.r / 3, this.y + this.r / 3);
+            vertex(this.x + this.r / 3, this.y + this.r * 2 / 3);
+            vertex(this.x + this.r * 2 / 3, this.y + this.r / 2);
+            vertex(this.x + this.r / 3, this.y + this.r / 3);
+            endShape();
+        }
+        // pop();
     } else {
         drawGame(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom, this.frames[this.counter]);
     }

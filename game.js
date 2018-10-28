@@ -195,7 +195,7 @@ Game.prototype.updateObjects = function() {
         if (this.bullets[i].hit) {
         	var bullet = this.bullets[i];
 			if (bullet instanceof Bullet) {
-				this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, theme.bullet.stroke);
+				this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, ["bullet", "stroke"]);
 				// this.smokeExplosion(bullet.pos, 1, 50, bullet.vel.heading(), PI * 0.05, 40, 5, 10, 5, color(255));
 			}
             this.bullets.splice(i, 1);

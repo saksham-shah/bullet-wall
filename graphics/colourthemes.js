@@ -122,4 +122,6 @@ var halloween = {
     }
 }
 
+var THEMES = [{name: "CLASSIC", obj: classic}, {name: "HALLOWEEN", obj: halloween}];
+var themeID = 1;
 var theme = classic;

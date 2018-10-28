@@ -139,7 +139,7 @@ Player.prototype.die = function(enemy) {
     // Mega slow motion
     this.game.slowMotion(360, 0.1);
 
-    this.game.particleExplosion(this.pos, 2, 100, PI, PI, createVector(0, 0.1), 50, 5, 50, 3, theme.particle.playerDeath);
+    this.game.particleExplosion(this.pos, 2, 100, PI, PI, createVector(0, 0.1), 50, 5, 50, 3, ["particle", "playerDeath"]);
 
     this.game.gameOver = true;
 }
