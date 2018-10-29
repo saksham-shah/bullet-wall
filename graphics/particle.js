@@ -11,9 +11,6 @@ function Particle(game_, pos_, vel_, acc_, r_, life_, colour_, cell_) {
 	this.maxLife = life_;
 
 	this.colour = colour_;
-	// if (!(this.colour instanceof p5.Color)) {
-	// 	this.colour = color(colour_);
-	// }
 
 	this.cell = cell_;
 	this.canDraw = true;
@@ -72,7 +69,6 @@ function drawParticle(z, params) {
 			for (var i = 0; i < params.colour.length; i++) {
 				c = c[params.colour[i]];
 			}
-			// c = theme.particle[params.colour];
 		} else {
 			c = params.colour;
 		}

@@ -1,4 +1,5 @@
 var classic = {
+    name: "CLASSIC",
     mult: 1.25,
     background: [30, 40, 80],
     button: {
@@ -57,10 +58,15 @@ var classic = {
         footprint: [30, 40, 80],
         playerDeath: [160, 160, 200],
         bulletShoot: [255, 255, 0]
+    },
+    powerup: {
+        dual: [150, 45, 45],
+        minions: [75]
     }
 }
 
 var halloween = {
+    name: "HALLOWEEN",
     mult: 1.25,
     background: [30],
     button: {
@@ -92,7 +98,7 @@ var halloween = {
         powerupFill: [150]
     },
     entity: {
-        damage: [255, 0, 0],
+        damage: [100, 200, 0],
         player: [200, 100, 0],
         enemy: [150, 0, 0],
         minion: [200, 100, 0]
@@ -119,9 +125,14 @@ var halloween = {
         footprint: [160, 80, 0],
         playerDeath: [200, 100, 0],
         bulletShoot: [255, 255, 0]
+    },
+    powerup: {
+        dual: [150, 30, 0],
+        minions: [150, 75, 0]
     }
 }
 
-var THEMES = [{name: "CLASSIC", obj: classic}, {name: "HALLOWEEN", obj: halloween}];
+// var THEMES = [{name: "CLASSIC", obj: classic}, {name: "HALLOWEEN", obj: halloween}];
+var THEMES = [classic, halloween];
 var themeID = 1;
 var theme = classic;

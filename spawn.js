@@ -1,3 +1,5 @@
+var spawns;
+
 function Spawn(reqPoints_, reqScore_, doFunction_) {
     this.reqPoints = reqPoints_;
     this.reqScore = reqScore_;
@@ -23,29 +25,31 @@ Game.prototype.randomCell = function(dFromPlayer) {
     }
 }
 
-var spawns = [
-    // Stab Enemy
-    new Spawn(1, 0,
-        function(game) {
-            var cell = game.randomCell(CELLSIZE * 6);
-            game.entities.push(new EnemyStab(game, cell.row, cell.col));
-        }
-    ),
-    // Gun Enemy
-    new Spawn(3, 100,
-        function(game) {
-            var cell = game.randomCell(CELLSIZE * 6);
-            game.entities.push(new EnemyGun(game, cell.row, cell.col));
-        }
-    ),
-    // Bull Enemy
-    new Spawn(4, 250,
-        function(game) {
-            var cell = game.randomCell(CELLSIZE * 6);
-            game.entities.push(new EnemyBull(game, cell.row, cell.col));
-        }
-    ),
-]
+function createSpawns() {
+    spawns = [
+        // Stab Enemy
+        new Spawn(1, 0,
+            function(game) {
+                var cell = game.randomCell(CELLSIZE * 6);
+                game.entities.push(new EnemyStab(game, cell.row, cell.col));
+            }
+        ),
+        // Gun Enemy
+        new Spawn(3, 100,
+            function(game) {
+                var cell = game.randomCell(CELLSIZE * 6);
+                game.entities.push(new EnemyGun(game, cell.row, cell.col));
+            }
+        ),
+        // Bull Enemy
+        new Spawn(4, 250,
+            function(game) {
+                var cell = game.randomCell(CELLSIZE * 6);
+                game.entities.push(new EnemyBull(game, cell.row, cell.col));
+            }
+        ),
+    ]
+}
 
 // Selects an enemy to spawn
 // The harder the enemy, the more spawnPoints it uses up and the rarer it is

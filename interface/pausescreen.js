@@ -41,13 +41,6 @@ PauseScreen.prototype.draw = function() {
 
     rect(0, 0, width, height);
 
-    // textSize(30);
-    // textAlign(CENTER);
-    // fill(255);
-    // noStroke();
-    //
-    // text("PAUSED", width * 0.5, height * 0.5);
-
     this.pausedText.draw(width * 0.5, height * 0.3, 175 * screenZoom, "PAUSED");
 
     for (var i = 0; i < this.buttons.length; i++) {

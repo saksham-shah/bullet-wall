@@ -78,12 +78,6 @@ EnemyBull.prototype.specificUpdate = function() {
             this.acc.add(p5.Vector.fromAngle(this.direction).setMag(this.maxForce));
 
 			this.checkChargeHits();
-            // var d = p5.Vector.dist(this.pos, this.game.player.pos);
-    		// if (d <= this.game.player.r + this.r && this.playerDamaged !== true) {
-    		// 	this.game.player.damage(1, this);
-			// 	// The bull can only damage the player once per charge
-    		// 	this.playerDamaged = true;
-    		// }
 
             if (this.cooldown < 180) {
                 this.state = 0;

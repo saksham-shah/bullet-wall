@@ -22,7 +22,7 @@ Cell.prototype.middle = function() {
 // Sets PowerUp
 Cell.prototype.setPowerUp = function(powerup) {
     this.powerup = powerup;
-    this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(this.powerup.colour), this);
+    this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, this.powerup.colour, this);
 }
 
 // Creates a wall
@@ -33,7 +33,7 @@ Cell.prototype.build = function() {
 
         if (this.powerup !== null) {
             this.powerup.activate(this.game, this);
-            this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, color(this.powerup.colour), this);
+            this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, this.powerup.colour, this);
             this.powerup = null;
         } else {
             this.game.particleExplosion(this.middle(), 1, 100, PI, PI, createVector(0, 0), 30, 0, 30, 7, ["grid", "cellStroke"], this);

@@ -24,13 +24,9 @@ MenuScreen.prototype.createButtons = function() {
 }
 
 MenuScreen.prototype.update = function() {
-    // this.title.startTyping();
-
-    // if (this.title.isFinished()) {
-        for (var i = 0; i < this.buttons.length; i++) {
-            this.buttons[i].update();
-        }
-    // }
+    for (var i = 0; i < this.buttons.length; i++) {
+        this.buttons[i].update();
+    }
 }
 
 MenuScreen.prototype.buttonClicked = function(button) {
@@ -44,7 +40,7 @@ MenuScreen.prototype.buttonClicked = function(button) {
     } else if (button === this.themeButton) {
         themeID = (themeID + 1) % THEMES.length;
         button.text = new TypeText(THEMES[themeID].name);
-        theme = THEMES[themeID].obj;
+        theme = THEMES[themeID];
     }
 }
 
@@ -53,9 +49,7 @@ MenuScreen.prototype.draw = function() {
 
     this.title.draw(width * 0.5, height * 0.2, 150 * screenZoom, "BULLET WALL");
 
-    // if (this.title.isFinished()) {
-        for (var i = 0; i < this.buttons.length; i++) {
-            this.buttons[i].draw();
-        }
-    // }
+    for (var i = 0; i < this.buttons.length; i++) {
+        this.buttons[i].draw();
+    }
 }

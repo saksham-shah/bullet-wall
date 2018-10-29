@@ -79,7 +79,6 @@ Player.prototype.checkShoot = function() {
     if (this.cooldown > 0) {
         this.cooldown -= this.game.gameSpeed;
     } else if (mouseIsPressed) {
-        // this.game.coolness -= 100;
         this.game.addCoolness("shootBullet");
         switch(this.weapon) {
             case 0: // Normal bullets

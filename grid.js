@@ -66,8 +66,7 @@ Grid.prototype.draw = function() {
 }
 
 function drawGrid(z, params) {
-    // var drawPos = getDrawPos(createVector(0, 0));
-    var drawPos = createVector(0,0);//p5.Vector.add(p5.Vector.mult(createVector(0, 0), z), createVector(x, y));
+    var drawPos = createVector(0,0);
 
 
     fill(theme.grid.floor);
@@ -77,8 +76,6 @@ function drawGrid(z, params) {
 	strokeWeight(1 * z);
 	stroke(theme.grid.lines);
 
-	// var top = getDrawPos(createVector(zoom * 0.5, zoom * 0.5));
-	// var bottom = getDrawPos(createVector(zoom * 0.5, params.grid.length * CELLSIZE + zoom * 0.5));
     var top = p5.Vector.mult(createVector(z * 0.5, z * 0.5), z);
     var bottom = p5.Vector.mult(createVector(z * 0.5, params.grid.length * CELLSIZE + z * 0.5), z);
 
@@ -88,8 +85,6 @@ function drawGrid(z, params) {
 		bottom.x += CELLSIZE * z;
 	}
 
-	// var left = getDrawPos(createVector(zoom * 0.5, zoom * 0.5));
-	// var right = getDrawPos(createVector(params.grid.length * CELLSIZE + zoom * 0.5, zoom * 0.5));
     var left = p5.Vector.mult(createVector(zoom * 0.5, zoom * 0.5), z);
     var right = p5.Vector.mult(createVector(params.grid.length * CELLSIZE + z * 0.5, z * 0.5), z);
 
@@ -103,7 +98,6 @@ function drawGrid(z, params) {
 		var row = params.grid[i];
 		for (var j = 0; j < row.length; j++) {
             // Draw powerups
-            // row[j].draw(1);
             drawCell(z, row[j], 1);
 		}
 	}
@@ -141,7 +135,6 @@ Grid.prototype.convertToSnap = function() {
         snapGrid.push(snapRow);
 	}
     return {
-        // length: this.grid.length,
         grid: snapGrid
     }
 }

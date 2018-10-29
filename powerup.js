@@ -1,3 +1,5 @@
+var powerups, powerupSequence;
+
 function PowerUp(rarity_, reqTime_, startF_, colour_, drawF_, endF_, time_) {
     this.rarity = rarity_;
     this.reqTime = reqTime_;
@@ -11,6 +13,7 @@ function PowerUp(rarity_, reqTime_, startF_, colour_, drawF_, endF_, time_) {
     this.activated = false;
 }
 
+// Activates the powerup
 PowerUp.prototype.activate = function(game, cell) {
     game.powerupsUsed++;
     this.activated = true;
@@ -37,95 +40,103 @@ PowerUp.prototype.draw = function(x, y, r) {
     push();
     translate(x, y);
     strokeWeight(r * 0.1);
-    stroke(this.colour);
+    var c = theme;
+    if (this.colour instanceof Array) {
+        for (var i = 0; i < this.colour.length; i++) {
+            c = c[this.colour[i]];
+        }
+    } else {
+        c = this.colour;
+    }
+    stroke(c);
     noFill();
     this.drawF(r);
     pop();
 }
 
-var powerups = [
-    // Disc
-    new PowerUp(2, 900,
-        function(game) {
-            game.player.weapon = 1;
-            game.player.ammo = 1;
-        }, [75, 0, 125],
-        function(r) {
-            ellipse(r * 0.5, r * 0.5, r * 0.5);
-        }
-    ),
-    // Dual guns
-    new PowerUp(2, 900,
-        function(game) {
-            game.player.guns = 2;
-            game.player.maxVel = 3;
-        }, [150, 45, 45],
-        function(r) {
-            beginShape();
-            vertex(r * 0.5, r * 0.625);
-            vertex(r * 0.25, r * 0.625);
-            vertex(r * 0.25, r * 0.125);
-            vertex(r * 0.5, r * 0.125);
-            vertex(r * 0.5, r * 0.875);
-            vertex(r * 0.75, r * 0.875);
-            vertex(r * 0.75, r * 0.375);
-            vertex(r * 0.5, r * 0.375);
-            endShape();
-        },
-        function(game) {
-            game.player.guns = 1;
-            game.player.maxVel = 2;
-        }, 300
-    ),
-    // Minions
-    new PowerUp(1, 900,
-        function(game, cell) {
-            for (var i = 0; i < 3; i++) {
-                game.entities.push(new Minion(game, cell.row, cell.col));
+function createPowerUps() {
+    powerups = [
+        // Disc
+        new PowerUp(2, 00,
+            function(game) {
+                game.player.weapon = 1;
+                game.player.ammo = 1;
+            }, ["bullet", "discStroke"],
+            function(r) {
+                ellipse(r * 0.5, r * 0.5, r * 0.5);
             }
-        }, [75],
-        function(r) {
-            beginShape();
-            vertex(r * 0.2, r * 0.2);
-            vertex(r * 0.2, r * 0.4);
-            vertex(r * 0.4, r * 0.4);
-            vertex(r * 0.4, r * 0.8);
-            vertex(r * 0.6, r * 0.8);
-            vertex(r * 0.6, r * 0.4);
-            vertex(r * 0.8, r * 0.4);
-            vertex(r * 0.8, r * 0.2);
-            vertex(r * 0.2, r * 0.2);
-            endShape();
-        })
-    // Shield
-    // new PowerUp(3, 3600,
-    //     function(game) {
-    //         game.player.shield = true;
-    //         game.player.shieldTimer = 0;
-    //     }, [75],
-    //     function(r) {
-    //         beginShape();
-    //         vertex(r * 0.25, r * 0.125);
-    //         vertex(r * 0.25, r * 0.625);
-    //         vertex(r * 0.5, r * 0.875);
-    //         vertex(r * 0.75, r * 0.625);
-    //         vertex(r * 0.75, r * 0.125);
-    //         vertex(r * 0.25, r * 0.125);
-    //         endShape();
-    //     }
-    // )
-]
+        ),
+        // Dual guns
+        new PowerUp(2, 00,
+            function(game) {
+                game.player.guns = 2;
+                game.player.maxVel = 3;
+            }, ["powerup", "dual"],
+            function(r) {
+                beginShape();
+                vertex(r * 0.5, r * 0.625);
+                vertex(r * 0.25, r * 0.625);
+                vertex(r * 0.25, r * 0.125);
+                vertex(r * 0.5, r * 0.125);
+                vertex(r * 0.5, r * 0.875);
+                vertex(r * 0.75, r * 0.875);
+                vertex(r * 0.75, r * 0.375);
+                vertex(r * 0.5, r * 0.375);
+                endShape();
+            },
+            function(game) {
+                game.player.guns = 1;
+                game.player.maxVel = 2;
+            }, 300
+        ),
+        // Minions
+        new PowerUp(1, 00,
+            function(game, cell) {
+                for (var i = 0; i < 3; i++) {
+                    game.entities.push(new Minion(game, cell.row, cell.col));
+                }
+            }, ["powerup", "minions"],
+            function(r) {
+                beginShape();
+                vertex(r * 0.2, r * 0.2);
+                vertex(r * 0.2, r * 0.4);
+                vertex(r * 0.4, r * 0.4);
+                vertex(r * 0.4, r * 0.8);
+                vertex(r * 0.6, r * 0.8);
+                vertex(r * 0.6, r * 0.4);
+                vertex(r * 0.8, r * 0.4);
+                vertex(r * 0.8, r * 0.2);
+                vertex(r * 0.2, r * 0.2);
+                endShape();
+            })
+        // Shield
+        // new PowerUp(3, 3600,
+        //     function(game) {
+        //         game.player.shield = true;
+        //         game.player.shieldTimer = 0;
+        //     }, [75],
+        //     function(r) {
+        //         beginShape();
+        //         vertex(r * 0.25, r * 0.125);
+        //         vertex(r * 0.25, r * 0.625);
+        //         vertex(r * 0.5, r * 0.875);
+        //         vertex(r * 0.75, r * 0.625);
+        //         vertex(r * 0.75, r * 0.125);
+        //         vertex(r * 0.25, r * 0.125);
+        //         endShape();
+        //     }
+        // )
+    ]
 
-var powerupSequence = [];
+    powerupSequence = [];
 
-for (var i = 0; i < powerups.length; i++) {
-    var num = powerups[i].rarity;
-    for (var j = 0; j < num; j++) {
-        powerupSequence.push(powerups[i]);
+    for (var i = 0; i < powerups.length; i++) {
+        var num = powerups[i].rarity;
+        for (var j = 0; j < num; j++) {
+            powerupSequence.push(powerups[i]);
+        }
     }
 }
-
-// console.log(powerupSequence);
 
 Game.prototype.randomPowerUps = function() {
     if (this.powerupsToUse.length == 0) {
@@ -167,8 +178,6 @@ Game.prototype.randomPowerUp = function() {
     for (var i = 0; i < possible.length; i++) {
         currentTotal += possible[i].randScore;
         if (currentTotal > randomNum) {
-
-            // possible[i].activate(this);
             return possible[i];
         }
     }

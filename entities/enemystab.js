@@ -56,12 +56,6 @@ EnemyStab.prototype.specificUpdate = function() {
 		}
 
 		this.checkWeaponHits();
-
-		// var d = p5.Vector.dist(this.weaponPos, this.game.player.pos);
-		// if (d < this.game.player.r) {
-		// 	this.game.player.damage(1, this);
-		// 	this.state = 2;
-		// }
 	}
 }
 
@@ -81,13 +75,7 @@ EnemyStab.prototype.checkWeaponHits = function() {
             if (d < this.game.entities[i].r) {
                 this.game.entities[i].damage(1, this);
 				this.state = 2;
-            } //else if (this.game.entities[i] instanceof Player && d < this.game.entities[i].r + 10) {
-            //     var futurePos = this.weaponPos.copy().add(this.vel.copy().setMag(10));
-            //     var d = p5.Vector.dist(futurePos, this.game.entities[i].pos);
-            //     if (d >= this.game.entities[i].r) {
-            //         console.log("near miss");
-            //     }
-            // }
+            }
         }
     }
 }

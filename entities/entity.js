@@ -43,7 +43,7 @@ Entity.prototype.move = function(entities) {
     this.checkCollisions(entities);
 
     // Leaves behind footprints
-    if (this.lastPrint > 20 / this.maxVel && this.vel.mag() > 0) {
+    if (this.lastPrint > 20 / this.maxVel && this.vel.mag() > 0 && !this.hide) {
         this.lastPrint = 0;
 
         var relativePos = createVector(0, this.foot * this.r * 0.5).rotate(this.vel.heading());
@@ -69,11 +69,7 @@ Entity.prototype.checkCollisions = function(all) {
             if (this instanceof Enemy && all[i] instanceof Player) {
                 var d = p5.Vector.dist(this.pos, all[i].pos);
                 if (d < this.r + all[i].r + 10) {
-                    // console.log("near");
                     this.game.addCoolness("enemyDodge");
-                    // this.game.coolness += 0.5 * this.game.playSpeed;
-                    // this.game.coolness += 500 / (d - this.r - entities[i].r);
-                    // console.log("near entity");
                 }
             }
 		}
@@ -137,23 +133,14 @@ Entity.prototype.damage = function(num, cause) {
         this.shield = false;
         this.shieldTimer = 180;
         this.shieldRecharge = 3600;
-        // if (this instanceof Player) {
-        //     this.game.coolness -= 150;
-        // }
     } else if (this.shieldTimer === undefined || this.shieldTimer <= 0) {
         this.health -= num;
         if (this.damaged !== undefined) {
             // Entity flashes red when damaged
             this.damaged = 25;
         }
-        // if (this instanceof Player) {
-        //     this.game.coolness -= 300;
-        // }
-    }// else {
-        // if (this instanceof Player) {
-        //     this.game.coolness -= 50;
-        // }
-    // }
+    }
+
     if (this.health == 0) {
         this.die(cause);
     }
@@ -220,7 +207,6 @@ function drawEntity(z, params) {
         var c = theme.entity.damage.slice();
         c.push(params.damaged * 4);
         fill(c);
-        // fill(255, 0, 0, params.damaged * 4);
         noStroke();
         ellipse(0, 0, params.r * z * 2);
     }
@@ -258,8 +244,5 @@ function drawEntityWeapon(z, params) {
         case 3:
         drawEnemyGunWeapon(z, params);
         break;
-        // case 4:
-        // drawEnemyBull(z, params);
-        // break;
     }
 }

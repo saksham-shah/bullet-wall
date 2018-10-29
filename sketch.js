@@ -6,7 +6,6 @@ var coverimg;
 
 function preload() {
 	coverimg = loadImage("media/bwcoverimghd.png");
-	console.log(coverimg);
 }
 
 function setup() {
@@ -32,6 +31,9 @@ function setup() {
 
 	myCursor = new GameCursor();
 	noCursor();
+
+	createSpawns();
+	createPowerUps();
 }
 
 function draw() {

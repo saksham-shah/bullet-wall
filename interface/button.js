@@ -17,11 +17,6 @@ Button.prototype.update = function() {
         this.hovered = true;
         // Makes the text type
         this.text.startTyping();
-
-        // if (mouseIsPressed) {
-        //     this.screen.buttonClicked(this);
-        // }
-
     } else {
         this.hovered = false;
         this.text.stopTyping();

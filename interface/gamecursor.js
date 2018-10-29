@@ -36,7 +36,6 @@ GameCursor.prototype.draw = function() {
         var c = theme.bullet.player.slice();
         c.push(150);
         fill(c);
-        // fill(theme. 150);
         var c = theme.bullet.stroke.slice();
         c.push(150);
         stroke(c);

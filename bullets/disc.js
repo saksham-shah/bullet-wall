@@ -35,7 +35,6 @@ Disc.prototype.update = function(entities) {
 }
 
 // Works similarly to Bullets
-
 Disc.prototype.checkWallHit = function() {
     var wallCollision = collideWithWalls(this.pos, this.r, this.game.grid);
     if (wallCollision[1] !== null) {
@@ -54,9 +53,7 @@ Disc.prototype.checkWallHit = function() {
     if (bounced) {
         this.pos.add(p5.Vector.mult(this.vel, this.game.gameSpeed));
     }
-    // } else if (wallCollision[0].x != this.pos.x || wallCollision[0].y != this.pos.y) {
-    //     this.done = true;
-    // }
+
 }
 
 Disc.prototype.checkEntityHits = function(entities) {

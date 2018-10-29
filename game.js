@@ -160,16 +160,11 @@ Game.prototype.updateSpawns = function() {
 	// Powerup spawning
 	if (this.nextPowerUp <= 0) {
 		var powerup = this.randomPowerUps();
-		// console.log(this.powerupsToUse);
-		// console.log(this.randomPowerUps());
 		var cell = this.randomCell(0);
 		if (powerup !== null) {
 			cell.setPowerUp(powerup);
-			// this.nextPowerUp = sq(random(3, 7)) * (60 - this.score * 0.0003);
-			// this.nextPowerUp = 60;
 		}
 		this.nextPowerUp = (sq(random(3, 7)) - this.score * 0.001) * 60;
-		// this.nextPowerUp = 120;
 	} else {
 		this.nextPowerUp -= this.gameSpeed;
 	}
@@ -196,7 +191,6 @@ Game.prototype.updateObjects = function() {
         	var bullet = this.bullets[i];
 			if (bullet instanceof Bullet) {
 				this.particleExplosion(bullet.pos, bullet.vel.mag() * 0.5, 50, bullet.vel.heading(), PI * 0.25, createVector(0, 0), 15, 1, 10, 3, ["bullet", "stroke"]);
-				// this.smokeExplosion(bullet.pos, 1, 50, bullet.vel.heading(), PI * 0.05, 40, 5, 10, 5, color(255));
 			}
             this.bullets.splice(i, 1);
         } else {
@@ -277,7 +271,7 @@ Game.prototype.convertToSnap = function() {
     }
 
 	return {
-		dt: this.playSpeed,
+		dt: this.gameSpeed,
 		grid: this.grid.convertToSnap(),
 		entities: entitiesSnap,
 		bullets: bulletsSnap,
@@ -302,29 +296,19 @@ function drawGame(x, y, z, params) {
 	var shakeV = createVector(noise(params.shakeOffset + 1000000) - 0.5, noise(params.shakeOffset) - 0.5).setMag(shakeMag * z);
 	translate(shakeV);
 
-	// this.grid.draw();
-	// var gridParams = params.grid.convertToSnap();
 	drawGrid(z, params.grid);
 
 	// Draws all game objects
 
 	for (var i = 0; i < params.markings.length; i++) {
-		// var params = params.markings[i].convertToSnap();
 		drawFootprint(z, params.markings[i]);
-		// this.markings[i].draw();
-
 	}
 
 	// Walls are on top of floor markings
-	// this.grid.drawWalls();
 	drawGridWalls(z, params.grid);
 
 	for (var i = 0; i < params.entities.length; i++) {
-		// if (!this.entities[i].hide) {
-			// this.entities[i].draw();
-			// var params = this.entities[i].convertToSnap();
-			drawEntity(z, params.entities[i]);
-		// }
+		drawEntity(z, params.entities[i]);
 	}
 
 	for (var i = 0; i < params.bullets.length; i++) {
@@ -337,15 +321,10 @@ function drawGame(x, y, z, params) {
 			drawDisc(z, p);
 			break;
 		}
-		// this.bullets[i].draw();
 	}
 
     for (var i = 0; i < params.entities.length; i++) {
-        // if (!this.entities[i].hide) {//&& this.entities[i].drawWeapon !== undefined) {
-            // this.entities[i].drawWeapon();
-			// var params = this.entities[i].convertToSnap();
-			drawEntityWeapon(z, params.entities[i]);
-        // }
+		drawEntityWeapon(z, params.entities[i]);
 	}
 
 	for (var i = 0; i < params.particles.length; i++) {
@@ -358,7 +337,6 @@ function drawGame(x, y, z, params) {
 			drawSmokeParticle(z, p);
 			break;
 		}
-		// this.particles[i].draw();
 	}
 
 	pop();

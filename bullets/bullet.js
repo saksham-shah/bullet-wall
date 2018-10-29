@@ -47,9 +47,6 @@ Bullet.prototype.checkWallHit = function() {
                     myCell.build();
                     this.game.score += 2;
                 }
-                // if (this.gun.player) {
-                //     this.game.addCoolness("missEnemy");
-                // }
             } else {
                 // Enemy bullets break walls
                 wallCollision[1].break(this.vel.heading());
@@ -84,7 +81,6 @@ Bullet.prototype.checkEntityHits = function(entities) {
                 this.hit = true;
                 if (this.buildWalls && entities[i].dead) {
                     var myCell = this.game.grid.getCell(this.pos);
-                    // var playerCell = this.game.grid.getCell(this.game.player.pos);
                     // A wall only spawns if they enemy is far from the player
                     var d = p5.Vector.dist(this.pos, this.game.player.pos);
                     if (d >= CELLSIZE) {
@@ -100,18 +96,12 @@ Bullet.prototype.checkEntityHits = function(entities) {
                     this.game.addCoolness("bulletHit", {time: this.time, health: entities[i].health, scoreValue: entities[i].scoreValue});
                 }
                 return;
-            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 25 && !this.dodged) {
-                var futurePos = this.pos.copy().add(this.vel.copy().setMag(30));
+            } else if (entities[i] instanceof Player && d < this.r + entities[i].r + 20 && !this.dodged) {
+                var futurePos = this.pos.copy().add(this.vel.copy().setMag(25));
                 var futureD = p5.Vector.dist(futurePos, entities[i].pos);
                 if (futureD >= this.r + entities[i].r) {
-                    // var cool = 250 / (d - this.r - entities[i].r);
-                    // if (cool > 100) {
-                    //     cool = 100;
-                    // }
-                    // this.game.coolness += cool * this.game.playSpeed;
                     this.game.addCoolness("bulletDodge");
                     this.dodged = true;
-                    // console.log("near miss " + String(cool));
                 }
             }
         }

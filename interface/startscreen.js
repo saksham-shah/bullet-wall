@@ -8,25 +8,26 @@ StartScreen.prototype.update = function() {
 	this.title.startTyping();
 
 	if (this.title.isFinished()) {
-		this.time += 0.05;
+		this.time += 0.04;
 	}
 }
 
 StartScreen.prototype.mouseClicked = function() {
 	if (this.title.isFinished()) {
 		nextScreen = ms;
-		theme = THEMES[themeID].obj;
+		theme = THEMES[themeID];
 	}
 }
 
 StartScreen.prototype.draw = function() {
-	// background(theme.background);
 	image(coverimg, 0, 0, width, height);
 
+	// Slightly darkened background
 	fill(30, 40, 80, 150);
 	noStroke();
 	rect(0, 0, width, height);
 
+	// Rotated title
 	push();
 	translate(width * 0.5, height * 0.3);
 	rotate(0.15);
@@ -34,6 +35,7 @@ StartScreen.prototype.draw = function() {
 
 	pop();
 
+	// Flashing 'click to begin' message
 	if (this.title.isFinished()) {
 		textSize(30 * screenZoom);
 		textAlign(CENTER);
