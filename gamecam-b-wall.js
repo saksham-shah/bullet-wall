@@ -4,15 +4,14 @@ var zoom;
 
 // Recalculates the position of the game grid when the window is resized
 function calcOffsets() {
-    screenZoom = width / 1200;
-    zoom = 15 * 40 * width / 1200 / (GRIDSIZE * CELLSIZE);
-	if (height / 800 < zoom) {
-        screenZoom = height / 800;
-        zoom = 15 * 40 * height / 800 / (GRIDSIZE * CELLSIZE);
+    screenZoom = width / 1920;
+	if (height / 1080 < screenZoom) {
+        screenZoom = height / 10800;
 	}
+    zoom = 810 * screenZoom / (GRIDSIZE * CELLSIZE);
 
-    xOff = (width - GRIDSIZE * CELLSIZE * zoom) * 0.5;
-    yOff = (height - GRIDSIZE * CELLSIZE * zoom) * 0.5;
+    xOff = 555 * screenZoom;
+    yOff = 135 * screenZoom;
 }
 
 // Converts a game position to a draw position on the screen

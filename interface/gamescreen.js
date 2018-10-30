@@ -133,8 +133,8 @@ GameScreen.prototype.draw = function() {
         this.drawCombo();
 
         // Game over fade
-        var c = theme.background.slice();
-        c.push(this.fade);
+        var c = color(theme.background);
+        c.setAlpha(this.fade);
         fill(c);
         noStroke();
 
@@ -151,7 +151,7 @@ GameScreen.prototype.draw = function() {
 GameScreen.prototype.drawScore = function() {
     var x = width - xOff * 0.5;
     var y = height * 0.25;
-    var r = 40 * screenZoom;
+    var r = 60 * screenZoom;
 
     this.text1.draw(x, y, r);
 
@@ -163,9 +163,9 @@ GameScreen.prototype.drawScore = function() {
 GameScreen.prototype.drawLives = function() {
     // Lives
     for (var i = 0; i < 3; i++) {
-        var x = (i - 1) * 80 * screenZoom + xOff * 0.5;
+        var x = (i - 1) * 120 * screenZoom + xOff * 0.5;
         var y = height * 0.75;
-        var r = 30 * screenZoom;
+        var r = 45 * screenZoom;
 
         if (this.lives > i) {
             fill(theme.gs.heartLive[0] * theme.mult, theme.gs.heartLive[1] * theme.mult, theme.gs.heartLive[2] * theme.mult);
@@ -201,7 +201,7 @@ GameScreen.prototype.drawShield = function() {
     // Shield
     var x = xOff * 0.5;
     var y = height * 0.5;
-    var r = 50 * screenZoom;
+    var r = 75 * screenZoom;
 
     noStroke();
 
@@ -247,15 +247,15 @@ GameScreen.prototype.drawShield = function() {
     endShape()
 
     if (this.shieldTimer > 0) {
-        var c = theme.background.slice();
-        c.push(150);
+        var c = color(theme.background);
+        c.setAlpha(150);
         fill(c);
         noStroke();
 
         rect(x - r, y, r * 2, 3 * r * (180 - this.shieldTimer) / 180);
     } else if (this.shieldRecharge > 0) {
-        var c = theme.background.slice();
-        c.push(150);
+        var c = color(theme.background);
+        c.setAlpha(150);
         fill(c);
         noStroke();
 
@@ -267,7 +267,7 @@ GameScreen.prototype.drawCombo = function() {
     if (this.combo > 0) {
         var x = xOff * 0.5;
         var y = height * 0.25;
-        var r = 60 * screenZoom;
+        var r = 90 * screenZoom;
 
         textSize(r);
         textAlign(CENTER);

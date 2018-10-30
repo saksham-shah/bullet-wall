@@ -86,3 +86,18 @@ TypeText.prototype.draw = function(x, y, r, textToType) {
     fill(theme.text[2]);
     text(t, x, y + r / 3);
 }
+
+function drawText(textToType, x, y, r) {
+    noStroke();
+    textAlign(CENTER);
+
+    textSize(r);
+
+    // 3D effect
+    fill(theme.text[0]);
+    text(textToType, x - r / 35 * 2, y + r / 3 - r / 35 * 2);
+    fill(theme.text[1]);
+    text(textToType, x - r / 35, y + r / 3 - r / 35);
+    fill(theme.text[2]);
+    text(textToType, x, y + r / 3);
+}

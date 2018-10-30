@@ -49,11 +49,11 @@ function draw() {
 	myCursor.mode = 0;
 
 	// Current version
-	textSize(20 * screenZoom);
+	textSize(30 * screenZoom);
 	fill(255);
 	noStroke();
 	if (currentScreen !== ss) {
-		text("v1.3 - Halloween", width * 0.5, height - 15 * screenZoom);
+		text("v1.3.0a - Halloween", width * 0.5, height - 30 * screenZoom);
 	}
 }
 

@@ -133,8 +133,13 @@ function drawEnemyStabWeapon(z, params) {
 	translate(drawPos);
 	rotate(params.direction);
 
-	fill(1.25 * (theme.weapon.stab[0] + params.weaponExtend * 3), theme.weapon.stab[2], theme.weapon.stab[2]);
-	stroke(theme.weapon.stab[0] + params.weaponExtend * 3, theme.weapon.stab[1], theme.weapon.stab[2]);
+	var c = lerpColor(color(theme.weapon.stab1), color(theme.weapon.stab2), (params.weaponExtend - 5) * 0.04);
+
+	// fill(1.25 * theme.weapon.stab[0] * (1 + params.weaponExtend * 0.03), theme.weapon.stab[2], theme.weapon.stab[2]);
+	// stroke(theme.weapon.stab[0] * (1 + params.weaponExtend * 0.03), theme.weapon.stab[1], theme.weapon.stab[2]);
+
+	stroke(c);
+	fill(red(c) * theme.mult, green(c) * theme.mult, blue(c) * theme.mult);
 	strokeWeight(2 * z);
 
 	beginShape();

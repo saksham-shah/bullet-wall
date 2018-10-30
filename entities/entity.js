@@ -204,8 +204,8 @@ function drawEntity(z, params) {
     }
 
     if (params.hide !== true) {
-        var c = theme.entity.damage.slice();
-        c.push(params.damaged * 4);
+        var c = color(theme.entity.damage);
+        c.setAlpha(params.damaged * 4);
         fill(c);
         noStroke();
         ellipse(0, 0, params.r * z * 2);

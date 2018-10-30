@@ -34,8 +34,8 @@ PauseScreen.prototype.buttonClicked = function(button) {
 PauseScreen.prototype.draw = function() {
     gs.draw();
 
-    var c = theme.background.slice();
-    c.push(150);
+    var c = color(theme.background);
+    c.setAlpha(150);
     fill(c);
     noStroke();
 
