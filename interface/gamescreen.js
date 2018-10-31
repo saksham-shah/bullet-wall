@@ -7,20 +7,20 @@ function GameScreen() {
 }
 
 // Starts a new game
-GameScreen.prototype.newGame = function(difficulty) {
-    this.game = new Game(difficulty);
+GameScreen.prototype.newGame = function(mode, difficulty) {
+    this.game = new Game(mode, difficulty);
     this.gameRec = new GameRecord(300);
 
-    // GS holds all of the stats of the game, to display them to the player
-    this.score = 0;
-    this.lives = 3;
-    this.shield = true;
-    this.shieldTimer = 0;
-    this.shieldRecharge = 0;
-    this.combo = 0;
-    this.lastKill = 55;
+    // this.score = 0;
+    // this.lives = 3;
+    // this.shield = true;
+    // this.shieldTimer = 0;
+    // this.shieldRecharge = 0;
+    // this.combo = 0;
+    // this.lastKill = 55;
     this.comboPercentage = 0;
-    this.coolness = 0;
+    this.comboTime = this.game.comboTime;
+    // this.coolness = 0;
     this.maxCoolness = 0;
     this.coolClip = null;
     this.coolTimer = 0;
@@ -33,55 +33,59 @@ GameScreen.prototype.newGame = function(difficulty) {
 
 GameScreen.prototype.update = function() {
     if (this.game !== null) {
-        this.game.update();
+        // GS holds all of the stats of the game, to display them to the player
+        this.gameStats = this.game.update();
 
         this.gameRec.addFrame(this.game.convertToSnap());
 
-        var mousePos = getMousePos();
-        if (!this.game.gameOver && mousePos.x > 0 && mousePos.x < CELLSIZE * GRIDSIZE && mousePos.y > 0 && mousePos.y < CELLSIZE * GRIDSIZE) {
-            myCursor.mode =  this.game.player.weapon + 1;
+        // var mousePos = getMousePos();
+        // if (!this.game.gameOver && mousePos.x > 0 && mousePos.x < CELLSIZE * GRIDSIZE && mousePos.y > 0 && mousePos.y < CELLSIZE * GRIDSIZE) {
+        if (!this.gameStats.gameOver && mouseX > xOff && mouseX < width - xOff && mouseY > yOff && mouseY < height - yOff) {
+            myCursor.mode =  this.gameStats.playerWeapon + 1;
         }
 
-        var score = this.game.score;
-        this.score = score;
-
-        var coolness = this.game.coolness;
-        this.coolness = coolness;
-        if (this.coolness > this.maxCoolness && !selfRecord) {
-            this.maxCoolness = this.coolness;
+            // var score = this.game.score;
+            // this.score = score;
+            //
+            // var coolness = this.game.coolness;
+            // this.coolness = coolness;
+        if (this.gameStats.coolness > this.maxCoolness && !selfRecord) {
+            this.maxCoolness = this.gameStats.coolness;
             this.coolTimer = 30;
             this.clipNeeded = true;
         }
         // }
-        this.coolTimer -= this.game.gameSpeed;
+        this.coolTimer -= this.gameStats.gameSpeed;
         if ((this.coolTimer < 0 && this.clipNeeded) || (selfRecord && keyIsDown(82))) {
 
             if (selfRecord) {
-                console.log(this.coolness);
+                console.log(this.gameStats.coolness);
             }
 
-            this.coolClip = this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness);
+            this.coolClip = this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.maxCoolness);
             this.clipNeeded = false;
+
+            console.log("RECORDED: " + String(this.maxCoolness) + " coolness");//, " + String(this.gameStats.coolness) + " now.");
         }
 
-        var lives = this.game.player.health;
-        this.lives = lives;
-
-        var shield = this.game.player.shield;
-        this.shield = shield;
-        var shieldTimer = this.game.player.shieldTimer;
-        this.shieldTimer = shieldTimer;
-        var shieldRecharge = this.game.player.shieldRecharge;
-        this.shieldRecharge = shieldRecharge;
-
-        var combo = this.game.combo;
-        this.combo = combo;
-
-        var lastKill = this.game.lastKill;
-        this.lastKill = lastKill;
+        // var lives = this.game.player.health;
+        // this.lives = lives;
+        //
+        // var shield = this.game.player.shield;
+        // this.shield = shield;
+        // var shieldTimer = this.game.player.shieldTimer;
+        // this.shieldTimer = shieldTimer;
+        // var shieldRecharge = this.game.player.shieldRecharge;
+        // this.shieldRecharge = shieldRecharge;
+        //
+        // var combo = this.game.combo;
+        // this.combo = combo;
+        //
+        // var lastKill = this.game.lastKill;
+        // this.lastKill = lastKill;
 
         // Converts the combo to a percentage
-        var percentage = (this.game.comboTime - this.lastKill) / this.game.comboTime;
+        var percentage = (this.comboTime - this.gameStats.lastKill) / this.comboTime;
         if (this.comboPercentage < percentage) {
             this.comboPercentage += 0.1;
             if (this.comboPercentage > percentage) {
@@ -92,14 +96,15 @@ GameScreen.prototype.update = function() {
         }
 
         // Game fades out when the player dies
-        if (this.game.gameOver) {
-            this.fade += this.game.gameSpeed / this.game.playSpeed;
+        if (this.gameStats.gameOver) {
+            this.fade += dt;
             if (this.fade > 300) {
                 if (this.coolClip === null) {
-                    this.coolClip = this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.coolness);
+                    this.coolClip = this.gameRec.createGameClip(width * 0.575, height * 0.5 - width * 0.125, width * 0.25, this.gameStats.coolness);
                 }
                 nextScreen = ds;
                 ds.newDeath({
+                    mode: this.game.mode,
                     clip: this.coolClip,
                     time: this.game.gameTime,
                     score: this.game.score,
@@ -124,7 +129,7 @@ GameScreen.prototype.draw = function() {
 
         // this.game.draw();
         var params = this.game.convertToSnap();
-        drawGame(xOff, yOff, zoom, params);
+        drawGame(xOff, yOff, 810 * screenZoom, params);
 
         // Draw all of the stats
         this.drawScore();
@@ -141,7 +146,7 @@ GameScreen.prototype.draw = function() {
         rect(0, 0, width, height);
 
         // Draw time
-        this.text2.draw(width * 0.5, yOff * 0.5, 60 * zoom, timeToText(this.game.gameTime));
+        this.text2.draw(width * 0.5, yOff * 0.5, 60 * screenZoom, timeToText(this.gameStats.gameTime));
     }
 
 }
@@ -156,7 +161,7 @@ GameScreen.prototype.drawScore = function() {
     this.text1.draw(x, y, r);
 
     if (this.text1.done) {
-        this.text2.draw(x, y + r * 1.5, r * 1.5, this.score);
+        this.text2.draw(x, y + r * 1.5, r * 1.5, this.gameStats.score);
     }
 }
 
@@ -167,7 +172,7 @@ GameScreen.prototype.drawLives = function() {
         var y = height * 0.75;
         var r = 45 * screenZoom;
 
-        if (this.lives > i) {
+        if (this.gameStats.lives > i) {
             fill(theme.gs.heartLive[0] * theme.mult, theme.gs.heartLive[1] * theme.mult, theme.gs.heartLive[2] * theme.mult);
         } else {
             fill(theme.gs.heartDead * theme.mult);
@@ -181,7 +186,7 @@ GameScreen.prototype.drawLives = function() {
         vertex(x, y + r);
         endShape();
 
-        if (this.lives > i) {
+        if (this.gameStats.lives > i) {
             stroke(theme.gs.heartLive);
         } else {
             stroke(theme.gs.heartDead);
@@ -205,10 +210,10 @@ GameScreen.prototype.drawShield = function() {
 
     noStroke();
 
-    if (this.shield) {
+    if (this.gameStats.shield) {
         var colourMult = 1;
     } else {
-        if (this.shieldTimer > 0) {
+        if (this.gameStats.shieldTimer > 0) {
             var colourMult = 1.3;
         } else {
             var colourMult = 0.4;
@@ -246,25 +251,25 @@ GameScreen.prototype.drawShield = function() {
     vertex(x, y);
     endShape()
 
-    if (this.shieldTimer > 0) {
+    if (this.gameStats.shieldTimer > 0) {
         var c = color(theme.background);
         c.setAlpha(150);
         fill(c);
         noStroke();
 
-        rect(x - r, y, r * 2, 3 * r * (180 - this.shieldTimer) / 180);
-    } else if (this.shieldRecharge > 0) {
+        rect(x - r, y, r * 2, 3 * r * (180 - this.gameStats.shieldTimer) / 180);
+    } else if (this.gameStats.shieldRecharge > 0) {
         var c = color(theme.background);
         c.setAlpha(150);
         fill(c);
         noStroke();
 
-        rect(x - r, y, r * 2, 3 * r * (this.shieldRecharge) / 3600);
+        rect(x - r, y, r * 2, 3 * r * (this.gameStats.shieldRecharge) / 3600);
     }
 }
 
 GameScreen.prototype.drawCombo = function() {
-    if (this.combo > 0) {
+    if (this.gameStats.combo > 0) {
         var x = xOff * 0.5;
         var y = height * 0.25;
         var r = 90 * screenZoom;
@@ -275,7 +280,7 @@ GameScreen.prototype.drawCombo = function() {
 
         fill(theme.gs.combo);
 
-        if (this.lastKill < this.game.comboTime) {
+        if (this.gameStats.lastKill < this.comboTime) {
             arc(x, y, r * 2, r * 2, - HALF_PI, this.comboPercentage * TWO_PI - HALF_PI);
 
             fill(theme.background);
@@ -284,7 +289,7 @@ GameScreen.prototype.drawCombo = function() {
 
         fill(255);
 
-        text(this.combo + "x", x, y + r / 3);
+        text(this.gameStats.combo + "x", x, y + r / 3);
     }
 }
 

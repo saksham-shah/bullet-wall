@@ -1,9 +1,17 @@
 var GRIDSIZE = 15;
 
 // Main object that controls the whole game
-function Game(difficulty) {
+function Game(mode, difficulty) {
 
-	this.gridSize = GRIDSIZE;
+	this.mode = mode;
+	switch (mode) {
+		case 0:
+		this.gridSize = 15;
+		break;
+		case 1:
+		this.gridSize = 11;
+		break;
+	}
 
     this.entities = [];
     this.bullets = [];
@@ -11,7 +19,7 @@ function Game(difficulty) {
 	this.markings = []; // Floor markings (e.g. footprints);
 
 	this.grid = new Grid(this, this.gridSize);
-    this.player = new Player(this, 7, 7, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
+    this.player = new Player(this, (this.gridSize - 1) * 0.5, (this.gridSize - 1) * 0.5, [UP_ARROW, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW]);
     this.entities.push(this.player);
 
 	// this.entities.push(new Hammerman(this, 1, 1));
@@ -81,17 +89,33 @@ Game.prototype.update = function() {
 	this.updateSpawns();
 	this.updateObjects();
 	// this.snapshot();
+
+	return {
+		gameSpeed: this.gameSpeed,
+		playSpeed: this.playSpeed,
+		gameTime: this.gameTime,
+		score: this.score,
+		coolness: this.coolness,
+		playerWeapon: this.player.weapon,
+		lives: this.player.health,
+		shield: this.player.shield,
+		shieldTimer: this.player.shieldTimer,
+		shieldRecharge: this.player.shieldRecharge,
+		combo: this.combo,
+		lastKill: this.lastKill,
+		gameOver: this.gameOver
+	}
 }
 
 // Slow motion, frame rate, camera shake etc
 Game.prototype.updateTime = function() {
 	// Calculate Delta time in order to have smooth movement
-    var now = Date.now();
-    var dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
-    this.lastUpdate = now;
-	if (dt > 3) {
-		dt = 3;
-	}
+    // var now = Date.now();
+    // var dt = (now - this.lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
+    // this.lastUpdate = now;
+	// if (dt > 3) {
+	// 	dt = 3;
+	// }
 
 	// If the slow motion is over
 	if (this.slowMo < 0) {
@@ -127,7 +151,7 @@ Game.prototype.updateTime = function() {
 	}
 
 	for (var i = 0; i < this.timeTick; i++) {
-		this.coolness = this.coolness * 0.99;
+		this.coolness -= this.coolness * 0.01 * this.gameSpeed;
 	}
 }
 
@@ -272,6 +296,7 @@ Game.prototype.convertToSnap = function() {
 
 	return {
 		dt: this.gameSpeed,
+		gridSize: this.gridSize,
 		grid: this.grid.convertToSnap(),
 		entities: entitiesSnap,
 		bullets: bulletsSnap,
@@ -282,8 +307,10 @@ Game.prototype.convertToSnap = function() {
 	}
 }
 
-function drawGame(x, y, z, params) {
+function drawGame(x, y, r, params) {
 	// background(30, 40, 80);
+
+	var z = r / (params.gridSize * CELLSIZE);
 
 	push();
 	translate(x, y);

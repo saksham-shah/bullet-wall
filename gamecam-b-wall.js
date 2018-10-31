@@ -6,9 +6,9 @@ var zoom;
 function calcOffsets() {
     screenZoom = width / 1920;
 	if (height / 1080 < screenZoom) {
-        screenZoom = height / 10800;
+        screenZoom = height / 1080;
 	}
-    zoom = 810 * screenZoom / (GRIDSIZE * CELLSIZE);
+    // zoom = 810 * screenZoom / (GRIDSIZE * CELLSIZE);
 
     xOff = 555 * screenZoom;
     yOff = 135 * screenZoom;
@@ -20,7 +20,8 @@ function getDrawPos(gamePos) {
 }
 
 // Returns the game position of the mouse
-function getMousePos() {
+function getMousePos(gridSize) {
+    var z = 810 * screenZoom / (gridSize * CELLSIZE);
     var mousePos = createVector(mouseX, mouseY).sub(createVector(xOff, yOff));
-    return mousePos.div(zoom);
+    return mousePos.div(z);
 }

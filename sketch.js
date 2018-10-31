@@ -4,11 +4,16 @@ var myCursor;
 var selfRecord = false;
 var coverimg;
 
+var now, dt, lastUpdate;
+
 function preload() {
 	coverimg = loadImage("media/bwcoverimghd.png");
 }
 
 function setup() {
+
+	this.lastUpdate = Date.now();
+
 	if (windowWidth > windowHeight * 16 / 9) {
 		createCanvas((windowHeight - 10) * 16 / 9, windowHeight - 10);
 	} else {
@@ -38,6 +43,13 @@ function setup() {
 
 function draw() {
 
+	now = Date.now();
+	dt = (now - lastUpdate) / (1000 / 60); //dt will be 1 at 60fps
+	lastUpdate = now;
+	if (dt > 15) {
+		dt = 15;
+	}
+
 	if (nextScreen !== currentScreen) {
 		currentScreen = nextScreen;
 	}
@@ -53,7 +65,7 @@ function draw() {
 	fill(255);
 	noStroke();
 	if (currentScreen !== ss) {
-		text("v1.3.0a - Halloween", width * 0.5, height - 30 * screenZoom);
+		text("v1.3.1a - Halloween", width * 0.5, height - 30 * screenZoom);
 	}
 }
 

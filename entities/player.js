@@ -68,7 +68,7 @@ Player.prototype.updateGuns = function() {
     }
 
     // Points towards the mouse
-    var mousePos = getMousePos();
+    var mousePos = getMousePos(this.game.gridSize);
     this.direction = p5.Vector.sub(mousePos, this.pos).heading();
     this.gun1.direction = p5.Vector.sub(mousePos, this.gun1.getPos()).heading();
     this.gun2.direction = p5.Vector.sub(mousePos, this.gun2.getPos()).heading();
@@ -104,7 +104,7 @@ Player.prototype.checkShoot = function() {
 
             case 1:
             // Disc
-            var meToMouse = p5.Vector.sub(getMousePos(), this.pos);
+            var meToMouse = p5.Vector.sub(getMousePos(this.game.gridSize), this.pos);
             var disc = new Disc(this.game, this.gun1.getPos(), meToMouse.heading());
             this.game.bullets.push(disc);
             this.ammo --;

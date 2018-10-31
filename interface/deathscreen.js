@@ -89,7 +89,7 @@ DeathScreen.prototype.buttonClicked = function(button) {
     // Restart game
     if (button === this.restartButton) {
         nextScreen = gs;
-        gs.newGame(this.stats.difficulty);
+        gs.newGame(this.stats.mode, this.stats.difficulty);
     } else if (button === this.menuButton) {
         nextScreen = ms;
     }
@@ -120,7 +120,7 @@ DeathScreen.prototype.draw = function() {
     noStroke();
     rect(0, 0, width, height * 0.1);
 
-    this.modeText.draw(width * 0.5, height * 0.05, 30 * screenZoom, "CLASSIC");
+    this.modeText.draw(width * 0.5, height * 0.05, 30 * screenZoom, MODES[this.stats.mode]);
     this.gameOverText.draw(width * 0.5, height * 0.2, 100 * screenZoom);
 
     if (this.gameOverText.isFinished()) {

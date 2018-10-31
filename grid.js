@@ -76,8 +76,10 @@ function drawGrid(z, params) {
 	strokeWeight(1 * z);
 	stroke(theme.grid.lines);
 
-    var top = p5.Vector.mult(createVector(z * 0.5, z * 0.5), z);
-    var bottom = p5.Vector.mult(createVector(z * 0.5, params.grid.length * CELLSIZE + z * 0.5), z);
+    // var top = p5.Vector.mult(createVector(z * 0.5, z * 0.5), z);
+    // var bottom = p5.Vector.mult(createVector(z * 0.5, params.grid.length * CELLSIZE + z * 0.5), z);
+    var top = createVector(0, 0);
+    var bottom = createVector(0, params.grid.length * CELLSIZE * z);
 
 	for (var i = 0; i <= params.grid.length; i++) {
 		line(top.x, top.y, bottom.x, bottom.y);
@@ -85,8 +87,10 @@ function drawGrid(z, params) {
 		bottom.x += CELLSIZE * z;
 	}
 
-    var left = p5.Vector.mult(createVector(zoom * 0.5, zoom * 0.5), z);
-    var right = p5.Vector.mult(createVector(params.grid.length * CELLSIZE + z * 0.5, z * 0.5), z);
+    // var left = p5.Vector.mult(createVector(z * 0.5, z * 0.5), z);
+    // var right = p5.Vector.mult(createVector(params.grid.length * CELLSIZE + z * 0.5, z * 0.5), z);
+    var left = createVector(0, 0);
+    var right = createVector(params.grid.length * CELLSIZE * z, 0);
 
 	for (var i = 0; i <= params.grid.length; i++) {
 		line(left.x, left.y, right.x, right.y);

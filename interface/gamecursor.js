@@ -29,9 +29,9 @@ GameCursor.prototype.draw = function() {
     switch (this.mode) {
         case 0: // Cross
         stroke(theme.cursor);
-        strokeWeight(r * 0.5);
-        line(0, -r, 0, r);
-        line(-r, 0, r, 0);
+        strokeWeight(r * 0.75);
+        line(0, -r * 1.5, 0, r * 1.5);
+        line(-r * 1.5, 0, r * 1.5, 0);
         break;
 
         case 1: // Bullet
@@ -41,25 +41,25 @@ GameCursor.prototype.draw = function() {
         c = color(theme.bullet.stroke);
         c.setAlpha(150);
         stroke(c);
-        strokeWeight(r * 0.25);
-        ellipse(0, 0, r * 2);
+        strokeWeight(r * 0.4);
+        ellipse(0, 0, r * 3);
         break;
 
         case 2: // Disc
         rotate(HALF_PI);
-        strokeWeight(r * 0.25);
+        strokeWeight(r * 0.4);
         c = color(theme.bullet.discStroke);
         c.setAlpha(150);
         stroke(c);
         c = color(theme.bullet.discLeft);
         c.setAlpha(150);
         fill(c);
-        arc(0, 0, r * 2.5, r * 2.5, 0, PI, CHORD);
+        arc(0, 0, r * 4, r * 4, 0, PI, CHORD);
         c = color(theme.bullet.discRight);
         c.setAlpha(150);
         fill(c);
-        arc(0, 0, r * 2.5, r * 2.5, -PI, 0, CHORD);
-        line(r * 1.25, 0, - r * 1.25, 0);
+        arc(0, 0, r * 4, r * 4, -PI, 0, CHORD);
+        line(r * 2, 0, - r * 2, 0);
         break;
     }
 

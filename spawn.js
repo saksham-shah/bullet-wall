@@ -10,19 +10,22 @@ function Spawn(reqPoints_, reqScore_, doFunction_) {
 
 // Returns a random cell at least dFromPlayer far from the player. Used to spawn enemies/powerups randomly
 Game.prototype.randomCell = function(dFromPlayer) {
+    var d = this.gridSize * CELLSIZE * dFromPlayer;
     var done = false;
     var tries = 1000;
     while (!done && tries > 0) {
         var row = floor(random(this.gridSize));
         var col = floor(random(this.gridSize));
         var cell = this.grid.grid[row][col];
-        if (cell.wall == 0 && cell.powerup === null && p5.Vector.dist(cell.middle(), this.player.pos) > dFromPlayer) {
+        if (cell.wall == 0 && cell.powerup === null && p5.Vector.dist(cell.middle(), this.player.pos) > d) {
             done = true;
             return cell;
         }
         // Avoids any accidental infinite loops
         tries--;
     }
+    console.log("well done you broke the game");
+    console.log("please don't do it again thanks");
 }
 
 function createSpawns() {
@@ -30,21 +33,21 @@ function createSpawns() {
         // Stab Enemy
         new Spawn(1, 0,
             function(game) {
-                var cell = game.randomCell(CELLSIZE * 6);
+                var cell = game.randomCell(0.4);
                 game.entities.push(new EnemyStab(game, cell.row, cell.col));
             }
         ),
         // Gun Enemy
         new Spawn(3, 100,
             function(game) {
-                var cell = game.randomCell(CELLSIZE * 6);
+                var cell = game.randomCell(0.4);
                 game.entities.push(new EnemyGun(game, cell.row, cell.col));
             }
         ),
         // Bull Enemy
         new Spawn(4, 250,
             function(game) {
-                var cell = game.randomCell(CELLSIZE * 6);
+                var cell = game.randomCell(0.4);
                 game.entities.push(new EnemyBull(game, cell.row, cell.col));
             }
         ),

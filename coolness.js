@@ -29,6 +29,6 @@ Game.prototype.addCoolness = function(eventType, data) {
     this.coolness += cool;
 
     // if (eventType != "enemyDodge") {
-        // console.log(`${cool} : ${eventType} : ${this.coolness}`);
+    //     console.log(`${cool} : ${eventType} : ${this.coolness}`);
     // }
 }

@@ -32,7 +32,7 @@ function GameClip(frames, x, y, r, coolness) {
     this.x = x;
     this.y = y;
     this.r = r;
-    this.z = this.r / GRIDSIZE / CELLSIZE;
+    // this.z = this.r / GRIDSIZE / CELLSIZE;
 
     this.coolness = coolness;
     this.counter = 0;
@@ -46,7 +46,7 @@ function GameClip(frames, x, y, r, coolness) {
 GameClip.prototype.setPos = function(x, y, r) {
     if (r !== undefined) {
         this.r = r;
-        this.z = this.r / GRIDSIZE / CELLSIZE;
+        // this.z = this.r / GRIDSIZE / CELLSIZE;
     }
 
     this.x = x;
@@ -60,10 +60,7 @@ GameClip.prototype.mouseHovered = function() {
             return true;
         }
     } else {
-        if (mouseX > width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 &&
-            mouseX < width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 + GRIDSIZE * CELLSIZE * zoom &&
-            mouseY > height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 &&
-            mouseY < height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5 + GRIDSIZE * CELLSIZE * zoom) {
+        if (mouseX > xOff && mouseX < width - xOff && mouseY > yOff && mouseY < height - yOff) {
             return true;
         }
     }
@@ -89,7 +86,7 @@ GameClip.prototype.fullScreen = function() {
 // Loops around the clip forever
 GameClip.prototype.nextFrame = function() {
     if (this.playing) {
-        this.counter = (this.counter + 1) % this.frames.length;
+        this.counter = (this.counter + dt) % this.frames.length;
     }
 }
 
@@ -99,7 +96,7 @@ GameClip.prototype.pause = function() {
 
 GameClip.prototype.draw = function(forced) {
     if (!this.fullscreen || forced) {
-        drawGame(this.x, this.y, this.z, this.thumbnail);
+        drawGame(this.x, this.y, this.r, this.thumbnail);
         if (!this.playing && !this.mouseHovered()) {
             fill(255, 100);
             stroke(200, 100);
@@ -114,6 +111,7 @@ GameClip.prototype.draw = function(forced) {
             endShape();
         }
     } else {
-        drawGame(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom, this.frames[this.counter]);
+        // drawGame(width * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, height * 0.5 - GRIDSIZE * CELLSIZE * zoom * 0.5, zoom, this.frames[this.counter]);
+        drawGame(xOff, yOff, 810 * screenZoom, this.frames[floor(this.counter)]);
     }
 }

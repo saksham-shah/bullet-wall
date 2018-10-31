@@ -15,12 +15,12 @@ StartScreen.prototype.update = function() {
 	if (this.titleR > 200) {
 		this.titleR = 200;
 	} else if (this.titleR == 200) {
-		this.time ++;
+		this.time += dt;
 		if (this.titleSin > 0.07) {
-			this.titleSin -= 0.003;
+			this.titleSin -= 0.003 * dt;
 		}
 	} else {
-		this.titleR += 10;
+		this.titleR += 10 * dt;
 	}
 
 	// this.titleAcc = 0;

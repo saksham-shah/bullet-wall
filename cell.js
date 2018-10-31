@@ -113,10 +113,11 @@ function drawCell(z, params, mode) {
         stroke(theme.grid.cellStroke);
         strokeWeight(4 * z);
         fill(theme.grid.cellFill);
-        rect(2 * z, 2 * z, (params.r - 2) * z, (params.r - 2) * z);
+        // rect(2 * z, 2 * z, (params.r - 2) * z, (params.r - 2) * z);
+        rect(0, 0, params.r * z, params.r * z);
 
         if (params.wall > 1) {
-            line(2 * z, (params.r - 2) * z, (params.r - 2) * z, 2 * z);
+            line(0, params.r * z, params.r * z, 0);
         }
 
         pop();
@@ -129,9 +130,9 @@ function drawCell(z, params, mode) {
         stroke(theme.grid.powerupStroke);
         strokeWeight(2 * z);
         fill(theme.grid.powerupFill);
-        rect(params.r * z * 0.1 + z, params.r * z * 0.1 + z, params.r * z * 0.8, params.r * z * 0.8);
+        rect(params.r * z * 0.1, params.r * z * 0.1, params.r * z * 0.8, params.r * z * 0.8);
 
-        params.powerup.draw(params.r * z * 0.1 + z, params.r * z * 0.1 + z, params.r * z * 0.8);
+        params.powerup.draw(params.r * z * 0.1, params.r * z * 0.1, params.r * z * 0.8);
 
         pop();
 

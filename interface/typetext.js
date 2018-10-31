@@ -18,7 +18,7 @@ function TypeText(text_) {
 TypeText.prototype.startTyping = function() {
     // If it was already typing, continue typing
     if (this.typing) {
-        this.timePassed ++;
+        this.timePassed += dt;
         if (this.timePassed > 60 / this.typeSpeed) {
             if (this.counter < this.text.length) {
                 this.counter ++;

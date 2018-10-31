@@ -4,6 +4,12 @@ Play the game here: https://rawgit.com/saksham-shah/bullet-wall/master/index.htm
 
 Change log:
 
+31 October - v1.3.1 - Tiny map!
+
+* NEW SMALL MODE: Play on a smaller map for an added challenge!
+* FIX: Game crashing after every powerup spawn
+* FIX: Frame rate issues causing glitches in the playback speed of game clips
+
 28 October - v1.3 - Spooooky...
 
 * Celebrate Halloween with an all new colour theme!
