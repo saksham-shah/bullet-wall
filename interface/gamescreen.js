@@ -50,9 +50,12 @@ GameScreen.prototype.update = function() {
             // var coolness = this.game.coolness;
             // this.coolness = coolness;
         if (this.gameStats.coolness > this.maxCoolness && !selfRecord) {
+            console.log("WANT TO RECORD: " + String(this.gameStats.coolness) + " coolness. Previous: " + String(this.maxCoolness));//, " + String(this.gameStats.coolness) + " now.");
+
             this.maxCoolness = this.gameStats.coolness;
             this.coolTimer = 30;
             this.clipNeeded = true;
+
         }
         // }
         this.coolTimer -= this.gameStats.gameSpeed;

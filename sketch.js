@@ -1,4 +1,4 @@
-var gs, ms, ds, ps, ss;
+var gs, ms, ds, ps, ss, fs;
 var currentScreen, nextScreen;
 var myCursor;
 var selfRecord = false;
@@ -25,6 +25,8 @@ function setup() {
 	ss = new StartScreen();
 
 	ms = new MenuScreen();
+
+	fs = new FadeScreen();
 
 	gs = new GameScreen();
 
@@ -65,7 +67,7 @@ function draw() {
 	fill(255);
 	noStroke();
 	if (currentScreen !== ss) {
-		text("v1.3.1a - Halloween", width * 0.5, height - 30 * screenZoom);
+		text("v1.3.1b", width * 0.5, height - 30 * screenZoom);
 	}
 }
 

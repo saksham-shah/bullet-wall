@@ -4,13 +4,12 @@ var GRIDSIZE = 15;
 function Game(mode, difficulty) {
 
 	this.mode = mode;
-	switch (mode) {
-		case 0:
-		this.gridSize = 15;
-		break;
-		case 1:
+
+	if (mode == 1) {
+		// Small mode
 		this.gridSize = 11;
-		break;
+	} else {
+		this.gridSize = 15;
 	}
 
     this.entities = [];
@@ -38,23 +37,60 @@ function Game(mode, difficulty) {
 	this.timeSinceWave = 0;
 	this.timeSinceEnemy = 0;
 
-	if (difficulty == 0) {
+	switch (difficulty) {
+		case 0:
 		// Easy
 		this.nextWave = 2;
 		this.waveStep = 1;
-	} else if (difficulty == 1) {
+		break;
+		case 1:
 		// Normal
 		this.nextWave = 5;
 		this.waveStep = 2;
-	} else if (difficulty == 2) {
+		break;
+		case 2:
 		// Hard
 		this.nextWave = 10;
 		this.waveStep = 3;
-	} else if (difficulty == 3) {
+		break;
+		case 3:
 		// Insane
 		this.nextWave = 20;
 		this.waveStep = 4;
+		break;
+		case 4:
+		// Onslaught
+		this.nextWave = 40;
+		this.waveStep = 10;
+		break;
+		default:
+		this.nextWave = 5;
+		this.waveStep = 2;
 	}
+
+	// if (mode == 2) {
+	// 	// Onslaught mode
+	// 	this.nextWave = 40;
+	// 	this.waveStep = 10;
+	// }
+
+	// if (difficulty == 0) {
+	// 	// Easy
+	// 	this.nextWave = 2;
+	// 	this.waveStep = 1;
+	// } else if (difficulty == 1) {
+	// 	// Normal
+	// 	this.nextWave = 5;
+	// 	this.waveStep = 2;
+	// } else if (difficulty == 2) {
+	// 	// Hard
+	// 	this.nextWave = 10;
+	// 	this.waveStep = 3;
+	// } else if (difficulty == 3) {
+	// 	// Insane
+	// 	this.nextWave = 20;
+	// 	this.waveStep = 4;
+	// }
 
 	this.nextPowerUp = 0;
 	this.powerupsToUse = [];
@@ -270,9 +306,11 @@ Game.prototype.enemyDeath = function(enemy) {
 
 // Sets the game to slow motion
 Game.prototype.slowMotion = function(time, speed) {
-	if (this.playSpeed >= speed) {
-		this.playSpeed = speed;
-		this.slowMo = time;
+	if (speed == 0.1 || this.mode !== 2) {// && false) {
+		if (this.playSpeed >= speed) {
+			this.playSpeed = speed;
+			this.slowMo = time;
+		}
 	}
 }
 
